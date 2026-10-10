@@ -1,0 +1,23 @@
+\begin{abstract}
+We study stochastic optimization with Gaussian measurement error in the
+inputs. For scores admitting an entire extension, complex-corrected
+stochastic gradient descent evaluates the score at a noisy observation
+plus an independent imaginary Gaussian perturbation. Building on the
+classical complex corrected-score identity, this gives a directly
+implementable learning rule whose gradient is exactly unbiased at every
+iteration, rather than corrected only to finite order. Under an exponential
+derivative bound with parameter-dependent amplitude, a gradient-based
+amplitude control, and sub-Gaussian latent inputs, we derive the conditional
+moment estimates that place this recursion within classical stochastic
+approximation. We obtain convex objective bounds, almost-sure convergence
+to the clean optimizer $\theta^*$ and mean-square rates under strong
+convexity, and nonconvex stationarity bounds. We also establish
+last-iterate and averaged central limit laws for step sizes
+$c/(t+\gamma)^\alpha$, $1/2<\alpha\le1$, including the distinct averaging
+covariance at $\alpha=1$. The construction allows any known positive
+semidefinite noise covariance. We discuss exact correction for admissible
+non-Gaussian errors, including uniform and symmetric two-point noise,
+under suitable integrability conditions. Explicit examples and numerical
+experiments illustrate parameter convergence and improved prediction
+over naive training.
+\end{abstract}

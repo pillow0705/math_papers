@@ -1,0 +1,471 @@
+\section{Proofs of the main results}\label{app:proofs}
+
+\subsection{Proof of Lemma~\ref{lem:exact_correction}}
+\begin{proof}
+Fix $\theta$ and $z\in\mathbb R^d$, and put $C=U+iV$.
+The fundamental theorem of calculus and the exponential envelope give, for every $q\in\mathbb C^d$,
+\begin{equation}\label{eq:appendix_score_envelope}
+\|g^{\mathbb C}(\theta;q)-g(\theta;0)\|
+\le M(\theta)\|q\|e^{a\|q\|}.
+\end{equation}
+Since $C$ is complex Gaussian, its norm has exponential moments of every linear order. Thus $g^{\mathbb C}(\theta;z+C)$ is absolutely integrable. The same bound permits exchange of the expectation and angular integral below.
+
+For every $\phi\in[0,2\pi]$, the real pair
+\[
+(\operatorname{Re}(e^{i\phi}C),\operatorname{Im}(e^{i\phi}C))
+=(U\cos\phi-V\sin\phi,\;U\sin\phi+V\cos\phi)
+\]
+has the same centered Gaussian law as $(U,V)$: its covariance is $\operatorname{diag}(\Omega,\Omega)$. Hence $e^{i\phi}C\overset{d}=C$. On the other hand, for each fixed $c\in\mathbb C^d$, the one-variable function $s\mapsto g^{\mathbb C}(\theta;z+sc)$ is entire. Cauchy's mean-value formula, applied componentwise, gives
+\[
+\frac{1}{2\pi}\int_0^{2\pi}
+g^{\mathbb C}(\theta;z+e^{i\phi}c)\,d\phi
+=g^{\mathbb C}(\theta;z)=g(\theta;z).
+\]
+Taking expectation over $C$ and using rotational invariance yields
+\[
+\mathbb E\,g^{\mathbb C}(\theta;z+C)
+=\mathbb E\!\left[\frac{1}{2\pi}\int_0^{2\pi}
+g^{\mathbb C}(\theta;z+e^{i\phi}C)\,d\phi\right]
+=g(\theta;z).
+\]
+Taking real parts proves the first claim. For the second, condition on $\mathcal F_{t-1}$, apply the first claim conditional on $Z_t$, and then average over $Z_t$. Predictability and the assumed interchange of gradient and expectation give $\nabla F(\theta_t)$.
+\end{proof}
+
+\subsection{Reduction to classical SGD noise conditions}
+\begin{proof}
+Put $D=U+iV$. The fundamental theorem of calculus gives
+\[
+\|\operatorname{Re}g^{\mathbb C}(\theta;Z+D)-g(\theta;Z)\|
+\le M(\theta)\|D\|e^{a(\|Z\|+\|D\|)}.
+\]
+Independence of $Z$ and $D$ gives
+$\mathbb E\|\Delta(\theta)\|^2\le K_aM(\theta)^2$.
+Equation~\eqref{eq:amplitude_control} then gives the correction-error
+bound in the main text.
+Sub-Gaussian vectors in finite dimension have exponential moments of their
+norm of every linear order; the same holds for the Gaussian pair $(U,V)$,
+regardless of whether $\Omega$ is singular. Hence $K_a<\infty$.
+Conditioning first on $Z_t$ and using exact correction shows that
+$\Delta_t$ is orthogonal in $L^2$ to
+$g(\theta_t;Z_t)-\nabla F(\theta_t)$. This proves
+\eqref{eq:relative_variance}. In particular,
+\begin{equation}\label{eq:score_second_moment}
+\mathbb E_t\|G_t\|^2
+\le\sigma^2+(1+\rho)\|\nabla F(\theta_t)\|^2.
+\end{equation}
+For the CLTs, stronger moments follow from the same input bound.
+Set $b_a(q)=\|q\|e^{a\|q\|}$ and $Q=Z+U+iV$. Centering cancels
+$g(\theta;0)$ and gives
+\[
+\|G(\theta)-\nabla F(\theta)\|
+\le M(\theta)\bigl[b_a(Q)+\mathbb E b_a(Z)\bigr].
+\]
+The bracket has moments of every finite order. Hence, for every $r\ge2$,
+\begin{equation}\label{eq:higher_noise_moments}
+\mathbb E_t\|\xi_t\|^r\le C_r M(\theta_t)^r
+\le C_r\bigl(A+B\|\nabla F(\theta_t)\|^2\bigr)^{r/2},
+\end{equation}
+where $C_r$ is deterministic and finite. Under the strong convexity and
+smoothness conditions used for the CLTs, almost-sure convergence gives
+\[
+\sup_t\|\nabla F(\theta_t)\|<\infty\quad\text{almost surely}.
+\]
+Thus the conditional higher moments are bounded along each convergent
+trajectory by a finite random constant. On a fixed neighborhood of
+$\theta^*$ the bound is deterministic, since
+$\|\nabla F(\theta)\|\le L\|\theta-\theta^*\|$.
+These bounds supply the Lindeberg control below without a global
+uniform bound on $M$ or a moment assumption on the corrected score.
+\end{proof}
+
+\subsection{Convex convergence}
+\begin{proof}
+Write $e_t=\theta_t-\theta^*$ and $f_t=F(\theta_t)-F(\theta^*)$.
+For a convex, $L$-smooth function,
+\[
+\langle\nabla F(\theta_t),e_t\rangle
+\ge f_t+\frac1{2L}\|\nabla F(\theta_t)\|^2.
+\]
+Expanding the squared distance, using unbiasedness and
+\eqref{eq:score_second_moment}, gives
+\[
+\mathbb E_t\|e_{t+1}\|^2
+\le\|e_t\|^2-2\eta_tf_t
++\bigl((1+\rho)\eta_t^2-\eta_t/L\bigr)
+\|\nabla F(\theta_t)\|^2+\sigma^2\eta_t^2.
+\]
+The gradient term is nonpositive under the stated step-size bound.
+Taking expectations, summing, and applying convexity to the weighted
+average proves the displayed bound. The rates follow from
+$\sum_t\eta_t^2<\infty$ and the growth of $\sum_{t\le T}\eta_t$.
+\end{proof}
+
+\subsection{Strong convexity and MSE}
+\begin{proof}
+Write $e_t=\theta_t-\theta^*$. Strong convexity and smoothness give
+$\langle\nabla F(\theta_t),e_t\rangle\ge\mu\|e_t\|^2$ and
+$\|\nabla F(\theta_t)\|\le L\|e_t\|$. Hence
+\begin{equation}\label{eq:strong_recursion}
+\mathbb E_t\|e_{t+1}\|^2
+\le\bigl(1-2\mu\eta_t+(1+\rho)L^2\eta_t^2\bigr)\|e_t\|^2
++\sigma^2\eta_t^2.
+\end{equation}
+This inequality first ensures finite second moments at every finite time.
+The Robbins--Siegmund theorem \cite{robbinssiegmund1971}, applied with
+summable coefficients $(1+\rho)L^2\eta_t^2$ and $\sigma^2\eta_t^2$,
+then shows that $\|e_t\|^2$ converges almost surely and
+$\sum_t\eta_t\|e_t\|^2<\infty$. Since $\sum_t\eta_t=\infty$,
+the limit is zero.
+
+For the rates, put $u_t=\mathbb E\|e_t\|^2$, $h_t=t+\gamma$,
+$A=2\mu c$, $B=(1+\rho)L^2c^2$, and $D=\sigma^2c^2$.
+Taking expectations gives
+\begin{equation}\label{eq:mse_scalar}
+u_{t+1}\le(1-Ah_t^{-\alpha}+Bh_t^{-2\alpha})u_t
++Dh_t^{-2\alpha}.
+\end{equation}
+If $\alpha<1$, choose $N$ so that the coefficient is nonnegative and
+at most $1-(A/2)h_t^{-\alpha}$ for $t\ge N$.
+Choose $M\ge4D/A$ with $u_N\le Mh_N^{-\alpha}$.
+Increasing $N$ if needed, $h_t^{1-\alpha}\ge4\alpha/A$.
+The induction hypothesis $u_t\le Mh_t^{-\alpha}$ then implies
+\[
+u_{t+1}\le Mh_t^{-\alpha}-\frac{AM}{4}h_t^{-2\alpha}
+\le M(h_t+1)^{-\alpha},
+\]
+where the last inequality uses
+$h^{-\alpha}-(h+1)^{-\alpha}\le\alpha h^{-\alpha-1}$.
+After adjusting $M$ at this fixed starting index, induction proves
+$u_t=O(t^{-\alpha})$.
+
+If $\alpha=1$, choose $N$ so that $q_j=1-A/h_j+B/h_j^2>0$ for
+$j\ge N$. Since $\log q_j=-A/h_j+O(h_j^{-2})$,
+\[
+\prod_{j=s}^{t-1}q_j\le C(h_s/h_t)^A\qquad(t>s\ge N),
+\]
+with a constant independent of $s,t$. Iterating \eqref{eq:mse_scalar}
+therefore gives
+\[
+u_t\le C h_t^{-A}
+\left(h_N^Au_N+D\sum_{s=N}^{t-1}h_s^{A-2}\right).
+\]
+The sum is $O(t^{A-1})$ for $A>1$, $O(\log t)$ for $A=1$,
+and $O(1)$ for $A<1$. These are the three asserted rates, and all
+converge to zero.
+\end{proof}
+
+\subsection{Preparatory estimates for the central limit theorems}
+\label{app:clt_preparation}
+Throughout the CLT proofs, write
+$\bar e_T=T^{-1}\sum_{t=1}^Te_t=\bar\theta_T-\theta^*$,
+and put $h=\lambda_{\min}(H)>0$ and
+\[
+r(e)=\nabla F(\theta^*+e)-He.
+\]
+Local Lipschitz continuity of the Hessian gives a radius $\varepsilon_0>0$
+and a constant $C_r$ such that
+$\|r(e)\|\le C_r\|e\|^2$ for $\|e\|\le\varepsilon_0$.
+Globally, smoothness gives $\|r(e)\|\le(L+\|H\|)\|e\|$.
+
+\paragraph{Localization.}
+Choose $0<\varepsilon\le\varepsilon_0$ and define
+$\tau_N=\inf\{t\ge N:\|e_t\|>\varepsilon\}$, with
+$\inf\varnothing=\infty$. Almost-sure convergence implies
+\begin{equation}\label{eq:localization_probability}
+\mathbb P(\tau_N<\infty)\longrightarrow0\qquad(N\to\infty).
+\end{equation}
+For $\alpha<1$, the global MSE bound yields
+\[
+\mathbb E[\|r(e_t)\|\mathbf1_{\{\tau_N>t\}}]
+\le C\,t^{-\alpha}.
+\]
+For $\alpha=1$, the local spectral condition $ch>1/2$ permits a choice
+$m\in(1/(2c),h)$ and a sufficiently small $\varepsilon$ such that
+$\langle\nabla F(\theta^*+e),e\rangle\ge m\|e\|^2$
+on this ball. The event $\{\tau_N>t\}$ is measurable with respect to
+$\mathcal F_{t-1}$. Setting
+$v_t=\mathbb E[\|e_t\|^2\mathbf1_{\{\tau_N>t\}}]$, discarding
+paths that exit at the next step gives
+\[
+v_{t+1}\le(1-2m\eta_t+(1+\rho)L^2\eta_t^2)v_t+\sigma^2\eta_t^2.
+\]
+The preceding scalar comparison, with $2mc>1$, gives
+\begin{equation}\label{eq:localized_remainder}
+v_t=O_N(t^{-1}),\qquad
+\mathbb E[\|r(e_t)\|\mathbf1_{\{\tau_N>t\}}]=O_N(t^{-1}).
+\end{equation}
+Here constants may depend on the fixed starting index $N$.
+We first take the iteration horizon to infinity and then let $N\to\infty$
+in \eqref{eq:localization_probability}. Thus a remainder that vanishes
+on these localized paths is $o_p(1)$ for the original process.
+
+\paragraph{Matrix products.}
+For $b\ge a$, let $P_{a,b}=\prod_{j=a}^b(I-\eta_jH)$, and set
+$P_{a,b}=I$ when $a>b$. Choose $N$ large enough that
+$\eta_j\|H\|<1$ for $j\ge N$. Spectral decomposition gives
+\begin{equation}\label{eq:product_bounds}
+\begin{aligned}
+\|P_{s+1,t-1}\|&\le
+\exp\left(-h\sum_{j=s+1}^{t-1}\eta_j\right), &&\alpha<1,\\
+\|P_{s+1,t-1}\|&\le C_\nu
+\left(\frac{s+\gamma}{t+\gamma}\right)^\nu,
+&&\alpha=1,\quad 0<\nu<ch,
+\end{aligned}
+\end{equation}
+for $t>s\ge N$. For the second bound, apply
+$\log(1-c\lambda/(j+\gamma))=-c\lambda/(j+\gamma)+O(j^{-2})$
+to each eigenvalue $\lambda$ of $H$ and sum over $j$.
+
+\paragraph{A common martingale CLT argument.}
+Equation~\eqref{eq:higher_noise_moments}, almost-sure convergence, and covariance continuity imply, for some
+$\delta>0$,
+\[
+\mathbb E_t\xi_t=0,\qquad
+\sup_t\mathbb E_t\|\xi_t\|^{2+\delta}\le C_\delta(\omega)<\infty,\qquad
+S(\theta_t)\longrightarrow S_*\quad\text{almost surely}.
+\]
+Let $D_{T,s}$ be deterministic matrix weights such that
+\begin{equation}\label{eq:weight_conditions}
+\max_s\|D_{T,s}\|\to0,\qquad
+\sup_T\sum_s\|D_{T,s}\|^2<\infty,\qquad
+\sum_sD_{T,s}S_*D_{T,s}^\top\to\Sigma.
+\end{equation}
+Splitting the sum at a fixed index and then sending that index to infinity
+shows that replacing $S_*$ by $S(\theta_s)$ changes the last limit by
+$o(1)$ almost surely. For each $\epsilon>0$, conditional Lindeberg follows
+from
+\[
+\sum_s\mathbb E_s\!\left[
+\|D_{T,s}\xi_s\|^2\mathbf1_{\{\|D_{T,s}\xi_s\|>\epsilon\}}\right]
+\le C_\delta(\omega)\epsilon^{-\delta}
+\max_s\|D_{T,s}\|^\delta\sum_s\|D_{T,s}\|^2\longrightarrow0\quad\text{almost surely}.
+\]
+The martingale array CLT and the Cram\'er--Wold argument therefore give
+$\sum_sD_{T,s}\xi_s\Rightarrow N(0,\Sigma)$
+\cite[Chapter~3]{hallheyde1980}. This verifies explicitly the probabilistic
+conditions used in the following two proofs.
+
+\subsection{Last-iterate fluctuations}
+\begin{proof}[Proof of Theorem~\ref{thm:last_clt}]
+The exact recursion, started at a fixed sufficiently large $N$, is
+\begin{equation}\label{eq:linear_representation}
+e_t=P_{N,t-1}e_N-
+\sum_{s=N}^{t-1}\eta_sP_{s+1,t-1}\xi_s-
+\sum_{s=N}^{t-1}\eta_sP_{s+1,t-1}r(e_s).
+\end{equation}
+We verify directly the linearization and covariance limits underlying
+the stochastic approximation CLT of Fabian \cite{fabian1968}.
+
+If $\alpha<1$, the first term multiplied by $t^{\alpha/2}$ vanishes
+by \eqref{eq:product_bounds}. On localized paths, the expected norm of
+the scaled last term is bounded by
+\[
+C t^{\alpha/2}\sum_{s=N}^{t-1}\eta_s
+\exp\left(-h\sum_{j=s+1}^{t-1}\eta_j\right)s^{-\alpha}
+=O(t^{-\alpha/2}).
+\]
+To see this, split at $t/2$. The earlier terms have an exponentially
+small factor $e^{-c_1t^{1-\alpha}}$; for the later terms,
+$s^{-\alpha}\le C t^{-\alpha}$ and the remaining weighted geometric
+sum is bounded. Localization then makes this term $o_p(1)$.
+
+Set $D_{t,s}=t^{\alpha/2}\eta_sP_{s+1,t-1}$.
+The same product bound gives
+$\max_s\|D_{t,s}\|=O(t^{-\alpha/2})$ and
+$\sum_s\|D_{t,s}\|^2=O(1)$.
+On the window $t-s=O(\eta_t^{-1})$, uniformly on bounded rescaled
+intervals, $\eta_s/\eta_t\to1$ and
+$P_{s+1,t-1}=e^{-H\eta_t(t-s)}+o(1)$.
+Riemann summation, using $t^\alpha\eta_t\to c$, gives
+\[
+\sum_{s=N}^{t-1}D_{t,s}S_*D_{t,s}^\top
+\longrightarrow c\int_0^\infty e^{-Hv}S_*e^{-Hv}\,dv.
+\]
+The omitted tail beyond $t-s>R/\eta_t$ is bounded by $Ce^{-c_2R}$
+after the negligible range $s<t/2$ is removed. This justifies sending
+$R\to\infty$. The common martingale argument proves the first CLT.
+
+If $\alpha=1$, fix $\nu\in(1/2,\min\{ch,1\})$.
+The scaled initial term is $O_p(t^{1/2-\nu})=o_p(1)$.
+By \eqref{eq:localized_remainder}, the localized expected norm of the
+scaled nonlinear term is at most
+\[
+C_N t^{1/2-\nu}\sum_{s=N}^{t-1}s^{\nu-2}
+=O_N(t^{1/2-\nu})=o(1).
+\]
+Set $D_{t,s}=\sqrt t\,\eta_sP_{s+1,t-1}$. Then
+$\|D_{t,s}\|\le C t^{-1/2}(s/t)^{\nu-1}$, so the first two
+conditions in \eqref{eq:weight_conditions} hold. Uniformly for
+$s/t$ in compact subsets of $(0,1]$,
+\[
+\sqrt t\,D_{t,s}\longrightarrow c\,u^{cH-I}
+\quad\text{when }s/t\to u.
+\]
+The squared-weight sum over $N\le s\le\varepsilon t$ is bounded by
+$C\varepsilon^{2\nu-1}$. Hence Riemann summation gives
+\[
+\sum_{s=N}^{t-1}D_{t,s}S_*D_{t,s}^\top
+\longrightarrow c^2\int_0^1u^{cH-I}S_*u^{cH-I}\,du.
+\]
+The martingale argument proves the endpoint CLT.
+
+Finally, the first integral covariance solves
+$H\Sigma_c+\Sigma_cH=cS_*$. In the second integral, the substitution
+$u=e^{-v}$ gives
+$c^2\int_0^\infty e^{-(cH-I/2)v}S_*e^{-(cH-I/2)v}\,dv$,
+which solves the stated endpoint equation. Positive definiteness of
+$H$ and $cH-I/2$, respectively, gives uniqueness and positive
+semidefiniteness of these solutions.
+\end{proof}
+
+\subsection{Polyak--Ruppert averaging}
+\begin{proof}[Proof of Theorem~\ref{thm:pr_clt}]
+Suppose first that $\alpha<1$. Summing
+$He_t=(e_t-e_{t+1})/\eta_t-\xi_t-r(e_t)$ from $N$ to $T$ gives
+\[
+H\sum_{t=N}^Te_t=-\sum_{t=N}^T\xi_t-
+\sum_{t=N}^Tr(e_t)+R_{N,T},
+\]
+where summation by parts yields
+\[
+R_{N,T}=\frac{e_N}{\eta_N}-\frac{e_{T+1}}{\eta_T}
++\sum_{t=N+1}^T(\eta_t^{-1}-\eta_{t-1}^{-1})e_t.
+\]
+Since $\mathbb E\|e_t\|=O(t^{-\alpha/2})$ and
+$\eta_t^{-1}-\eta_{t-1}^{-1}=O(t^{\alpha-1})$,
+\[
+T^{-1/2}\mathbb E\|R_{N,T}\|
+=O_N(T^{-1/2})+O(T^{(\alpha-1)/2})=o(1).
+\]
+The localized nonlinear sum, divided by $\sqrt T$, has expected norm
+at most
+\[
+C T^{-1/2}\sum_{t=N}^Tt^{-\alpha}=O(T^{1/2-\alpha})=o(1).
+\]
+Removing localization and the finite initial segment gives the classical
+averaging representation
+\cite{polyakjuditsky1992}
+\[
+\sqrt T\,\bar e_T=-H^{-1}\frac1{\sqrt T}\sum_{t=1}^T\xi_t+o_p(1).
+\]
+Taking $D_{T,s}=H^{-1}/\sqrt T$ in
+\eqref{eq:weight_conditions} proves the first assertion.
+
+For $\alpha=1$, use the product representation
+\eqref{eq:linear_representation} and define
+\[
+B_{T,s}=\eta_s\sum_{t=s+1}^TP_{s+1,t-1},\qquad N\le s\le T,
+\]
+Then
+\[
+\sqrt T\,\bar e_T=-\frac1{\sqrt T}\sum_{s=N}^{T-1}B_{T,s}\xi_s
+-\frac1{\sqrt T}\sum_{s=N}^{T-1}B_{T,s}r(e_s)+I_{N,T},
+\]
+where $B_{T,T}=0$ and $I_{N,T}$ contains the finite initial segment and the propagated
+initial value. For $\nu\in(1/2,\min\{ch,1\})$,
+\eqref{eq:product_bounds} implies
+\begin{equation}\label{eq:averaging_weight_bound}
+\|B_{T,s}\|\le C s^{\nu-1}\sum_{t=s+1}^Tt^{-\nu}
+\le C(s/T)^{\nu-1},\qquad
+I_{N,T}=O_p(T^{1/2-\nu}).
+\end{equation}
+By \eqref{eq:localized_remainder}, the localized nonlinear sum is
+bounded in expected norm by
+\[
+\frac{C_N}{\sqrt T}\sum_{s=N}^{T-1}(s/T)^{\nu-1}s^{-1}
+=O_N(T^{1/2-\nu})=o(1).
+\]
+Thus both remainders vanish in probability.
+
+To identify the weights, the eigenvalue expansion used in
+\eqref{eq:product_bounds} gives, uniformly when
+$\varepsilon T\le s<t\le T$,
+\[
+P_{s+1,t-1}=((s+\gamma)/(t+\gamma))^{cH}+O_\varepsilon(T^{-1}).
+\]
+Consequently, uniformly on compact subsets of $(0,1]$,
+\[
+B_{T,\lfloor Tu\rfloor}\longrightarrow
+K_c(u)=c\,u^{cH-I}\int_u^1v^{-cH}\,dv.
+\]
+Both $B_{T,s}$ and $K_c(s/T)$ satisfy the bound
+$C(s/T)^{\nu-1}$. In particular,
+\[
+\frac1T\sum_{N\le s\le\varepsilon T}
+\bigl(\|B_{T,s}\|^2+\|K_c(s/T)\|^2\bigr)
+\le C\varepsilon^{2\nu-1}.
+\]
+Compact convergence and this bound establish
+\begin{equation}\label{eq:kernel_l2}
+\frac1T\sum_{s=N}^{T-1}\|B_{T,s}-K_c(s/T)\|^2\longrightarrow0.
+\end{equation}
+The relative variance bound, smoothness, and the strong-convexity MSE
+estimate imply $\sup_s\mathbb E\|\xi_s\|^2<\infty$.
+Martingale orthogonality therefore shows that
+replacing $B_{T,s}$ by $K_c(s/T)$ in the noise sum produces an
+$o_{L^2}(1)$ error. The finitely many terms with $s<N$ vanish because
+$T^{-1/2}\|K_c(s/T)\|=O(T^{1/2-\nu})$ for fixed $s$.
+We have therefore proved
+\[
+\sqrt T\,\bar e_T=-\frac1{\sqrt T}\sum_{s=1}^{T-1}K_c(s/T)\xi_s+o_p(1).
+\]
+For $D_{T,s}=T^{-1/2}K_c(s/T)$,
+\eqref{eq:averaging_weight_bound} gives vanishing maximum weight and a
+bounded squared-weight sum. The same compact/tail decomposition gives
+\[
+\sum_{s=1}^{T-1}D_{T,s}S_*D_{T,s}^\top
+\longrightarrow\int_0^1K_c(u)S_*K_c(u)^\top\,du.
+\]
+The common martingale CLT argument completes the proof.
+\end{proof}
+
+\subsection{Nonconvex stationarity}
+\begin{proof}
+Smoothness, unbiasedness, and \eqref{eq:score_second_moment} give
+\[
+\mathbb E_tF(\theta_{t+1})
+\le F(\theta_t)-\eta_t\left(1-\tfrac L2(1+\rho)\eta_t\right)
+\|\nabla F(\theta_t)\|^2+\tfrac L2\sigma^2\eta_t^2.
+\]
+The stated step-size bound makes the descent coefficient at least
+$\eta_t/2$. Taking expectations, summing, and using
+$F(\theta_{T+1})\ge F_{\inf}$ proves the bound and the asserted rates.
+\end{proof}
+
+
+\subsection{Moment bounds for nonlinear-feature regression}
+\label{app:regression}
+For the regression model in Section~\ref{sec:experiments}, write
+$Q=Z+U+iV$, $\theta^*=\theta_{\rm true}$, and
+\[
+A=\operatorname{Re}\{\psi(Q)\psi(Q)^\top\},\qquad
+b=Y\operatorname{Re}\psi(Q),\qquad
+H=\mathbb E[\psi(Z)\psi(Z)^\top].
+\]
+The corrected gradient is $G(\theta)=A\theta-b$.
+Gaussian tails, the polynomial growth of $Y$, and the exponential growth
+of the sine and cosine factors imply that $A$ and $b$ have moments of
+every finite order. Conditional exact correction gives
+$\mathbb EA=H$ and $\mathbb Eb=H\theta^*$.
+The functions $\sin z$, $\cos(0.7z)$, and $z^2$ are linearly independent
+on $\mathbb R$, and the latent density is positive everywhere.
+Consequently $H\succ0$ and
+\[
+F(\theta)=\tfrac12(\theta-\theta^*)^\top H(\theta-\theta^*).
+\]
+Putting $e=\theta-\theta^*$ and $\mu=\lambda_{\min}(H)$, we obtain
+\[
+\xi(\theta)=(A-H)e+(A\theta^*-b),\qquad
+\mathbb E\|\xi(\theta)\|^2
+\le 2\mathbb E\|A\theta^*-b\|^2
++2\mathbb E\|A-H\|_{\rm op}^2\|e\|^2.
+\]
+Since $\|e\|\le\mu^{-1}\|\nabla F(\theta)\|$, this derives
+\eqref{eq:relative_variance} directly from the data and score moments,
+with finite constants. This argument verifies the required variance
+condition for the joint response model, whose response-dependent envelope
+is discussed in Section~\ref{sec:algorithm}. The proof of
+Theorem~\ref{thm:strong_convex} therefore applies.
+Here $\mu\approx0.382$ and $c=2.6$, so $2\mu c>1$ and the theoretical
+MSE rate is $O(t^{-1})$.
+The numerical value of $\mu$ is obtained from population quadrature.

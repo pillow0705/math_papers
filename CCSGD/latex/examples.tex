@@ -1,0 +1,65 @@
+\section{Explicit corrections}
+\label{sec:examples}
+
+These formulas illustrate the correction identity; the algorithm evaluates
+the complex score directly and does not require symbolic integration.
+
+\paragraph{Linear prediction with squared loss.}
+Let $\theta,Z,W,U,V\in\mathbb R^p$, with $W=Z+U$ and independent
+$U,V\sim N(0,\Omega)$. For a fixed response $y$ and the squared
+linear-prediction loss
+$\ell(\theta;z)=\tfrac12(\theta^\top z-y)^2$, the clean score is
+\[
+g(\theta;z)=(\theta^\top z-y)z.
+\]
+The complex-corrected score and its conditional mean over the simulated
+perturbation are
+\[
+G(\theta;W,V)
+=\operatorname{Re}\bigl[(\theta^\top(W+iV)-y)(W+iV)\bigr]
+=(\theta^\top W-y)W-(\theta^\top V)V,
+\]
+\[
+\widetilde G(\theta;W)
+=\mathbb E_V[G(\theta;W,V)\mid W]
+=(\theta^\top W-y)W-\Omega\theta.
+\]
+In particular, $\mathbb E\widetilde G(\theta;W)=\nabla F(\theta)$.
+The identity is exact for every $\theta$. Indeed,
+\[
+D_zg^{\mathbb C}(\theta;q)
+=q\theta^\top+(\theta^\top q-y)I_p,
+\qquad
+\|D_zg^{\mathbb C}(\theta;q)\|_{\rm op}
+\le2\|\theta\|\|q\|+|y|.
+\]
+Thus Assumption~\ref{ass:envelope} holds with $a=1$ and
+$M(\theta)=2\|\theta\|+|y|$. If
+$H=\mathbb E[ZZ^\top]\succ0$, let $\mu=\lambda_{\min}(H)$ and
+$\theta^*=H^{-1}y\mathbb EZ$. Then
+$\nabla F(\theta)=H(\theta-\theta^*)$ and
+\[
+M(\theta)^2\le
+2(2\|\theta^*\|+|y|)^2+8\mu^{-2}\|\nabla F(\theta)\|^2.
+\]
+The clean score is affine in $\theta$ with square-integrable random
+coefficients, so its centered variance also has this relative form.
+Consequently the main results apply without bounding the parameter set.
+
+\paragraph{Nonlinear analytic loss.}
+Let $\theta,z\in\mathbb R^p$ and
+$\ell(\theta;z)=\tfrac12\|\theta-\sin z\|^2$, where $\sin$ acts
+coordinatewise. Then $g(\theta;z)=\theta-\sin z$, and the complex update is
+\[
+G(\theta;W,V)=\theta-\sin W\odot\cosh V.
+\]
+Since $V_j\sim N(0,\Omega_{jj})$, integrating out $V$ gives
+\[
+\widetilde G(\theta;W)
+=\theta-\bigl(e^{\Omega_{jj}/2}\sin W_j\bigr)_{j=1}^p,
+\qquad
+\mathbb E\widetilde G(\theta;W)=\nabla F(\theta).
+\]
+Here $D_zg^{\mathbb C}(\theta;q)=-\operatorname{diag}(\cos q_j)$
+has an exponential bound independent of $\theta$, while
+$\nabla^2F=I_p$. The assumptions therefore hold on all of $\mathbb R^p$.

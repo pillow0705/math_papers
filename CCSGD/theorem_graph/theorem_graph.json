@@ -1,0 +1,1105 @@
+{
+  "schema_version": "1.0",
+  "paper_title": "Complex-Corrected Stochastic Gradient Descent for Noisy Observations",
+  "snapshot_date": "2026-10-11",
+  "paper_sha256": "d57ad5ae41ab05b9cfebfe9cc91a7b736b409e82597a1ff58ebc03bca25e63fd",
+  "edge_semantics": "depends_on contains direct result prerequisites; assumption_ids and external_dependencies are separate. Conditional proof reuse is not unconditional theorem application.",
+  "review_status": "User-provided 6 Astra review reports no major mathematical gaps for main(6).pdf; the author has confirmed that the reviewed version matches this snapshot. See 6_review_zh.pdf.",
+  "assumptions": [
+    {
+      "id": "A-DATA",
+      "kind": "assumption",
+      "title": "Fresh Gaussian measurement model",
+      "statement": "W_t=Z_t+U_t; Z is sub-Gaussian; U_t,V_t iid N(0,Omega), independent of Z and history; known Omega>=0; fresh iid triples; deterministic theta_1.",
+      "source": {
+        "path": "latex/algorithm.tex",
+        "line": 4,
+        "anchor": "Let $\\theta",
+        "section": "Section 3",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "id": "A-ENT",
+      "kind": "assumption",
+      "title": "Entire input extension",
+      "statement": "g^C(theta;.) is entire on C^d and real on R^d.",
+      "source": {
+        "path": "latex/algorithm.tex",
+        "line": 19,
+        "anchor": "\\begin{assumption}[Holomorphic score]",
+        "section": "Section 3",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "id": "A-ENV",
+      "kind": "assumption",
+      "title": "Parameter-dependent derivative envelope",
+      "statement": "||D_q g^C(theta;q)||op <= M(theta) exp(a||q||), a finite and independent of theta; M finite and measurable.",
+      "source": {
+        "path": "latex/algorithm.tex",
+        "line": 26,
+        "anchor": "\\begin{equation}\\label{eq:parameter_envelope}",
+        "section": "Section 3",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          3,
+          4
+        ]
+      },
+      "scope_note": "Assumption 3.2, first inequality; sufficient for correction identity without A-AMP."
+    },
+    {
+      "id": "A-AMP",
+      "kind": "assumption",
+      "title": "Amplitude controlled by objective gradient",
+      "statement": "M(theta)^2 <= A+B||grad F(theta)||^2, finite deterministic A,B>=0.",
+      "source": {
+        "path": "latex/algorithm.tex",
+        "line": 34,
+        "anchor": "\\begin{equation}\\label{eq:amplitude_control}",
+        "section": "Section 3",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          3,
+          4
+        ]
+      },
+      "scope_note": "Assumption 3.2, second inequality."
+    },
+    {
+      "id": "A-CLEAN",
+      "kind": "assumption",
+      "title": "Clean sampling condition",
+      "statement": "F=E loss finite, grad F=E g; E||g(theta;Z)-grad F(theta)||^2 <= sigma_0^2+rho_0||grad F(theta)||^2.",
+      "source": {
+        "path": "latex/algorithm.tex",
+        "line": 40,
+        "anchor": "\\begin{assumption}[Clean sampling variance]",
+        "section": "Section 3",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          3,
+          4
+        ]
+      },
+      "scope_note": "Higher moments use the interchange part and input growth; the variance inequality alone does not imply them."
+    },
+    {
+      "id": "A-SCHED",
+      "kind": "assumption",
+      "title": "Polynomial step schedule",
+      "statement": "eta_t=c/(t+gamma)^alpha, c>0, gamma>=0, 1/2<alpha<=1.",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 76,
+        "anchor": "\\begin{theorem}[Convex objective]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      }
+    },
+    {
+      "id": "A-CAP",
+      "kind": "assumption",
+      "title": "Step-size cap",
+      "statement": "eta_1 <= 1/[L(1+rho)].",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 76,
+        "anchor": "\\begin{theorem}[Convex objective]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      },
+      "scope_note": "Required by convex and nonconvex finite-time bounds; strong-convexity theorem permits an arbitrary finite initial step."
+    },
+    {
+      "id": "A-CONVEX",
+      "kind": "assumption",
+      "title": "Convex smooth objective",
+      "statement": "F convex and globally L-smooth, with minimizer theta*.",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 76,
+        "anchor": "\\begin{theorem}[Convex objective]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      }
+    },
+    {
+      "id": "A-STRONG",
+      "kind": "assumption",
+      "title": "Strongly convex smooth objective",
+      "statement": "F globally mu-strongly convex and L-smooth, mu>0, with unique minimizer theta*.",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 93,
+        "anchor": "\\begin{theorem}[Strong convexity]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "A-NONCONVEX",
+      "kind": "assumption",
+      "title": "Smooth objective bounded below",
+      "statement": "F globally L-smooth and F>=F_inf; no convexity.",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 170,
+        "anchor": "\\begin{theorem}[Nonconvex stationarity]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "A-LOCAL",
+      "kind": "assumption",
+      "title": "Local Hessian regularity",
+      "statement": "F is C^2 near theta*, with locally Lipschitz Hessian H=Hessian F(theta*).",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 122,
+        "anchor": "\\begin{theorem}[Last-iterate fluctuations]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "A-COV",
+      "kind": "assumption",
+      "title": "Covariance continuity",
+      "statement": "S(theta)=E[(G(theta)-grad F(theta))(G(theta)-grad F(theta))^T] -> S*=S(theta*) as theta->theta*.",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 122,
+        "anchor": "\\begin{theorem}[Last-iterate fluctuations]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "A-ENDPOINT",
+      "kind": "assumption",
+      "title": "Endpoint spectral condition",
+      "statement": "If alpha=1 for either CLT, require c lambda_min(H)>1/2.",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 122,
+        "anchor": "\\begin{theorem}[Last-iterate fluctuations]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "A-BATCH",
+      "kind": "assumption",
+      "title": "Independent batch and simulations",
+      "statement": "n independent fresh observations; m independent V draws per observation, all mutually independent and independent of history; fixed positive integers n,m.",
+      "source": {
+        "path": "latex/main_results.tex",
+        "line": 40,
+        "anchor": "\\paragraph{Mini-batching and Monte Carlo averaging.}",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      }
+    },
+    {
+      "id": "A-CONJ",
+      "kind": "assumption",
+      "title": "Admissible conjugate law",
+      "statement": "Symmetric scalar U with M_U(t)<infinity for all real t; 1/M_U is a characteristic function; independent V with phi_V=1/M_U.",
+      "source": {
+        "path": "latex/future_work.tex",
+        "line": 10,
+        "anchor": "\\begin{equation}\\label{eq:conjugate_transform}",
+        "section": "Section 7.1",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          9,
+          10,
+          11
+        ]
+      }
+    },
+    {
+      "id": "A-TAYLOR",
+      "kind": "assumption",
+      "title": "Absolutely integrable entire-score expansion",
+      "statement": "Sum_k ||partial_z^k g^C(theta;z)|| E|U+iV|^k/k! < infinity; automatic for polynomial scores for the displayed pairs.",
+      "source": {
+        "path": "latex/future_work.tex",
+        "line": 67,
+        "anchor": "\\begin{equation}\\label{eq:nongaussian_taylor}",
+        "section": "Section 7.1",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          9,
+          10,
+          11
+        ]
+      }
+    },
+    {
+      "id": "A-NGTAIL",
+      "kind": "assumption",
+      "title": "Conjugate tail-growth compatibility",
+      "statement": "Uniform error: lambda=pi/b; symmetric two-point error: lambda=pi/(2b). a<lambda suffices for identity; 2a<lambda for variance; (2+delta)a<lambda for higher moments.",
+      "source": {
+        "path": "latex/future_work.tex",
+        "line": 104,
+        "anchor": "\\paragraph{Moment conditions for optimization.}",
+        "section": "Section 7.1",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          9,
+          10,
+          11
+        ]
+      },
+      "scope_note": "Sufficient envelope conditions, not necessary conditions for each particular score."
+    },
+    {
+      "id": "A-REG",
+      "kind": "assumption",
+      "title": "Joint-response regression structure",
+      "statement": "Y=theta_true^T psi(Z); psi=(sin z,cos(0.7z),z^2); specified Gaussian mixture and Gaussian measurement noise; H=E psi psi^T>0; finite coefficient moments.",
+      "source": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 436,
+        "anchor": "\\subsection{Moment bounds for nonlinear-feature regression}",
+        "section": "Appendix A.9",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          17,
+          18
+        ]
+      },
+      "scope_note": "Separate joint (Z,Y) verification; do not silently apply the fixed-response envelope."
+    }
+  ],
+  "results": [
+    {
+      "id": "R-EXACT",
+      "kind": "lemma",
+      "title": "Exact Gaussian correction",
+      "paper_label": "Lemma 3.4",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-CLEAN"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN"
+      ],
+      "conclusion": "E_{U,V} Re g^C(theta;z+U+iV)=g(theta;z); E_t G_t=grad F(theta_t).",
+      "depends_on": [],
+      "statement": {
+        "path": "latex/algorithm.tex",
+        "line": 84,
+        "anchor": "\\begin{lemma}[Exact correction]",
+        "section": "Section 3",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          3,
+          4
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 3,
+        "anchor": "\\subsection{Proof of Lemma",
+        "section": "Appendix A.1",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          12
+        ]
+      },
+      "external_dependencies": [
+        {
+          "id": "E-CAUCHY",
+          "role": "logical_tool",
+          "status": "standard_tool_not_reproved"
+        },
+        {
+          "id": "E-NOVICK",
+          "role": "historical_origin",
+          "status": "cited_identity_reproved_internally"
+        }
+      ],
+      "scope_note": "Pointwise identity needs neither sub-Gaussian Z, amplitude control nor convexity; conditional SGD mean also uses predictability, fresh data and gradient/expectation interchange. A-DATA is stronger than the identity requires."
+    },
+    {
+      "id": "R-VAR",
+      "kind": "derived_bound",
+      "title": "Reduction to relative variance",
+      "paper_label": "Eq. (4.1)",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN"
+      ],
+      "conclusion": "E_t||xi_t||^2 <= sigma^2+rho||grad F(theta_t)||^2; sigma^2=sigma_0^2+K_a A; rho=rho_0+K_a B.",
+      "depends_on": [
+        "R-EXACT"
+      ],
+      "statement": {
+        "path": "latex/main_results.tex",
+        "line": 25,
+        "anchor": "\\begin{equation}\\label{eq:relative_variance}",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 34,
+        "anchor": "\\subsection{Reduction to classical SGD noise conditions}",
+        "section": "Appendix A.2",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          12,
+          13
+        ]
+      },
+      "external_dependencies": [],
+      "scope_note": "Cross term is zero by conditional mean zero given clean sample and history; not merely norm subadditivity."
+    },
+    {
+      "id": "R-HM",
+      "kind": "derived_bound",
+      "title": "Derived higher moments",
+      "paper_label": "Eq. (A.3)",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN"
+      ],
+      "conclusion": "For every finite r>=2, E_t||xi_t||^r <= C_r M(theta_t)^r <= C_r(A+B||grad F(theta_t)||^2)^(r/2).",
+      "depends_on": [],
+      "statement": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 64,
+        "anchor": "\\begin{equation}\\label{eq:higher_noise_moments}",
+        "section": "Appendix A.2",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          12,
+          13
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 56,
+        "anchor": "For the CLTs, stronger moments",
+        "section": "Appendix A.2",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          12,
+          13
+        ]
+      },
+      "external_dependencies": [],
+      "scope_note": "No separate 2+delta moment assumption. Uses input envelope/tails and clean mean identity, not clean second-moment inequality. Trajectory-uniform random bound follows only after strong-convexity convergence."
+    },
+    {
+      "id": "R-BATCH",
+      "kind": "derived_bound",
+      "title": "Batch and simulation variance decomposition",
+      "paper_label": "Eq. (4.2)",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-BATCH"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-BATCH"
+      ],
+      "conclusion": "E_t||G^(n,m)-grad F||^2 = v_obs/n + v_sim/(nm) <= (sigma^2+rho||grad F||^2)/n.",
+      "depends_on": [
+        "R-EXACT",
+        "R-VAR"
+      ],
+      "statement": {
+        "path": "latex/main_results.tex",
+        "line": 40,
+        "anchor": "\\paragraph{Mini-batching and Monte Carlo averaging.}",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      },
+      "proof": {
+        "path": "latex/main_results.tex",
+        "line": 57,
+        "anchor": "Conditional centering makes",
+        "section": "Section 4, before Theorem 4.1",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      },
+      "external_dependencies": [],
+      "scope_note": "Increasing m only reduces virtual-noise variability; n reduces both observation and simulation components."
+    },
+    {
+      "id": "T-CONVEX",
+      "kind": "theorem",
+      "title": "Convex objective gap",
+      "paper_label": "Theorem 4.1",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-CONVEX",
+        "A-SCHED",
+        "A-CAP"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-CONVEX",
+        "A-SCHED",
+        "A-CAP"
+      ],
+      "conclusion": "E F(theta_bar_eta)-F* <= (||theta_1-theta*||^2+sigma^2 sum eta_t^2)/(2 sum eta_t); O(T^(alpha-1)) if alpha<1, O(1/log T) if alpha=1.",
+      "depends_on": [
+        "R-EXACT",
+        "R-VAR"
+      ],
+      "statement": {
+        "path": "latex/main_results.tex",
+        "line": 76,
+        "anchor": "\\begin{theorem}[Convex objective]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          5
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 81,
+        "anchor": "\\subsection{Convex convergence}",
+        "section": "Appendix A.3",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          13
+        ]
+      },
+      "external_dependencies": [],
+      "scope_note": ""
+    },
+    {
+      "id": "T-STRONG",
+      "kind": "theorem",
+      "title": "Strong convergence and MSE",
+      "paper_label": "Theorem 4.2",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED"
+      ],
+      "conclusion": "theta_t->theta* almost surely and in mean square; MSE O(t^-alpha) for alpha<1; for alpha=1: O(t^-1), O(t^-1 log t), O(t^(-2mu c)) when 2mu c >,=,<1.",
+      "depends_on": [
+        "R-EXACT",
+        "R-VAR"
+      ],
+      "statement": {
+        "path": "latex/main_results.tex",
+        "line": 93,
+        "anchor": "\\begin{theorem}[Strong convexity]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 103,
+        "anchor": "\\subsection{Strong convexity and MSE}",
+        "section": "Appendix A.4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          13,
+          14
+        ]
+      },
+      "external_dependencies": [
+        {
+          "id": "E-RS",
+          "role": "logical_tool",
+          "status": "cited_theorem_not_reproved"
+        }
+      ],
+      "scope_note": "No early step-size cap; scalar recursion handles finitely many initial iterations."
+    },
+    {
+      "id": "R-CLTPREP",
+      "kind": "proof_module",
+      "title": "Localization and martingale CLT module",
+      "paper_label": "Appendix A.5",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED",
+        "A-LOCAL",
+        "A-COV",
+        "A-ENDPOINT"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED",
+        "A-LOCAL",
+        "A-COV",
+        "A-ENDPOINT"
+      ],
+      "conclusion": "Localized quadratic drift remainder; convergent conditional covariance; conditional Lindeberg for deterministic weights with vanishing maximum norm and bounded squared-weight sum.",
+      "depends_on": [
+        "T-STRONG",
+        "R-HM"
+      ],
+      "statement": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 157,
+        "anchor": "\\subsection{Preparatory estimates",
+        "section": "Appendix A.5",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          14,
+          15
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 157,
+        "anchor": "\\subsection{Preparatory estimates",
+        "section": "Appendix A.5",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          14,
+          15
+        ]
+      },
+      "external_dependencies": [
+        {
+          "id": "E-HH",
+          "role": "logical_tool",
+          "status": "cited_theorem_not_reproved"
+        }
+      ],
+      "scope_note": "For alpha=1, remainder estimates also use A-ENDPOINT. Finite random conditional moment bound is sufficient; no unproved deterministic trajectory bound is imposed."
+    },
+    {
+      "id": "T-LAST",
+      "kind": "theorem",
+      "title": "Last-iterate CLT",
+      "paper_label": "Theorem 4.3",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED",
+        "A-LOCAL",
+        "A-COV",
+        "A-ENDPOINT"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED",
+        "A-LOCAL",
+        "A-COV",
+        "A-ENDPOINT"
+      ],
+      "conclusion": "alpha<1: t^(alpha/2)e_t => N(0,Sigma_c), H Sigma_c+Sigma_c H=c S*. alpha=1: sqrt(t)e_t => N(0,Sigma_c), (cH-I/2)Sigma_c+Sigma_c(cH-I/2)=c^2 S*.",
+      "depends_on": [
+        "T-STRONG",
+        "R-CLTPREP"
+      ],
+      "statement": {
+        "path": "latex/main_results.tex",
+        "line": 122,
+        "anchor": "\\begin{theorem}[Last-iterate fluctuations]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 248,
+        "anchor": "\\subsection{Last-iterate fluctuations}",
+        "section": "Appendix A.6",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          15,
+          16
+        ]
+      },
+      "external_dependencies": [
+        {
+          "id": "E-FABIAN",
+          "role": "context_and_provenance",
+          "status": "cited_context_direct_derivation_in_paper"
+        }
+      ],
+      "scope_note": "A-ENDPOINT applies only at alpha=1; covariance is that of the corrected oracle."
+    },
+    {
+      "id": "T-PR",
+      "kind": "theorem",
+      "title": "Polyak-Ruppert CLT",
+      "paper_label": "Theorem 4.4",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED",
+        "A-LOCAL",
+        "A-COV",
+        "A-ENDPOINT"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-STRONG",
+        "A-SCHED",
+        "A-LOCAL",
+        "A-COV",
+        "A-ENDPOINT"
+      ],
+      "conclusion": "sqrt(T)(theta_bar-theta*) => N(0,Xi). alpha<1: Xi=H^-1 S* H^-1. alpha=1: Xi=int_0^1 K_c(u) S* K_c(u)^T du, K_c(u)=c u^(cH-I) int_u^1 v^(-cH)dv.",
+      "depends_on": [
+        "T-STRONG",
+        "R-CLTPREP"
+      ],
+      "statement": {
+        "path": "latex/main_results.tex",
+        "line": 144,
+        "anchor": "\\begin{theorem}[Polyak--Ruppert averaging]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 321,
+        "anchor": "\\subsection{Polyak--Ruppert averaging}",
+        "section": "Appendix A.7",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          16,
+          17
+        ]
+      },
+      "external_dependencies": [
+        {
+          "id": "E-PJ",
+          "role": "context_and_provenance",
+          "status": "cited_context_direct_derivation_in_paper"
+        }
+      ],
+      "scope_note": "Shares objective and covariance assumptions with T-LAST; does not use its CLT as a logical premise. Uniform average differs from eta-weighted convex average; endpoint covariance differs from interior formula."
+    },
+    {
+      "id": "T-NONCONVEX",
+      "kind": "theorem",
+      "title": "Nonconvex stationarity",
+      "paper_label": "Theorem 4.5",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-NONCONVEX",
+        "A-SCHED",
+        "A-CAP"
+      ],
+      "declared_assumption_ids": [
+        "A-DATA",
+        "A-ENT",
+        "A-ENV",
+        "A-AMP",
+        "A-CLEAN",
+        "A-NONCONVEX",
+        "A-SCHED",
+        "A-CAP"
+      ],
+      "conclusion": "sum eta_t E||grad F(theta_t)||^2 / sum eta_t <= [2(F(theta_1)-F_inf)+L sigma^2 sum eta_t^2]/sum eta_t; O(T^(alpha-1)) if alpha<1, O(1/log T) if alpha=1.",
+      "depends_on": [
+        "R-EXACT",
+        "R-VAR"
+      ],
+      "statement": {
+        "path": "latex/main_results.tex",
+        "line": 170,
+        "anchor": "\\begin{theorem}[Nonconvex stationarity]",
+        "section": "Section 4",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          6
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 422,
+        "anchor": "\\subsection{Nonconvex stationarity}",
+        "section": "Appendix A.8",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          17
+        ]
+      },
+      "external_dependencies": [],
+      "scope_note": "Stationarity bound only; no global optimizer or parameter recovery conclusion."
+    },
+    {
+      "id": "R-REG",
+      "kind": "example_verification",
+      "title": "Joint-response regression verification",
+      "paper_label": "Appendix A.9",
+      "status": "proved_in_paper",
+      "assumption_ids": [
+        "A-REG",
+        "A-SCHED"
+      ],
+      "declared_assumption_ids": [
+        "A-REG",
+        "A-SCHED"
+      ],
+      "conclusion": "G(theta)=A theta-b; H>0; E||xi(theta)||^2<=C0+C1||grad F(theta)||^2. Strong-convexity proof gives O(t^-1) at c=2.6, mu approximately 0.382.",
+      "depends_on": [
+        "R-EXACT"
+      ],
+      "statement": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 436,
+        "anchor": "\\subsection{Moment bounds for nonlinear-feature regression}",
+        "section": "Appendix A.9",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          17,
+          18
+        ]
+      },
+      "proof": {
+        "path": "latex/appendix_proofs.tex",
+        "line": 436,
+        "anchor": "\\subsection{Moment bounds for nonlinear-feature regression}",
+        "section": "Appendix A.9",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          17,
+          18
+        ]
+      },
+      "external_dependencies": [],
+      "scope_note": "R-EXACT is applied conditionally at fixed Y; this verification enables reuse of the T-STRONG recursion via its derived noise conditions, not by asserting the fixed-response envelope for random Y."
+    },
+    {
+      "id": "R-NG",
+      "kind": "extension",
+      "title": "Exact conjugate correction and moment thresholds",
+      "paper_label": "Section 7.1 / Algorithm 2",
+      "status": "conditional_extension_discussed_with_derivation",
+      "assumption_ids": [
+        "A-CONJ",
+        "A-ENT",
+        "A-TAYLOR",
+        "A-NGTAIL"
+      ],
+      "declared_assumption_ids": [
+        "A-CONJ",
+        "A-ENT",
+        "A-TAYLOR",
+        "A-NGTAIL"
+      ],
+      "conclusion": "Uniform noise pairs with logistic V; symmetric two-point noise pairs with scaled hyperbolic-secant V. Exact mean identity; under 2a<lambda and matching sampling/amplitude conditions, relative variance and local higher moments transfer.",
+      "depends_on": [],
+      "statement": {
+        "path": "latex/future_work.tex",
+        "line": 58,
+        "anchor": "\\paragraph{Exact correction and implementation.}",
+        "section": "Section 7.1",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          9,
+          10,
+          11
+        ]
+      },
+      "proof": {
+        "path": "latex/future_work.tex",
+        "line": 58,
+        "anchor": "\\paragraph{Exact correction and implementation.}",
+        "section": "Section 7.1",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          9,
+          10,
+          11
+        ]
+      },
+      "external_dependencies": [
+        {
+          "id": "E-CONJ",
+          "role": "logical_tool_for_extension",
+          "status": "external_companion_source_consulted_not_bundled"
+        }
+      ],
+      "scope_note": "Conditional extension, not a newly numbered non-Gaussian convergence theorem. Source derives cancellation-to-mean identity and checks moments; optimizer geometry and covariance conditions must still be verified."
+    },
+    {
+      "id": "R-FUNCTION",
+      "kind": "extension",
+      "title": "Boundary for function generalization",
+      "paper_label": "Section 7.2",
+      "status": "external_boundary_discussed",
+      "assumption_ids": [],
+      "declared_assumption_ids": [],
+      "conclusion": "In the nondegenerate scalar Gaussian location setting, globally integrable unbiased estimation requires entire extension under the cited theorem; entire extension alone does not guarantee score integrability.",
+      "depends_on": [],
+      "statement": {
+        "path": "latex/future_work.tex",
+        "line": 135,
+        "anchor": "\\subsection{Function generalization}",
+        "section": "Section 7.2",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          11
+        ]
+      },
+      "proof": {
+        "path": "latex/future_work.tex",
+        "line": 135,
+        "anchor": "\\subsection{Function generalization}",
+        "section": "Section 7.2",
+        "pdf_path": "1_paper.pdf",
+        "pdf_pages": [
+          11
+        ]
+      },
+      "external_dependencies": [
+        {
+          "id": "E-STEFANSKI",
+          "role": "scope_boundary",
+          "status": "cited_boundary_not_reproved"
+        }
+      ],
+      "scope_note": "External scope boundary; no general impossibility claim for arbitrary restricted mean spaces or noiseless directions."
+    }
+  ],
+  "external_dependencies": [
+    {
+      "id": "E-CAUCHY",
+      "title": "Cauchy mean-value formula",
+      "role": "logical_tool",
+      "status": "standard_tool_not_reproved",
+      "source": "Standard one-variable complex analysis",
+      "scope": "Applied componentwise along a complex line; domination is proved internally."
+    },
+    {
+      "id": "E-NOVICK",
+      "title": "Novick and Stefanski (2002)",
+      "role": "historical_origin",
+      "status": "cited_identity_reproved_internally",
+      "bib_key": "novick2002",
+      "url": "https://doi.org/10.1198/016214502760047005",
+      "scope": "Exact Gaussian complex corrected score; no claim that this identity is new."
+    },
+    {
+      "id": "E-RS",
+      "title": "Robbins and Siegmund (1971)",
+      "role": "logical_tool",
+      "status": "cited_theorem_not_reproved",
+      "bib_key": "robbinssiegmund1971",
+      "url": "https://doi.org/10.1016/B978-0-12-604550-5.50015-8",
+      "scope": "Almost-supermartingale convergence theorem; recursion and summability checked internally."
+    },
+    {
+      "id": "E-HH",
+      "title": "Hall and Heyde (1980), Chapter 3",
+      "role": "logical_tool",
+      "status": "cited_theorem_not_reproved",
+      "bib_key": "hallheyde1980",
+      "scope": "Martingale array CLT; covariance limit and Lindeberg verified internally."
+    },
+    {
+      "id": "E-FABIAN",
+      "title": "Fabian (1968)",
+      "role": "context_and_provenance",
+      "status": "cited_context_direct_derivation_in_paper",
+      "bib_key": "fabian1968",
+      "url": "https://doi.org/10.1214/aoms/1177698258",
+      "scope": "Stochastic approximation CLT background; products and covariance limits derived internally."
+    },
+    {
+      "id": "E-PJ",
+      "title": "Polyak and Juditsky (1992)",
+      "role": "context_and_provenance",
+      "status": "cited_context_direct_derivation_in_paper",
+      "bib_key": "polyakjuditsky1992",
+      "url": "https://doi.org/10.1137/0330046",
+      "scope": "PR averaging background; representations including alpha=1 derived internally."
+    },
+    {
+      "id": "E-CONJ",
+      "title": "Constructive Characterizations and New Families of van Dantzig Pairs (companion manuscript, 2026)",
+      "role": "logical_tool_for_extension",
+      "status": "external_companion_source_consulted_not_bundled",
+      "bib_key": "conjugatecriterion2026",
+      "scope": "Conjugate existence, all-order cancellation and mean-value identity; not a peer-review certification; no public URL specified in paper."
+    },
+    {
+      "id": "E-STEFANSKI",
+      "title": "Stefanski (1989)",
+      "role": "scope_boundary",
+      "status": "cited_boundary_not_reproved",
+      "bib_key": "stefanski1989",
+      "url": "https://doi.org/10.1080/03610928908830159",
+      "scope": "Gaussian location setting: necessity of entire extension under the stated global unbiased-estimation and integrability requirements."
+    }
+  ],
+  "reuse_edges": [
+    {
+      "from": "R-REG",
+      "to": "T-STRONG",
+      "relation": "verifies_noise_conditions_for_proof_reuse"
+    },
+    {
+      "from": "R-NG",
+      "to": "R-VAR",
+      "relation": "conditional_extension_of_argument"
+    },
+    {
+      "from": "R-NG",
+      "to": "R-HM",
+      "relation": "conditional_extension_of_argument"
+    }
+  ]
+}

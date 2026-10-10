@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=21mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo,amsmath,amssymb,booktabs,array,enumitem,microtype,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}\setlength{\tabcolsep}{4.5pt}\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=3pt,topsep=3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small CCSGD / Agent reading edition}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\ID}[1]{\texttt{#1}}
+\begin{document}
+{\LARGE\bfseries CCSGD: an agent reading edition}\par
+{\small Source snapshot: 11 October 2026. Canonical mathematics: \texttt{paper/main.pdf}.}
+
+\section*{1. Contract, scope, and result lookup}
+This is a five-page extraction, not an additional paper or an independent review.
+Page 1 fixes the contract; pages 2--5 collect reusable reasoning and implementation lessons.
+Stable IDs resolve through \texttt{theorem\_graph/theorem\_graph.json} to the original source and proof.
+
+\textbf{Problem.} Minimize $F(\theta)=\E\ell(\theta;Z)$, $\theta\in\R^p$, while observing
+$W=Z+U$. In the main theorems, $Z$ is sub-Gaussian, $U\sim N(0,\Omega)$ is independent of $Z$, and the known $\Omega\succeq0$ may be correlated or singular. Samples are fresh and independent of the past.
+
+\textbf{Executable oracle.} With independent $V_t\sim N(0,\Omega)$,
+\[
+G_t=\operatorname{Re}g^{\C}(\theta_t;W_t+iV_t),\qquad
+\theta_{t+1}=\theta_t-\eta_tG_t.
+\]
+$g=\nabla_\theta\ell$ is extended in the \emph{input}, with real parameters. No symbolic integration is required.
+
+\textbf{Input assumptions.} $g^{\C}(\theta;\cdot)$ is entire and real on real inputs;
+\[
+\norm{D_zg^{\C}(\theta;q)}_{\rm op}\le M(\theta)e^{a\norm q},\qquad
+M(\theta)^2\le A+B\norm{\nabla F(\theta)}^2.
+\]
+$a,A,B$ are fixed finite constants. Differentiation and expectation commute, and the \emph{clean} score obeys
+$\E\norm{g(\theta;Z)-\nabla F(\theta)}^2\le\sigma_0^2+\rho_0\norm{\nabla F(\theta)}^2$.
+The corrected-score variance is derived, not assumed. No convexity is required for correction.
+
+\small
+\begin{tabular}{p{.21\linewidth}p{.42\linewidth}p{.28\linewidth}}
+\toprule Stable ID / paper & Use & Proof \\\midrule
+\ID{R-EXACT} / L3.4 & Exact Gaussian correction & A.1 \\
+\ID{R-VAR}, \ID{R-HM} & Relative variance; higher moments & A.2 \\
+\ID{T-CONVEX} / T4.1 & Weighted objective-gap bound & A.3 \\
+\ID{T-STRONG} / T4.2 & Almost-sure convergence and MSE & A.4 \\
+\ID{T-LAST} / T4.3 & Last-iterate CLT & A.5--A.6 \\
+\ID{T-PR} / T4.4 & Uniform-average CLT & A.5, A.7 \\
+\ID{T-NONCONVEX} / T4.5 & Weighted stationarity bound & A.8 \\
+\ID{R-REG}, \ID{R-NG} & Joint-response example; conjugate extension & A.9; \S7.1 \\
+\bottomrule
+\end{tabular}
+\normalsize
+
+\textbf{Attribution and evidence.} Gaussian complex corrected scores are classical (Novick--Stefanski, 2002). The paper connects an executable online oracle to SGD through explicit moment estimates. Non-Gaussian conjugate existence and its mean-value identity come from a companion manuscript. Neural-network curves are empirical evidence, not a global convergence theorem. A user-provided 6 Astra review reports no major mathematical gaps for \texttt{main(6).pdf}; its file-level match to this snapshot is not confirmed.
+
+\clearpage
+\section*{2. Takeaways: exact cancellation is an oracle design principle}
+\textbf{Takeaway 1: restore the clean gradient, rather than shrinking a persistent bias.}
+A smaller step size cannot generally repair an observed-data gradient with the wrong population mean. CCSGD changes the oracle so that
+$\E_tG_t=\nabla F(\theta_t)$, where $\E_t=\E[\,\cdot\mid\mathcal F_{t-1}]$.
+This separates the measurement-error problem from the choice of optimization geometry.
+The statement concerns exact expectation; a realized update remains noisy.
+
+\textbf{Takeaway 2: prove the identity through symmetry before manipulating infinite series.}
+For $D=U+iV$, the common Gaussian covariance gives $e^{i\phi}D\overset d=D$.
+For each fixed $d$, $s\mapsto g^{\C}(\theta;z+sd)$ is entire, hence
+\[
+\frac1{2\pi}\int_0^{2\pi}g^{\C}(\theta;z+e^{i\phi}d)\,d\phi=g(\theta;z).
+\]
+The derivative envelope ensures integrability. Average over $D$ and use rotational invariance to obtain \ID{R-EXACT}. This proof works for vector scores and singular $\Omega$; it does not require a Gaussian latent input or coordinatewise independent measurement errors. The generalizable technique is \emph{invariance + holomorphic mean value + explicit domination}.
+
+\textbf{Takeaway 3: identify the conditioning that makes the correction error orthogonal.}
+Write
+\[
+\zeta_t=g(\theta_t;Z_t)-\nabla F(\theta_t),\qquad
+\Delta_t=G_t-g(\theta_t;Z_t),\qquad \xi_t=\zeta_t+\Delta_t.
+\]
+Exact correction gives $\E[\Delta_t\mid\mathcal F_{t-1},Z_t]=0$. Therefore
+\[
+\E_t\langle\zeta_t,\Delta_t\rangle=0,\qquad
+\E_t\norm{\xi_t}^2=\E_t\norm{\zeta_t}^2+\E_t\norm{\Delta_t}^2.
+\]
+This avoids a factor-two loss from a generic norm inequality. With a response, condition also on $Y_t$ and keep it fixed in the complex evaluation.
+
+\textbf{Takeaway 4: distinguish simulation averaging from observation batching.}
+For $h_\theta(W)=\E_V[G(\theta)\mid W]$, put
+$v_{\rm obs}=\E\norm{h_\theta(W)-\nabla F(\theta)}^2$ and
+$v_{\rm sim}=\E\norm{G(\theta)-h_\theta(W)}^2$.
+With $n$ independent observations and $m$ independent simulations per observation,
+\[
+\E_t\norm{G_t^{(n,m)}-\nabla F(\theta_t)}^2
+=\frac{v_{\rm obs}(\theta_t)}n+\frac{v_{\rm sim}(\theta_t)}{nm}.
+\]
+Repeating virtual noise at one $W$ reduces only simulation variance. Taking $m\to\infty$ does not create a clean observation. The exact correction identity is conditioned on $Z$; $h_\theta(W)$ is generally not $g(\theta;Z)$ for a realized pair.
+
+\textbf{Reuse boundary.} A finite number of Monte Carlo draws preserves unbiasedness when each draw has the correct law and required integrability. A fixed imaginary shift, clipping, truncation, or a modulus-square loss changes the oracle and requires a fresh bias calculation.
+
+\clearpage
+\section*{3. Takeaways: a parameter-dependent envelope closes the variance argument}
+\textbf{Takeaway 5: control input derivatives, and let their amplitude grow with the objective gradient.}
+The fundamental theorem of calculus gives
+\[
+\norm{\Delta(\theta)}\le M(\theta)\norm D e^{a(\norm Z+\norm D)},
+\quad
+K_a=\E e^{2a\norm Z}\E[\norm D^2e^{2a\norm D}]<\infty.
+\]
+Independence and orthogonality imply
+\[
+\E_t\norm{\xi_t}^2\le\sigma^2+\rho\norm{\nabla F(\theta_t)}^2,
+\quad \sigma^2=\sigma_0^2+K_aA,\quad \rho=\rho_0+K_aB.
+\]
+This is the reusable bridge \ID{R-VAR}. A global constant bound on $M$ is unnecessarily restrictive. Conversely, finiteness at each fixed $\theta$ does not supply deterministic relative-variance constants along an arbitrary trajectory. Verify the amplitude relation instead of assuming the desired corrected-oracle conclusion.
+
+\textbf{Takeaway 6: remove a deterministic anchor before estimating centered moments.}
+Let $b_a(q)=\norm q e^{a\norm q}$ and $Q=Z+U+iV$. The anchor $g(\theta;0)$ cancels:
+\[
+\norm{G(\theta)-\nabla F(\theta)}
+\le M(\theta)[b_a(Q)+\E b_a(Z)].
+\]
+Sub-Gaussian and Gaussian tails give every finite moment of the bracket. For $r\ge2$,
+\[
+\E_t\norm{\xi_t}^r\le C_r M(\theta_t)^r
+\le C_r[A+B\norm{\nabla F(\theta_t)}^2]^{r/2}.
+\]
+The clean centered score has the same type of estimate using $Q=Z$.
+A second-moment assumption alone would not imply this.
+
+\textbf{Takeaway 7: obtain convergence before using trajectory bounds in a CLT.}
+Strong convexity and \ID{R-VAR} first yield almost-sure convergence via a squared-distance recursion and Robbins--Siegmund. Then $\sup_t\norm{\nabla F(\theta_t)}<\infty$ almost surely.
+The resulting conditional $(2+\delta)$-moment bound may have a \emph{random} finite constant. On a fixed neighborhood of $\theta^*$ it is deterministic.
+Vanishing maximum martingale weights and bounded sums of squared weights imply Lindeberg. This avoids circularly assuming stability to prove stability. Covariance continuity and local Hessian regularity remain separate requirements.
+
+\textbf{Takeaway 8: exploit affine parameter structure when responses enter the envelope.}
+For nonlinear-feature regression, $G(\theta)=\mathcal A\theta-b$ and $\nabla F(\theta)=H(\theta-\theta^*)$. If $H\succeq\mu I$ and the coefficients have finite second moments,
+\[
+\E\norm{\xi(\theta)}^2
+\le 2\E\norm{\mathcal A\theta^*-b}^2
++2\mu^{-2}\E\norm{\mathcal A-H}_{\rm op}^2\norm{\nabla F(\theta)}^2.
+\]
+Appendix A.9 verifies this for the actual joint $(Z,Y)$ experiment. A response-dependent envelope must not silently be replaced by a deterministic function of $\theta$ alone.
+
+\clearpage
+\section*{4. Takeaways: endpoint step sizes change the limit laws}
+\textbf{Common schedule.} $\eta_t=c/(t+\gamma)^\alpha$, $c>0$, $\gamma\ge0$, $1/2<\alpha\le1$.
+Convex and nonconvex bounds additionally impose $\eta_1\le[L(1+\rho)]^{-1}$.
+These are upper bounds, not lower bounds or optimal-complexity claims.
+
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.24\linewidth}>{\raggedright\arraybackslash}p{.28\linewidth}>{\raggedright\arraybackslash}p{.38\linewidth}}
+\toprule Geometry / output & $1/2<\alpha<1$ & $\alpha=1$ \\\midrule
+Convex / $\eta$-weighted average & Objective gap $O(T^{\alpha-1})$ & $O(1/\log T)$ \\
+Strongly convex / last iterate & MSE $O(t^{-\alpha})$ & $O(t^{-1})$ if $2\mu c>1$; $O(t^{-1}\log t)$ if equality; $O(t^{-2\mu c})$ otherwise \\
+Nonconvex / weighted gradients & Mean squared gradient $O(T^{\alpha-1})$ & $O(1/\log T)$ \\
+\bottomrule
+\end{tabular}
+\normalsize
+Nonconvex stationarity does not imply convergence to a global minimizer or a planted parameter.
+
+\textbf{Takeaway 9: the last-iterate covariance depends on the schedule.}
+Let $H=\nabla^2F(\theta^*)$ and $S_*=\E[\xi(\theta^*)\xi(\theta^*)^\top]$.
+For $\alpha<1$, $t^{\alpha/2}(\theta_t-\theta^*)\Rightarrow N(0,\Sigma_c)$ with
+$H\Sigma_c+\Sigma_cH=cS_*$. For $\alpha=1$, require $c\lambda_{\min}(H)>1/2$ and replace this by
+\[
+\sqrt t(\theta_t-\theta^*)\Rightarrow N(0,\Sigma_c),\quad
+(cH-\tfrac12I)\Sigma_c+\Sigma_c(cH-\tfrac12I)=c^2S_*.
+\]
+The $1/2$ shift comes from the $\sqrt t$ normalization. $S_*$ includes measurement and simulation noise; exact unbiasedness does not equate it with the clean-oracle covariance.
+
+\textbf{Takeaway 10: uniform averaging has an exceptional $1/t$ endpoint.}
+For $\bar\theta_T=T^{-1}\sum_{t=1}^T\theta_t$, the usual PR covariance is
+$H^{-1}S_*H^{-1}$ when $\alpha<1$. At $\alpha=1$, under the same spectral condition,
+\[
+\Xi_c=\int_0^1K_c(u)S_*K_c(u)^\top\,du,
+\qquad K_c(u)=c\,u^{cH-I}\int_u^1v^{-cH}\,dv.
+\]
+The proof retains the full time-dependent averaging weights; simply reusing the interior PR formula is wrong. For example, in one dimension with $cH=1$, $K_c(u)=-c\log u$ and $\Xi_c=2c^2S_*=2H^{-2}S_*$.
+This scalar specialization is derived here from T4.4, not a separately numbered paper theorem.
+
+\textbf{Proof-reuse rule.} Both CLTs use \ID{T-STRONG} and the common localization/martingale module \ID{R-CLTPREP}. T4.4 shares local assumptions with T4.3; it does not require T4.3 as an already-proved CLT. Distinguish the weighted convex average from the uniform PR average.
+
+\clearpage
+\section*{5. Takeaways: conjugate laws, growth thresholds, and empirical scope}
+\textbf{Takeaway 11: non-Gaussian cancellation is a distribution-design problem.}
+For symmetric scalar $U$ with $M_U(t)=\E e^{tU}<\infty$ for all real $t$, an independent conjugate has
+$\varphi_V(t)=1/M_U(t)$ when this is a characteristic function. The companion manuscript supplies existence criteria. Its moment cancellation gives exact correction for polynomials and entire scores with an absolutely integrable Taylor expansion. It does not authorize arbitrary entire scores.
+
+For $R\sim\operatorname{Unif}(0,1)$ independent of all observations,
+\[
+\begin{array}{lll}
+U\sim\operatorname{Unif}[-b,b]:&
+V=\dfrac b\pi\log\dfrac R{1-R},& \lambda=\pi/b,\\[9pt]
+\Pr(U=\pm b)=1/2:&
+V=\dfrac{2b}\pi\log\tan(\pi R/2),&\lambda=\pi/(2b).
+\end{array}
+\]
+Use these $V$ laws in the same complex-gradient update, not independent copies of $U$.
+Here $\E e^{s|V|}<\infty$ precisely for $0\le s<\lambda$.
+
+\textbf{Takeaway 12: matching growth to conjugate tails is indispensable.}
+With the paper's input derivative exponent $a$, $a<\lambda$ suffices for the entire-score identity; $2a<\lambda$ supplies finite correction variance. This strict inequality permits a $\delta>0$ with $(2+\delta)a<\lambda$, giving the needed higher moments. Polynomial scores permit arbitrarily small positive exponents, after adjusting $M$; the amplitude condition still needs verification. Gaussian conjugates have no finite linear-exponential threshold.
+The thresholds are sufficient envelope criteria. Their failure alone does not prove divergence for a specific score. More simulations or a smaller step size cannot turn an actually infinite one-step variance into a finite one.
+
+\textbf{Implementation invariants.}
+\begin{itemize}
+\item Extend the analytic score in the noisy input. For squared loss use an ordinary complex square, not a modulus square; apply the analytic chain rule and take the real part after the complete gradient.
+\item Generate fresh independent virtual noise at every update. For fixed latent training pairs, fresh measurement noise preserves unbiasedness for the clean \emph{empirical} objective, not automatically a population objective.
+\item Entire input maps need not have a parameter-independent growth exponent. Trainable sine-network input weights change this exponent; stacked sine layers can grow faster than exponentially. Neither property can be inferred from real-input boundedness.
+\end{itemize}
+
+\textbf{Experimental evidence and comparator boundary.}
+The nonlinear-feature regression is strongly convex in its coefficients, with planted $\theta^*=(0.8,-0.6,0.2)$ and a fitted MSE slope $-0.978$ over $5\times10^4$--$10^7$ updates. Dashed baselines are computed asymptotic squared biases, not finite-time lower bounds. The neural experiment is a trainable $1\to32\to1$ sine network; its curves do not establish a global theorem. At 200,000 updates SIMEX slightly outperforms CCSGD in reported mean prediction MSE. The WH comparison is specifically deterministic Eq.\ (5), not every correction in that paper. SIMEX uses three trajectories, so equal update counts do not equalize computation.
+\end{document}

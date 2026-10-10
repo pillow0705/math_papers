@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=21mm,top=19mm,bottom=19mm]{geometry}
+\usepackage{amsmath,amssymb,newtxtext,newtxmath,microtype}
+\usepackage{xcolor,graphicx,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\definecolor{ink}{HTML}{183D50}
+\linespread{1.04}\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\abovedisplayskip}{7pt}\setlength{\belowdisplayskip}{7pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\footnotesize van Dantzig pairs}\fancyhead[R]{\footnotesize Companion edition}\fancyfoot[C]{\footnotesize\thepage}\renewcommand{\headrulewidth}{0pt}
+\newcommand{\ptitle}[1]{{\color{ink}\fontsize{16}{20}\selectfont #1\par}\vspace{6pt}}
+\newcommand{\stitle}[1]{\par\vspace{5pt}{\color{ink}\bfseries #1}\par}
+
+\begin{document}
+\raggedright
+\ptitle{1. Problem contracts and existence criteria}
+This companion extracts reusable results from the manuscript. Stable IDs below refer to theorem\_graph/theorems.json; LaTeX labels locate the full statements and proofs in main.tex. The standing hypothesis H is: U is symmetric and nondegenerate, and its moment-generating function is finite on the whole real axis. All constructions of a pair use independent representatives.
+
+\[
+M_U(t)=\mathbb E e^{tU},\quad \varphi_V(t)=\mathbb E e^{itV},\qquad \mathbb E e^{t(U+iV)}=1\ \Longleftrightarrow\ M_U(t)\varphi_V(t)=1.
+\]
+\stitle{T2.2 / Fourier characterization}
+Input: an evaluable M\_U satisfying H. Output: the unique conjugate density if its inverse Fourier transform is nonnegative everywhere. Lemma L2.1 supplies automatic exponential decay: choose r>0 with rho=P(|U|$\ge$r)>0. Then 1/M\_U(t)$\le$2 exp(-r|t|)/rho. This removes a separate Fourier-integrability assumption.
+
+\[
+f_U^*(x)=\frac1\pi\int_0^\infty\frac{\cos(tx)}{M_U(t)}\,dt,\qquad V\text{ exists}\ \Longleftrightarrow\ f_U^*\ge0.
+\]
+The uniform truncation error is at most 2 exp(-rT)/(pi rho r), and the derivative is bounded by 2/(pi rho r\textasciicircum{}2). Together with certified quadrature these bounds can exclude existence by a negative value. A global positivity proof also requires control of the spatial tails. A nonnegative inverse has total mass one by Gaussian regularization and monotone convergence (Appendix A).
+
+\stitle{T2.3 / Hankel characterization}
+Input: the even moments u\_n=E[U\textasciicircum{}(2n)]. Compute the candidate moments below. Existence is equivalent to positive semidefiniteness of both matrices at every size; under H this is also equivalent to strict positive definiteness.
+
+\[
+v_0=1,\qquad v_n=\sum_{k=1}^{n}(-1)^{k+1}\binom{2n}{2k}u_kv_{n-k},\qquad H_N=(v_{i+j}),\quad \widetilde H_N=(v_{i+j+1}).
+\]
+A failed matrix test excludes existence. The full criterion quantifies over all N. The first nontrivial consequence is E[U\textasciicircum{}4]<5(E[U\textasciicircum{}2])\textasciicircum{}2. Positive semidefiniteness gives a Stieltjes law for X=V\textasciicircum{}2; an independent fair sign attached to sqrt(X) recovers the symmetric V.
+
+\stitle{Proof mechanism to reuse}
+Cauchy estimates for the local analytic germ q=1/M\_U give v\_n$\le$C(2n)! r\_0\textasciicircum{}(-2n). This proves an exponential moment for V. The product M\_U(z) phi\_V(z)-1 is analytic on a connected horizontal strip and vanishes near zero, so the identity theorem yields equality on the entire real axis. The proof uses the product on the strip, avoiding any need to extend the Taylor series beyond its disk of convergence. See LB.1 and Appendix B.
+
+\newpage
+\ptitle{2. Positive polynomials: a two-step realization}
+\stitle{T3.1 / The construction contract}
+Input: a nonconstant real polynomial P with P(0)=1 and P(s)>0 for every s$\ge$0. Output: b\_0>0 and, for each b$\ge$b\_0, a threshold tau\_0(b)>0 such that every tau$\ge$tau\_0(b) realizes the following pair. Both laws have strictly positive symmetric densities.
+
+\[
+M_U(t)=e^{\tau t^2/2}(1+bt^2)P(t^2),\qquad \varphi_V(t)=\frac{e^{-\tau t^2/2}}{(1+bt^2)P(t^2)}.
+\]
+Positivity of P on the nonnegative axis is necessary and sufficient for the existence of these auxiliary parameters. The parameter order is b first, then tau. The polynomial degree and multiplicities of its roots are unrestricted. This simultaneous realization is the central candidate original result; the historical comparison remains open.
+
+\stitle{L3.2 + L3.3 / Turn a signed inverse into a positive law}
+The rational function 1/P(t\textasciicircum{}2) has a real, even inverse k of mass one. Partial fractions give polynomial times exponential terms, and hence an exponential moment of |k|. For a Laplace density ell\_lambda and sufficiently small lambda, a relative convolution estimate is uniform in x:
+
+\[
+\delta_k(\lambda)=\int_{\mathbb R}|k(y)|(e^{\lambda|y|}-1)\,dy\longrightarrow0,\quad (1-\delta_k)\ell_\lambda\le\ell_\lambda*k\le(1+\delta_k)\ell_\lambda.
+\]
+Set $b=\lambda^{-2}$. The lower bound proves positivity of the density of $Y_b$, whose characteristic function is $[(1+bt^2)P(t^2)]^{-1}$. The argument applies to any real integrable kernel of mass one with an exponential absolute moment. Its reusable feature is the relative bound by a positive envelope on the entire real axis.
+
+\stitle{L3.4 / Realize the original variable}
+Put Q(s)=(1+bs)P(s), R(y)=Q(y\textasciicircum{}2), and D=deg Q. With g\_tau the N(0,tau) density, the exact inverse transform is
+
+\[
+f_U(x)=g_\tau(x)S_\tau(x/\tau),\qquad S_\tau(y)=\sum_{j=0}^{D}\frac{(-1)^j}{(2\tau)^j j!}R^{(2j)}(y).
+\]
+The ratios C\_j=sup\_y |R\textasciicircum{}(2j)(y)|/R(y) are finite because R is strictly positive and the derivatives have lower degree. Choosing sum C\_j/[(2tau)\textasciicircum{}j j!]<1 gives S\_tau>0. Gaussian derivatives integrate to zero in every positive order, so the density has mass one and moment-generating function e\textasciicircum{}(tau t\textasciicircum{}2/2)Q(t\textasciicircum{}2).
+
+\stitle{Reusable design principle}
+Treat positivity of the two inverse transforms separately. A broad Laplace convolution controls the signed reciprocal kernel; the finite Gaussian derivative formula controls the original density. Finally take V=sqrt(tau) Z+Y\_b with independent Z standard normal. All three ingredients are explicit; Appendix C contains the proofs and parameter certificates.
+
+\newpage
+\ptitle{3. Parameter certificates and probability recovery}
+\stitle{Finite sufficient parameter selection / Section 3.3}
+For x$\ge$0, write k(x)=sum c\_(ell,p) x\textasciicircum{}p exp(-zeta\_ell x), with alpha\_ell=Re zeta\_ell>0. The conjugate-paired sum is real. For 0<lambda<min alpha\_ell, evaluate
+
+\[
+B(\lambda)=2\sum_{\ell,p}|c_{\ell,p}|p!\left[(\alpha_\ell-\lambda)^{-p-1}-\alpha_\ell^{-p-1}\right].
+\]
+Choose lambda with B(lambda)<1 and set b=lambda\textasciicircum{}(-2). Since B(lambda) tends to zero, this search succeeds. Form R, choose certified upper bounds Cbar\_j$\ge$C\_j, and take
+
+\[
+\tau\ge\max\left\{1,\sum_{j=1}^{D}\frac{\overline C_j}{j!}\right\}.\qquad \overline C_jR(y)\pm R^{(2j)}(y)\ge0\quad(y\in\mathbb R).
+\]
+The displayed polynomial inequalities certify the derivative bounds, yielding A\_Q(tau)$\le$1/2. Rational or algebraic coefficients permit root isolation and univariate sign tests. General real coefficients require a representation supporting certified evaluation. These are sufficient bounds; the exact two-parameter admissible region is open.
+
+\stitle{Rejection samplers / Appendix E}
+For Y\_b, use the Laplace proposal ell\_lambda. Let f\_b=ell\_lambda*k and choose B$\ge$delta\_k(lambda), B<1. Accept X with probability f\_b(X)/[(1+B)ell\_lambda(X)]. The acceptance rate is 1/(1+B). Partial fractions evaluate f\_b. Add an independent N(0,tau) variable to sample V.
+
+For U, expand S\_tau(y)=sum s\_k y\textasciicircum{}(2k) and use the proposal g\_(2tau). The envelope constant and acceptance ratio are
+
+\[
+C_U=\sqrt2\left[|s_0|+\sum_{k=1}^{D}|s_k|\left(\frac{4k}{e\tau}\right)^k\right],\qquad \frac{f_U(x)}{C_Ug_{2\tau}(x)}\in[0,1].
+\]
+The acceptance rate is 1/C\_U. The laws are exact mathematical targets; implementations must evaluate the acceptance probabilities to the required accuracy. Independent sampler calls realize independence of U and V.
+
+\stitle{C2.4 / Recovery from moments}
+Use the full symmetric sequence m\_(2n)=v\_n and m\_(2n+1)=0 to form monic orthogonal polynomials. Their recurrence has zero diagonal: p\_(n+1)(x)=x p\_n(x)-beta\_n p\_(n-1)(x). The off-diagonals of J\_N are sqrt(beta\_n). Its spectral measure is
+
+\[
+\mu_N=\sum_{j=1}^{N}|\langle e_1,q_{N,j}\rangle|^2\delta_{x_{N,j}}\ \Longrightarrow\ \mathcal L(V).
+\]
+The measure matches moments through degree 2N-1. Tightness, higher matched moments, and moment determinacy prove convergence. Applying a zero-diagonal recurrence directly to the moments of V\textasciicircum{}2 would represent a different moment problem. The manuscript establishes weak convergence; quantitative convergence rates are a further research question.
+
+\newpage
+\ptitle{4. New families and a fully explicit pair}
+\stitle{T4.2 / Root placement as a structural test}
+\[
+P(s)=\prod_{j=1}^{m}\frac{(s-a_j)^2+c_j^2}{a_j^2+c_j^2},\qquad m\ge1,\quad a_j\ge0,\quad c_j>0.
+\]
+T3.1 realizes this family for sufficiently large b and then tau. The roots a\_j $\pm$ i c\_j produce nonreal zeros of phi\_U(z)=exp(-tau z\textasciicircum{}2/2)(1-bz\textasciicircum{}2)P(-z\textasciicircum{}2), proving phi\_U is outside the even Laguerre--Polya class D\_L.
+
+P4.1 provides the second obstruction. For a law in D\_P, the KPS Bernstein representation requires h(s)=1/M\_U(sqrt(s)) to be a probability Laplace transform. Such transforms are analytic and bounded by one on Re s>0. Here h(s)=exp(-tau s/2)/[(1+bs)P(s)] has poles in the closed right half-plane. Interior poles contradict analyticity; boundary poles contradict boundedness when approached from within the half-plane.
+
+The same argument excludes centered Gaussian variance mixtures for V, including the closure under independent addition, scaling, and weak limits. The external premise is KPS Theorem 4.1 specifically. General even characteristic functions do not satisfy this Bernstein representation.
+
+\stitle{E4.3 / P(s)=1+s\textasciicircum{}2, b=2, tau=4}
+\[
+M_U(t)=e^{2t^2}(1+2t^2)(1+t^4),\qquad V=2Z+Y.
+\]
+\[
+f_Y(x)=\frac{e^{-|x|/\sqrt2}}{10\sqrt2}\left(4-\cos\frac{|x|}{\sqrt2}+3\sin\frac{|x|}{\sqrt2}\right).
+\]
+The bracket is at least 4-sqrt(10)>0 and the density integrates to one. For U, f\_U(x)=g\_4(x)S\_4(x/4), where
+
+\[
+S_4(y)=2y^2\left(y^2-\frac{13}{8}\right)^2+\frac{27}{32}y^2+\frac7{32}>0.
+\]
+Both variances are 8. For $Y$, propose $X$ from a Laplace law of scale $\sqrt2$ and put $y=|X|/\sqrt2$. Accept with probability $(4-\cos y+3\sin y)/(4+\sqrt{10})$. The mean acceptance is $5/(4+\sqrt{10})$. Appendix D checks the Fourier constants and both normalizations.
+
+\stitle{P4.4 / A sharp threshold for the rational factor}
+\[
+\frac1{(1+bt^2)(1+t^4)}\text{ is a characteristic function}\quad\Longleftrightarrow\quad b\ge2\quad(b>0).
+\]
+For b$\ge$2, factor the function as the b=2 characteristic function times a mixture of a point mass and a Laplace transform. For b<2, the inverse has an oscillating term decaying as exp(-|x|/sqrt(2)) and a positive term with faster decay. Negative values recur in the tails. This threshold concerns the rational factor; admissibility of the original density also depends on tau.
+
+\newpage
+\ptitle{5. Functional identity, known classes, and reuse scope}
+\stitle{T2.5 / Entire extensions and mean values}
+For W=U+iV under H, some a\_0>0 satisfies E exp(a\_0|W|)<infinity. Exponential cancellation gives E W\textasciicircum{}n=0 for all n$\ge$1. Hence every polynomial is preserved in expectation. For entire F, the sufficient exchange condition and the real-part identity are
+
+\[
+\sum_{n\ge0}\frac{|F^{(n)}(x)|}{n!}\mathbb E|W|^n<\infty,\qquad \mathbb E[\operatorname{Re}F(x+W)]=f(x)\quad(F|_{\mathbb R}=f,\ f:\mathbb R\to\mathbb R).
+\]
+The condition holds if |F(z)|$\le$C exp(a|z|) with 0$\le$a<a\_0. Cauchy estimates on circles of radius c|W|, with c>1 and ac<a\_0, give an integrable geometric majorant for the Taylor series. For the Rademacher pair and F(z)=exp(-z\textasciicircum{}2), the positive and negative parts of Re F(U+iV) both have infinite expectation. Retain the exchange condition when reusing the identity.
+
+\stitle{P5.1 / Laguerre--Polya recovery}
+\[
+M_U(t)=e^{\sigma^2t^2/2}\prod_n\left(1+\frac{t^2}{a_n^2}\right),\quad \sum_n a_n^{-2}<\infty,\qquad V=G+\sum_n L_n.
+\]
+Assume the product is a moment-generating function of a symmetric U. Take independent G\textasciitilde{}N(0,sigma\textasciicircum{}2) and L\_n\textasciitilde{}Laplace(0,1/a\_n). The sum converges in L\textasciicircum{}2 and almost surely. This includes Gaussian, symmetric two-point, uniform, and power-semicircle/Bessel examples. For Bessel index nu>-1/2, the scales are a/j\_(nu,n).
+
+\stitle{P5.2 / D\_P recovery with an external premise}
+\[
+\mathcal I_\Psi(t)=\sum_{n\ge0}\frac{t^{2n}}{\prod_{k=1}^{n}\Psi(k)},\quad \log\mathcal I_\Psi(t)=\Phi_\Psi(t^2),\quad V_\Psi=\sqrt{2T_\Psi}\,Z.
+\]
+The permitted Levy exponents Psi are specified in Section 5.2: exclude negative subordinators and require the largest nonnegative root theta in [0,1/2]. KPS Theorem 4.1 supplies the Bernstein function Phi\_Psi. Set E exp(-sT\_Psi)=exp(-Phi\_Psi(s)). Appendix F proves T\_Psi>0 and E[T\_Psi\textasciicircum{}(-1/2)]<infinity, giving a finite continuous Gaussian-mixture density.
+
+\stitle{Result status and remaining questions}
+Fourier inversion, Stieltjes representation, analytic moment regularity, and Gauss quadrature are classical inputs. T3.1 and its resulting families are candidate research contributions. Historical priority awaits further comparison with Lukacs (1968) and rational characteristic-function constructions. The user-supplied 6 Astra report identifies no major mathematical gap; reviews/ records its scope, findings, and responses.
+
+Open questions: exact admissible $(b,\tau)$ regions; removal of the Laplace factor for specified $P$; conjugate tail asymptotics and exponential-moment boundaries; quantitative Jacobi recovery.
+
+Editorial audit notes preserved for future revision: Proposition 4.1 should state Q in R[s] explicitly; the continuation language in Section 2.1 should distinguish local analyticity from meromorphic continuation. The explicit conjugate has poles at z=$\pm$i/sqrt(2). The original manuscript is unchanged in this packaging pass.
+
+\end{document}

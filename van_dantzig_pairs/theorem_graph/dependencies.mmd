@@ -1,0 +1,61 @@
+flowchart TD
+  L21["L2.1: Automatic decay"]
+  T22["T2.2: Fourier characterization"]
+  LB1["LB.1: Analytic characteristic germ"]
+  T23["T2.3: Hankel characterization"]
+  C24["C2.4: Discrete spectral recovery"]
+  T25["T2.5: Holomorphic mean-value identity"]
+  L32["L3.2: Laplace positivity"]
+  L33["L3.3: Rational inverse kernel"]
+  L34["L3.4: Gaussian polynomial realization"]
+  T31["T3.1: Polynomial realization"]
+  P41["P4.1: Closed-half-plane pole obstruction"]
+  T42["T4.2: Families outside both classes"]
+  E43["E4.3: Explicit polynomial pair"]
+  P44["P4.4: Rational threshold"]
+  P51["P5.1: Independent-sum recovery"]
+  P52["P5.2: Bernstein mixture recovery"]
+  XFOURIER["X.FOURIER: Fourier inversion for integrable transforms"]
+  XSTIELTJES["X.STIELTJES: Stieltjes moment representation"]
+  XIDENTITY["X.IDENTITY: Identity theorem and Cauchy estimates"]
+  XRESIDUES["X.RESIDUES: Residue inversion of rational functions"]
+  XGAUSSIAN["X.GAUSSIAN: Gaussian transform and derivative identities"]
+  XBERNSTEIN["X.BERNSTEIN: Bernstein--Widder representation"]
+  XKPS41["X.KPS41: KPS 2024, Theorem 4.1"]
+  XL2["X.L2: L2 martingale convergence"]
+  XLP["X.LP: Even Laguerre--Polya product representation"]
+  L21 --> T22
+  LB1 --> T23
+  T22 --> T23
+  T23 --> C24
+  T23 --> T25
+  L32 --> L33
+  L33 --> T31
+  L34 --> T31
+  T31 --> T42
+  P41 --> T42
+  L34 --> E43
+  E43 --> P44
+  T22 --> P51
+  LB1 --> P52
+  L21 --> P52
+  T22 --> P52
+  XFOURIER -.-> T22
+  XIDENTITY -.-> LB1
+  XSTIELTJES -.-> T23
+  XIDENTITY -.-> T23
+  XIDENTITY -.-> T25
+  XRESIDUES -.-> L33
+  XFOURIER -.-> L33
+  XGAUSSIAN -.-> L34
+  XBERNSTEIN -.-> P41
+  XIDENTITY -.-> P41
+  XKPS41 -.-> P41
+  XLP -.-> T42
+  XRESIDUES -.-> E43
+  XFOURIER -.-> P44
+  XRESIDUES -.-> P44
+  XL2 -.-> P51
+  XLP -.-> P51
+  XKPS41 -.-> P52
+  XBERNSTEIN -.-> P52

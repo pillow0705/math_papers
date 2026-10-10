@@ -1,0 +1,972 @@
+{
+  "schema_version": "1.0",
+  "paper_title": "Constructive Characterizations and New Families of van Dantzig Pairs",
+  "source_file": "latex/paper.tex",
+  "source_sha256": "9cbea0be361fdea7fd182ce71ea4eca0098fba7031c75acf538bd73021717fcb",
+  "edge_semantics": "An arrow A -> B means the recorded proof or stated identification of B uses A. Cross-panel inputs and external premises appear on each card. Hypotheses are node attributes.",
+  "panels": {
+    "1": "Existence, recovery, and the mean-value identity",
+    "2": "Polynomial realization",
+    "3": "Structural exclusions and the explicit family",
+    "4": "Recovery of known classes"
+  },
+  "nodes": [
+    {
+      "id": "L2.1",
+      "title": "Automatic decay",
+      "panel": 1,
+      "latex_label": "lem:decay",
+      "assumptions": [
+        "U is symmetric, Var(U)>0, and M_U(t)<infinity for every real t.",
+        "r>0 and rho=P(|U|>=r)>0."
+      ],
+      "conclusion": "1/M_U(t)<=2 exp(-r|t|)/rho; the reciprocal is integrable.",
+      "dependencies": [],
+      "external_dependencies": [],
+      "external_dependency_status": [],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 132,
+        "anchor": "lem:decay"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix A",
+        "line": 513,
+        "anchor": "lem:decay"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "classical consequence",
+      "display_formula_latex": "M_U(t)^{-1}\\le 2\\rho^{-1}e^{-r|t|}",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "T2.2",
+      "title": "Fourier characterization",
+      "panel": 1,
+      "latex_label": "thm:fourier",
+      "assumptions": [
+        "U is symmetric, Var(U)>0, and M_U(t)<infinity for every real t."
+      ],
+      "conclusion": "A conjugate exists iff F^{-1}[1/M_U]>=0 everywhere; this inverse is its unique continuous density.",
+      "dependencies": [
+        "L2.1"
+      ],
+      "external_dependencies": [
+        "X.FOURIER"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.FOURIER",
+          "status": "classical; applied and detailed in Appendix A"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 143,
+        "anchor": "thm:fourier"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix A",
+        "line": 516,
+        "anchor": "thm:fourier"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "constructive criterion from classical tools",
+      "display_formula_latex": "V\\text{ exists}\\iff f_U^*\\ge0",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "LB.1",
+      "title": "Analytic characteristic germ",
+      "panel": 1,
+      "latex_label": "lem:germ",
+      "assumptions": [
+        "A real random variable has a characteristic function agreeing locally with an analytic germ q.",
+        "For the stated bound, q is even and bounded by C near the closed disk of radius r_0."
+      ],
+      "conclusion": "All even moments exist; E W^(2n)=(-1)^n q^(2n)(0). Under the disk bound, E exp(a|W|)<infinity for a<r_0.",
+      "dependencies": [],
+      "external_dependencies": [
+        "X.IDENTITY"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.IDENTITY",
+          "status": "classical; applied with explicit domains"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 535,
+        "anchor": "lem:germ"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix B",
+        "line": 546,
+        "anchor": "lem:germ"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "classical principle with proof",
+      "display_formula_latex": "\\mathbb E W^{2n}=(-1)^nq^{(2n)}(0)",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "T2.3",
+      "title": "Hankel characterization",
+      "panel": 1,
+      "latex_label": "thm:hankel",
+      "assumptions": [
+        "U is symmetric, Var(U)>0, and M_U(t)<infinity for every real t.",
+        "u_n=E U^(2n), v_0=1, and v_n follows equation (2.4)."
+      ],
+      "conclusion": "Existence iff H_N and shifted H_N are PSD for every N, equivalently PD. The conjugate has moments v_n, an exponential moment, and a determinate law.",
+      "dependencies": [
+        "LB.1",
+        "T2.2"
+      ],
+      "external_dependencies": [
+        "X.STIELTJES",
+        "X.IDENTITY"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.STIELTJES",
+          "status": "classical; cited, not reproved"
+        },
+        {
+          "id": "X.IDENTITY",
+          "status": "classical; applied with explicit domains"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 172,
+        "anchor": "thm:hankel"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix B",
+        "line": 557,
+        "anchor": "thm:hankel"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "constructive criterion from classical tools",
+      "display_formula_latex": "V\\text{ exists}\\iff H_N,\\widetilde H_N\\succeq0\\ (\\forall N)",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "C2.4",
+      "title": "Discrete spectral recovery",
+      "panel": 1,
+      "latex_label": "cor:jacobi",
+      "assumptions": [
+        "T2.3 holds.",
+        "Use m_(2n)=v_n and m_(2n+1)=0, and the corresponding orthogonal recurrence."
+      ],
+      "conclusion": "The spectral measure of J_N matches moments through 2N-1 and converges weakly to the conjugate law.",
+      "dependencies": [
+        "T2.3"
+      ],
+      "external_dependencies": [],
+      "external_dependency_status": [],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 195,
+        "anchor": "cor:jacobi"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix B",
+        "line": 591,
+        "anchor": "cor:jacobi"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "classical Gauss recovery, proof supplied",
+      "display_formula_latex": "\\mu_N=\\sum_j|\\langle e_1,q_j\\rangle|^2\\delta_{x_j}\\Rightarrow\\mathcal L(V)",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "T2.5",
+      "title": "Holomorphic mean-value identity",
+      "panel": 1,
+      "latex_label": "thm:mean-value",
+      "assumptions": [
+        "U is symmetric, Var(U)>0, and M_U(t)<infinity for every real t.",
+        "V is an independent conjugate of U; W=U+iV.",
+        "F is a polynomial, or entire with sum |F^(n)(x)| E|W|^n/n! finite."
+      ],
+      "conclusion": "E F(x+W)=F(x). If F restricts to real f, E Re F(x+W)=f(x). Growth Ce^(a|z|), a<a_0, suffices when E exp(a_0|W|)<infinity.",
+      "dependencies": [
+        "T2.3"
+      ],
+      "external_dependencies": [
+        "X.IDENTITY"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.IDENTITY",
+          "status": "classical; applied with explicit domains"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 213,
+        "anchor": "thm:mean-value"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix B",
+        "line": 602,
+        "anchor": "thm:mean-value"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "consequence of cancellation",
+      "display_formula_latex": "\\mathbb E\\operatorname{Re}F(x+U+iV)=f(x)",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "L3.2",
+      "title": "Laplace positivity",
+      "panel": 2,
+      "latex_label": "lem:laplace",
+      "assumptions": [
+        "k is real and integrable, integral k=1.",
+        "Integral exp(eta|y|)|k(y)| dy is finite for some eta>0."
+      ],
+      "conclusion": "delta(lambda) tends to zero. The convolution lies between (1-delta)ell_lambda and (1+delta)ell_lambda; delta<1 gives a positive density.",
+      "dependencies": [],
+      "external_dependencies": [],
+      "external_dependency_status": [],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 257,
+        "anchor": "lem:laplace"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix C",
+        "line": 618,
+        "anchor": "lem:laplace"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "regularization lemma; priority unconfirmed",
+      "display_formula_latex": "(1-\\delta)\\ell_\\lambda\\le\\ell_\\lambda*k\\le(1+\\delta)\\ell_\\lambda",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "L3.3",
+      "title": "Rational inverse kernel",
+      "panel": 2,
+      "latex_label": "lem:rational",
+      "assumptions": [
+        "P is a nonconstant real polynomial, P(0)=1, P(s)>0 for s>=0."
+      ],
+      "conclusion": "The inverse k of 1/P(t^2) is real, even, continuous, of mass one, with an exponential absolute moment. The Laplace-regularized reciprocal is a characteristic function for all sufficiently large b.",
+      "dependencies": [
+        "L3.2"
+      ],
+      "external_dependencies": [
+        "X.RESIDUES",
+        "X.FOURIER"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.RESIDUES",
+          "status": "classical; contour argument given in Appendix C"
+        },
+        {
+          "id": "X.FOURIER",
+          "status": "classical; applied and detailed in Appendix A"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 272,
+        "anchor": "lem:rational"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix C",
+        "line": 634,
+        "anchor": "lem:rational"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "rational inversion and regularization",
+      "display_formula_latex": "[(1+bt^2)P(t^2)]^{-1}=\\varphi_{Y_b}(t)",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "L3.4",
+      "title": "Gaussian polynomial realization",
+      "panel": 2,
+      "latex_label": "lem:gaussian",
+      "assumptions": [
+        "Q is a real polynomial, Q(0)=1, Q(s)>0 for s>=0.",
+        "R(y)=Q(y^2), D=deg Q, tau>0."
+      ],
+      "conclusion": "The inverse of exp(-tau t^2/2)Q(-t^2) is g_tau(x)S_tau(x/tau). If sum C_j/[(2tau)^j j!]<1 it is positive, normalized, and has MGF exp(tau t^2/2)Q(t^2).",
+      "dependencies": [],
+      "external_dependencies": [
+        "X.GAUSSIAN"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.GAUSSIAN",
+          "status": "classical; derivative formula derived in Appendix C"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 289,
+        "anchor": "lem:gaussian"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix C",
+        "line": 646,
+        "anchor": "lem:gaussian"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "regularization lemma; priority unconfirmed",
+      "display_formula_latex": "f_U=g_\\tau S_\\tau(\\,\\cdot\\,/\\tau),\\quad A_Q(\\tau)<1",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "T3.1",
+      "title": "Polynomial realization",
+      "panel": 2,
+      "latex_label": "thm:polynomial",
+      "assumptions": [
+        "P is a nonconstant real polynomial with P(0)=1."
+      ],
+      "conclusion": "P>0 on [0,infinity) iff auxiliary b,tau>0 realize the proposed pair. If P>0, every b>=b_0 admits tau_0(b) and all tau>=tau_0(b) work, with strictly positive densities.",
+      "dependencies": [
+        "L3.3",
+        "L3.4"
+      ],
+      "external_dependencies": [],
+      "external_dependency_status": [],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 238,
+        "anchor": "thm:polynomial"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix C",
+        "line": 678,
+        "anchor": "thm:polynomial"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "central candidate original contribution",
+      "display_formula_latex": "M_U=e^{\\tau t^2/2}(1+bt^2)P(t^2),\\quad \\varphi_V=M_U^{-1}",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "P4.1",
+      "title": "Closed-half-plane pole obstruction",
+      "panel": 3,
+      "latex_label": "prop:poles",
+      "assumptions": [
+        "Q is a real polynomial with Q(0)=1 and Q(s)>0 for s>=0 (polynomial type is implicit in the current statement).",
+        "Q has a nonreal zero z_0 with Re z_0>=0; tau>=0."
+      ],
+      "conclusion": "exp(-tau s/2)/Q(s) is not completely monotone. A corresponding pair has phi_U outside D_P, and V outside centered Gaussian variance mixtures.",
+      "dependencies": [],
+      "external_dependencies": [
+        "X.BERNSTEIN",
+        "X.IDENTITY",
+        "X.KPS41"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.BERNSTEIN",
+          "status": "classical; cited, not reproved"
+        },
+        {
+          "id": "X.IDENTITY",
+          "status": "classical; applied with explicit domains"
+        },
+        {
+          "id": "X.KPS41",
+          "status": "primary statement checked; used as an external theorem"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 350,
+        "anchor": "prop:poles"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Section 4.1",
+        "line": 357,
+        "anchor": "prop:poles"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "structural exclusion",
+      "display_formula_latex": "\\Re z_0\\ge0,\\ Q(z_0)=0\\ \\Longrightarrow\\ h\\text{ is not CM}",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "T4.2",
+      "title": "Families outside both classes",
+      "panel": 3,
+      "latex_label": "thm:families",
+      "assumptions": [
+        "P(s)=product ((s-a_j)^2+c_j^2)/(a_j^2+c_j^2), m>=1, a_j>=0, c_j>0.",
+        "b and tau satisfy T3.1."
+      ],
+      "conclusion": "phi_U belongs to D outside D_L union D_P; both densities are strictly positive. Repeated factors and a_j=0 are included.",
+      "dependencies": [
+        "T3.1",
+        "P4.1"
+      ],
+      "external_dependencies": [
+        "X.LP"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.LP",
+          "status": "classical representation used to identify the comparison class"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 364,
+        "anchor": "thm:families"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Section 4.2",
+        "line": 375,
+        "anchor": "thm:families"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "family from the main construction",
+      "display_formula_latex": "\\varphi_U\\in\\mathcal D\\setminus(\\mathcal D_L\\cup\\mathcal D_P)",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "E4.3",
+      "title": "Explicit polynomial pair",
+      "panel": 3,
+      "latex_label": "ex:explicit",
+      "assumptions": [
+        "P(s)=1+s^2, b=2, tau=4."
+      ],
+      "conclusion": "M_U=exp(2t^2)(1+2t^2)(1+t^4); V=2Z+Y with the displayed positive density. f_U=g_4 S_4 with a positive SOS; both variances equal 8.",
+      "dependencies": [
+        "L3.4"
+      ],
+      "external_dependencies": [
+        "X.RESIDUES"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.RESIDUES",
+          "status": "classical; contour argument given in Appendix C"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 390,
+        "anchor": "ex:explicit"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix D",
+        "line": 693,
+        "anchor": "app:example"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "exact worked example",
+      "display_formula_latex": "S_4=2y^2(y^2-13/8)^2+27y^2/32+7/32",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          5
+        ]
+      }
+    },
+    {
+      "id": "P4.4",
+      "title": "Rational threshold",
+      "panel": 3,
+      "latex_label": "prop:threshold",
+      "assumptions": [
+        "b>0."
+      ],
+      "conclusion": "1/[(1+bt^2)(1+t^4)] is a characteristic function iff b>=2.",
+      "dependencies": [
+        "E4.3"
+      ],
+      "external_dependencies": [
+        "X.FOURIER",
+        "X.RESIDUES"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.FOURIER",
+          "status": "classical; applied and detailed in Appendix A"
+        },
+        {
+          "id": "X.RESIDUES",
+          "status": "classical; contour argument given in Appendix C"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 415,
+        "anchor": "prop:threshold"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix D",
+        "line": 730,
+        "anchor": "prop:threshold"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "sharp threshold for the rational factor",
+      "display_formula_latex": "r_b(t)=[(1+bt^2)(1+t^4)]^{-1}\\text{ is CF}\\iff b\\ge2",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          5
+        ]
+      }
+    },
+    {
+      "id": "P5.1",
+      "title": "Independent-sum recovery",
+      "panel": 4,
+      "latex_label": "prop:LP",
+      "assumptions": [
+        "U is symmetric with M_U(t)=exp(sigma^2 t^2/2) product(1+t^2/a_n^2).",
+        "sigma>=0, a_n>0, sum a_n^(-2)<infinity; the product is a valid MGF."
+      ],
+      "conclusion": "The independent sum V=G+sum L_n converges in L2 and almost surely and is a conjugate. For nondegenerate U its density is the Fourier inverse.",
+      "dependencies": [
+        "T2.2"
+      ],
+      "external_dependencies": [
+        "X.L2",
+        "X.LP"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.L2",
+          "status": "classical; applied in Appendix F"
+        },
+        {
+          "id": "X.LP",
+          "status": "classical representation used to identify the comparison class"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 428,
+        "anchor": "prop:LP"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix F",
+        "line": 767,
+        "anchor": "prop:LP"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "recovery of a classical class",
+      "display_formula_latex": "V=G+\\sum_n L_n,\\quad L_n\\sim\\operatorname{Laplace}(0,1/a_n)",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          6
+        ]
+      }
+    },
+    {
+      "id": "P5.2",
+      "title": "Bernstein mixture recovery",
+      "panel": 4,
+      "latex_label": "prop:DP",
+      "assumptions": [
+        "Psi belongs to N_D as specified in Section 5.2.",
+        "Use the characteristic-function and Bernstein assertions of KPS Theorem 4.1."
+      ],
+      "conclusion": "There is T_Psi>0 with E exp(-sT)=exp(-Phi_Psi(s)); V=sqrt(2T)Z is the conjugate, with finite continuous Gaussian-mixture density and E T^(-1/2)<infinity.",
+      "dependencies": [
+        "LB.1",
+        "L2.1",
+        "T2.2"
+      ],
+      "external_dependencies": [
+        "X.KPS41",
+        "X.BERNSTEIN"
+      ],
+      "external_dependency_status": [
+        {
+          "id": "X.KPS41",
+          "status": "primary statement checked; used as an external theorem"
+        },
+        {
+          "id": "X.BERNSTEIN",
+          "status": "classical; cited, not reproved"
+        }
+      ],
+      "statement_location": {
+        "file": "latex/paper.tex",
+        "line": 489,
+        "anchor": "prop:DP"
+      },
+      "proof_location": {
+        "file": "latex/paper.tex",
+        "section": "Appendix F",
+        "line": 785,
+        "anchor": "prop:DP"
+      },
+      "proof_status": "proof_present_in_manuscript",
+      "independent_review_status": "user_supplied_6_astra_report_no_major_gap_identified",
+      "contribution_role": "recovery dependent on an external theorem",
+      "display_formula_latex": "V_\\Psi=\\sqrt{2T_\\Psi}Z,\\quad f_V(x)=\\mathbb E\\frac{e^{-x^2/(4T_\\Psi)}}{\\sqrt{4\\pi T_\\Psi}}",
+      "review_reference": {
+        "file": "6_review_zh.pdf",
+        "sections": [
+          6
+        ]
+      }
+    }
+  ],
+  "external_dependencies": [
+    {
+      "id": "X.FOURIER",
+      "title": "Fourier inversion for integrable transforms",
+      "source": "Classical Fourier inversion and Gaussian approximate identities",
+      "status": "classical; applied and detailed in Appendix A",
+      "url": null
+    },
+    {
+      "id": "X.STIELTJES",
+      "title": "Stieltjes moment representation",
+      "source": "Schmudgen, The Moment Problem, Chapters 3--5",
+      "status": "classical; cited, not reproved",
+      "url": "https://doi.org/10.1007/978-3-319-64546-9"
+    },
+    {
+      "id": "X.IDENTITY",
+      "title": "Identity theorem and Cauchy estimates",
+      "source": "Classical one-variable complex analysis",
+      "status": "classical; applied with explicit domains",
+      "url": null
+    },
+    {
+      "id": "X.RESIDUES",
+      "title": "Residue inversion of rational functions",
+      "source": "Classical residue theorem",
+      "status": "classical; contour argument given in Appendix C",
+      "url": null
+    },
+    {
+      "id": "X.GAUSSIAN",
+      "title": "Gaussian transform and derivative identities",
+      "source": "Classical Gaussian Fourier transform",
+      "status": "classical; derivative formula derived in Appendix C",
+      "url": null
+    },
+    {
+      "id": "X.BERNSTEIN",
+      "title": "Bernstein--Widder representation",
+      "source": "Schilling, Song and Vondracek, Bernstein Functions (2012)",
+      "status": "classical; cited, not reproved",
+      "url": "https://doi.org/10.1515/9783110269338"
+    },
+    {
+      "id": "X.KPS41",
+      "title": "KPS 2024, Theorem 4.1",
+      "source": "D_P characteristic-function assertion and Bernstein representation",
+      "status": "primary statement checked; used as an external theorem",
+      "url": "https://aif.centre-mersenne.org/item/10.5802/aif.3600.pdf"
+    },
+    {
+      "id": "X.L2",
+      "title": "L2 martingale convergence",
+      "source": "Convergence of independent centered sums with summable variances",
+      "status": "classical; applied in Appendix F",
+      "url": null
+    },
+    {
+      "id": "X.LP",
+      "title": "Even Laguerre--Polya product representation",
+      "source": "Schoenberg (1951); KPS 2024, Section 2",
+      "status": "classical representation used to identify the comparison class",
+      "url": "https://doi.org/10.5802/aif.3600"
+    }
+  ],
+  "edges": [
+    {
+      "from": "L2.1",
+      "to": "T2.2",
+      "kind": "internal"
+    },
+    {
+      "from": "LB.1",
+      "to": "T2.3",
+      "kind": "internal"
+    },
+    {
+      "from": "T2.2",
+      "to": "T2.3",
+      "kind": "internal"
+    },
+    {
+      "from": "T2.3",
+      "to": "C2.4",
+      "kind": "internal"
+    },
+    {
+      "from": "T2.3",
+      "to": "T2.5",
+      "kind": "internal"
+    },
+    {
+      "from": "L3.2",
+      "to": "L3.3",
+      "kind": "internal"
+    },
+    {
+      "from": "L3.3",
+      "to": "T3.1",
+      "kind": "internal"
+    },
+    {
+      "from": "L3.4",
+      "to": "T3.1",
+      "kind": "internal"
+    },
+    {
+      "from": "T3.1",
+      "to": "T4.2",
+      "kind": "internal"
+    },
+    {
+      "from": "P4.1",
+      "to": "T4.2",
+      "kind": "internal"
+    },
+    {
+      "from": "L3.4",
+      "to": "E4.3",
+      "kind": "internal"
+    },
+    {
+      "from": "E4.3",
+      "to": "P4.4",
+      "kind": "internal"
+    },
+    {
+      "from": "T2.2",
+      "to": "P5.1",
+      "kind": "internal"
+    },
+    {
+      "from": "LB.1",
+      "to": "P5.2",
+      "kind": "internal"
+    },
+    {
+      "from": "L2.1",
+      "to": "P5.2",
+      "kind": "internal"
+    },
+    {
+      "from": "T2.2",
+      "to": "P5.2",
+      "kind": "internal"
+    },
+    {
+      "from": "X.FOURIER",
+      "to": "T2.2",
+      "kind": "external"
+    },
+    {
+      "from": "X.IDENTITY",
+      "to": "LB.1",
+      "kind": "external"
+    },
+    {
+      "from": "X.STIELTJES",
+      "to": "T2.3",
+      "kind": "external"
+    },
+    {
+      "from": "X.IDENTITY",
+      "to": "T2.3",
+      "kind": "external"
+    },
+    {
+      "from": "X.IDENTITY",
+      "to": "T2.5",
+      "kind": "external"
+    },
+    {
+      "from": "X.RESIDUES",
+      "to": "L3.3",
+      "kind": "external"
+    },
+    {
+      "from": "X.FOURIER",
+      "to": "L3.3",
+      "kind": "external"
+    },
+    {
+      "from": "X.GAUSSIAN",
+      "to": "L3.4",
+      "kind": "external"
+    },
+    {
+      "from": "X.BERNSTEIN",
+      "to": "P4.1",
+      "kind": "external"
+    },
+    {
+      "from": "X.IDENTITY",
+      "to": "P4.1",
+      "kind": "external"
+    },
+    {
+      "from": "X.KPS41",
+      "to": "P4.1",
+      "kind": "external"
+    },
+    {
+      "from": "X.LP",
+      "to": "T4.2",
+      "kind": "external"
+    },
+    {
+      "from": "X.RESIDUES",
+      "to": "E4.3",
+      "kind": "external"
+    },
+    {
+      "from": "X.FOURIER",
+      "to": "P4.4",
+      "kind": "external"
+    },
+    {
+      "from": "X.RESIDUES",
+      "to": "P4.4",
+      "kind": "external"
+    },
+    {
+      "from": "X.L2",
+      "to": "P5.1",
+      "kind": "external"
+    },
+    {
+      "from": "X.LP",
+      "to": "P5.1",
+      "kind": "external"
+    },
+    {
+      "from": "X.KPS41",
+      "to": "P5.2",
+      "kind": "external"
+    },
+    {
+      "from": "X.BERNSTEIN",
+      "to": "P5.2",
+      "kind": "external"
+    }
+  ],
+  "editorial_notes": [
+    {
+      "location": "Section 2.1",
+      "status": "unapplied",
+      "text": "Clarify local analyticity versus meromorphic continuation; the explicit conjugate has imaginary-axis poles."
+    },
+    {
+      "location": "Proposition 4.1",
+      "status": "unapplied",
+      "text": "State Q in R[s] explicitly. The registry records this contextual polynomial hypothesis."
+    }
+  ],
+  "literature_status": "Priority of the main construction remains unconfirmed. The Lukacs 1968 full-text comparison is outstanding."
+}

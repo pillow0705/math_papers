@@ -1,0 +1,61 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=19mm,top=18mm,bottom=18mm]{geometry}
+\usepackage{amsmath,amssymb,newtxtext,newtxmath,microtype}
+\usepackage{xcolor,graphicx,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\definecolor{ink}{HTML}{183D50}
+\linespread{1.04}\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\abovedisplayskip}{7pt}\setlength{\belowdisplayskip}{7pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\footnotesize van Dantzig pairs}\fancyhead[R]{\footnotesize Companion edition}\fancyfoot[C]{\footnotesize\thepage}\renewcommand{\headrulewidth}{0pt}
+\newcommand{\ptitle}[1]{{\color{ink}\fontsize{16}{20}\selectfont #1\par}\vspace{6pt}}
+\newcommand{\stitle}[1]{\par\vspace{5pt}{\color{ink}\bfseries #1}\par}
+
+\begin{document}
+\ptitle{van Dantzig pairs: reading guide}
+\stitle{G01 / Problem and assumptions}
+{\footnotesize\color{ink} Section 1; Section 2.1}\par
+The paper studies symmetric, nondegenerate real U with M\_U(t)=E exp(tU) finite for every real t. It asks for an independent real V satisfying the exponential identity below. The reciprocal transform determines the conjugate law uniquely.
+\[
+\mathbb E e^{t(U+iV)}=1\quad(t\in\mathbb R)\quad\Longleftrightarrow\quad \varphi_V(t)=\frac1{M_U(t)}.
+\]
+\stitle{G02 / Two criteria and distribution recovery}
+{\footnotesize\color{ink} Sections 2.2--2.3; Appendices A--B}\par
+The Fourier criterion tests nonnegativity of the inverse transform; when it holds, the inverse is the continuous density of V. Exponential decay of 1/M\_U guarantees convergence and gives a uniform truncation bound.
+\[
+f_U^*(x)=\frac1\pi\int_0^\infty\frac{\cos(tx)}{M_U(t)}\,dt\ge0\quad(\forall x\in\mathbb R).
+\]
+\stitle{G03 / Moment computation and spectral recovery}
+{\footnotesize\color{ink} Theorem 2.3; Corollary 2.4; Appendix B}\par
+With u\_n=E[U\textasciicircum{}(2n)], compute the candidate even moments v\_n below. Existence is equivalent to positive semidefiniteness of both Hankel matrices for every N. The full symmetric moments generate Jacobi matrices whose spectral measures converge to the law of V. Finite failed matrix tests exclude existence; a proof of existence uses the conditions at all orders.
+\[
+v_0=1,\quad v_n=\sum_{k=1}^n(-1)^{k+1}\binom{2n}{2k}u_kv_{n-k},\qquad (v_{i+j})_{i,j=0}^{N},\ (v_{i+j+1})_{i,j=0}^{N}\succeq0.
+\]
+\stitle{G04 / Mean-value identity for entire extensions}
+{\footnotesize\color{ink} Theorem 2.5; Appendix B}\par
+For W=U+iV, all positive-order complex moments vanish. Every polynomial is therefore preserved in expectation. The same conclusion holds for entire F under the absolute Taylor-integrability condition below. If F restricts to a real-valued f on the real axis, taking real parts gives the stated identity.
+\[
+\sum_{n\ge0}\frac{|F^{(n)}(x)|}{n!}\mathbb E|W|^n<\infty,\qquad \mathbb E[\operatorname{Re}F(x+W)]=f(x).
+\]
+\newpage
+\ptitle{van Dantzig pairs: reading guide}
+\stitle{G05 / General polynomial construction}
+{\footnotesize\color{ink} Theorem 3.1; Section 3.3; Appendices C, E}\par
+For every nonconstant real P with P(0)=1 and P(s)>0 on s$\ge$0, sufficiently large b, followed by sufficiently large tau, makes the following expressions a moment-generating function and its reciprocal characteristic function. A broad Laplace convolution makes the signed reciprocal inverse positive; Gaussian regularization gives a positive original density. The proof supplies finite sufficient parameter certificates.
+\[
+M_U(t)=e^{\tau t^2/2}(1+bt^2)P(t^2),\qquad \varphi_V(t)=\frac{e^{-\tau t^2/2}}{(1+bt^2)P(t^2)}.
+\]
+\stitle{G06 / Families outside the two comparison classes}
+{\footnotesize\color{ink} Section 4; Appendices D--E}\par
+Take the polynomial below with a\_j$\ge$0 and c\_j>0. Nonreal zeros exclude the resulting phi\_U from D\_L. Poles in the closed right half-plane exclude the probability Laplace-transform structure required for D\_P. The example P(s)=1+s\textasciicircum{}2, b=2, tau=4 has explicit positive densities and rejection samplers. The rational factor 1/[(1+bt\textasciicircum{}2)(1+t\textasciicircum{}4)] is a characteristic function exactly when b$\ge$2.
+\[
+P(s)=\prod_{j=1}^{m}\frac{(s-a_j)^2+c_j^2}{a_j^2+c_j^2},\qquad \varphi_U\in\mathcal D\setminus(\mathcal D_L\cup\mathcal D_P).
+\]
+\stitle{G07 / Known families and reading routes}
+{\footnotesize\color{ink} Sections 5--6; Appendix F}\par
+For D\_L, the conjugate is an independent sum of Gaussian and Laplace variables. For D\_P, the Bernstein representation of Konstantopoulos, Patie and Sarkar (2024), Theorem 4.1, gives a Gaussian variance mixture. The paper covers Gaussian, symmetric two-point, uniform, and Bessel-type examples. For existence of a prescribed law, read Section 2; for constructing pairs, Sections 3--4; for special-function comparisons, Section 5. Section 6 records parameter and classification questions.
+\[
+V_{\mathcal D_L}=G+\sum_n L_n,\qquad V_{\mathcal D_P}=\sqrt{2T}\,Z.
+\]
+\vspace{5pt}\hrule\vspace{5pt}{\small The criteria use classical Fourier inversion and Stieltjes moment theory. The main construction is the positive-polynomial realization theorem. Conjugate densities and samplers are developed in Sections 2--4 and Appendices C--E.}
+\end{document}

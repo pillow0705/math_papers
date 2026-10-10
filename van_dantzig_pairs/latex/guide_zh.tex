@@ -1,0 +1,65 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=19mm,top=18mm,bottom=18mm]{geometry}
+\usepackage{amsmath,amssymb,newtxtext,newtxmath,microtype}
+\usepackage{xcolor,graphicx,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\definecolor{ink}{HTML}{183D50}
+\linespread{1.04}\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\abovedisplayskip}{7pt}\setlength{\belowdisplayskip}{7pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\footnotesize van Dantzig pairs}\fancyhead[R]{\footnotesize Companion edition}\fancyfoot[C]{\footnotesize\thepage}\renewcommand{\headrulewidth}{0pt}
+\newcommand{\ptitle}[1]{{\color{ink}\fontsize{16}{20}\selectfont #1\par}\vspace{6pt}}
+\newcommand{\stitle}[1]{\par\vspace{5pt}{\color{ink}\bfseries #1}\par}
+\usepackage{xeCJK}
+\setCJKmainfont[Path=/System/Library/Fonts/Supplemental/,Extension=.ttc,FontIndex=0]{Songti.ttc}
+\setCJKsansfont[Path=/System/Library/Fonts/,Extension=.ttc,FontIndex=0,AutoFakeBold=2]{STHeiti Light.ttc}
+\renewcommand{\stitle}[1]{\par\vspace{5pt}{\color{ink}\sffamily #1}\par}
+
+\begin{document}
+\ptitle{van Dantzig 配对：中文导读}
+\stitle{G01 / 问题与假设}
+{\footnotesize\color{ink} 第 1 节；第 2.1 节}\par
+论文研究对称、非退化且矩母函数在整个实轴有限的实随机变量 $U$，寻找满足下式的独立实随机变量 $V$。倒数变换唯一确定共轭分布。
+\[
+\mathbb E e^{t(U+iV)}=1\quad(t\in\mathbb R)\quad\Longleftrightarrow\quad \varphi_V(t)=\frac1{M_U(t)}.
+\]
+\stitle{G02 / 两项判据与分布恢复}
+{\footnotesize\color{ink} 第 2.2--2.3 节；附录 A--B}\par
+Fourier 判据检查倒数变换的反演是否处处非负；成立时，反演即为 $V$ 的连续密度。$1/M_U$ 的指数衰减保证积分收敛，并给出统一截断误差界。
+\[
+f_U^*(x)=\frac1\pi\int_0^\infty\frac{\cos(tx)}{M_U(t)}\,dt\ge0\quad(\forall x\in\mathbb R).
+\]
+\stitle{G03 / 矩递推与离散谱恢复}
+{\footnotesize\color{ink} 定理 2.3；推论 2.4；附录 B}\par
+记 $u_n=\mathbb E U^{2n}$，按下式计算候选偶矩 $v_n$。共轭存在等价于两组 Hankel 矩阵对所有 $N$ 均半正定。完整对称矩序列生成的 Jacobi 矩阵，其谱测度收敛到 $V$ 的分布。有限阶检验失败即可排除存在性；存在性证明使用全部阶数的条件。
+\[
+v_0=1,\quad v_n=\sum_{k=1}^n(-1)^{k+1}\binom{2n}{2k}u_kv_{n-k},\qquad (v_{i+j})_{i,j=0}^{N},\ (v_{i+j+1})_{i,j=0}^{N}\succeq0.
+\]
+\stitle{G04 / 整函数延拓的均值恒等式}
+{\footnotesize\color{ink} 定理 2.5；附录 B}\par
+令 $W=U+iV$，则所有正阶复矩均为零，因此多项式在取期望后保持原值。整函数 $F$ 在下述绝对 Taylor 可积条件下也满足该结论。若 $F$ 在实轴的限制为实值函数 $f$，取实部即得所示恒等式。
+\[
+\sum_{n\ge0}\frac{|F^{(n)}(x)|}{n!}\mathbb E|W|^n<\infty,\qquad \mathbb E[\operatorname{Re}F(x+W)]=f(x).
+\]
+\newpage
+\ptitle{van Dantzig 配对：中文导读}
+\stitle{G05 / 一般多项式构造}
+{\footnotesize\color{ink} 定理 3.1；第 3.3 节；附录 C、E}\par
+对任意非恒定实多项式 $P$，若 $P(0)=1$ 且 $P(s)>0$（$s\ge0$），则先取足够大的 $b$，再取足够大的 $\tau$，可使下式分别为矩母函数及其共轭特征函数。宽 Laplace 卷积使倒数的有符号反演为正；Gaussian 正则化给出原变量的正密度。证明提供有限的参数充分条件。
+\[
+M_U(t)=e^{\tau t^2/2}(1+bt^2)P(t^2),\qquad \varphi_V(t)=\frac{e^{-\tau t^2/2}}{(1+bt^2)P(t^2)}.
+\]
+\stitle{G06 / 超出两个比较类的分布族}
+{\footnotesize\color{ink} 第 4 节；附录 D--E}\par
+取下式多项式，其中 $a_j\ge0$、$c_j>0$。非实零点排除所得 $\varphi_U$ 属于 $\mathcal D_L$；闭右半平面极点排除 $\mathcal D_P$ 所要求的概率 Laplace 变换结构。例子 $P(s)=1+s^2$、$b=2$、$\tau=4$ 有显式正密度与拒绝采样方法。有理因子 $1/[(1+bt^2)(1+t^4)]$ 为特征函数的精确条件是 $b\ge2$。
+\[
+P(s)=\prod_{j=1}^{m}\frac{(s-a_j)^2+c_j^2}{a_j^2+c_j^2},\qquad \varphi_U\in\mathcal D\setminus(\mathcal D_L\cup\mathcal D_P).
+\]
+\stitle{G07 / 已有分布族与阅读路径}
+{\footnotesize\color{ink} 第 5--6 节；附录 F}\par
+$\mathcal D_L$ 的共轭由独立 Gaussian 与 Laplace 变量之和构成。$\mathcal D_P$ 则由 Konstantopoulos、Patie 与 Sarkar（2024）定理 4.1 的 Bernstein 表示得到 Gaussian 方差混合。文中覆盖 Gaussian、对称两点、均匀与 Bessel 型例子。判定给定分布可读第 2 节；构造配对可读第 3--4 节；比较特殊函数类可读第 5 节。第 6 节列出参数与分类问题。
+\[
+V_{\mathcal D_L}=G+\sum_n L_n,\qquad V_{\mathcal D_P}=\sqrt{2T}\,Z.
+\]
+\vspace{5pt}\hrule\vspace{5pt}{\small 判据使用经典 Fourier 反演与 Stieltjes 矩理论。主要构造为正多项式实现定理。共轭密度与采样方法见第 2--4 节及附录 C--E。}
+\end{document}

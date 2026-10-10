@@ -1,0 +1,119 @@
+\thispagestyle{plain}
+{\fontsize{22}{26}\selectfont\sffamily\bfseries Hodge Classes on Abelian Sixfolds\par}
+\vspace{5pt}
+{\large\sffamily AI reading and reuse edition}\hfill 11 October 2026\par
+\medskip\hrule\medskip
+\noindent\textbf{Purpose.} Extract reusable proof mechanisms before reading the 21 case analyses. The following four pages are a method map, followed by the manuscript's full proof text in a compact format. Original result numbers and LaTeX labels are retained; \texttt{theorem\_graph/theorems.json} resolves them to both editions. These are candidate takeaways from this manuscript, not claims of priority over the literature.
+
+\medskip\noindent\colorbox{ScopeBackground}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Logical contract.} The full 21-row conclusion is conditional. The official 7 October withdrawal notice lists the split-eightfold, Kuga--Satake and K3-product manuscripts. Their precise assertions below are assumptions, not certified theorems. The CM assertion is also not independently verified here. See \href{https://github.com/openai/math/blob/main/history.md}{the official release history}. The original dated text is preserved after this front matter, including its historical descriptions of the preprints.}}
+
+\subsection*{1. Change the polarization while preserving the target Weil space}
+\textbf{Problem.} A geometric theorem applies only to split Weil type, while the given rational Hermitian discriminant is nonsplit. The space $W_k(A)$ depends on the variety and the $k$-action; it does not depend on the chosen compatible polarization. This permits a change of polarization before applying the theorem.
+
+\textbf{Odd-rank mechanism (\ref{p:oddscale}).} If a $k$-linear product factor has odd rank $r$, write the total determinant as $d<0$. Scale that factor by $c=-d>0$. Then
+\[
+ d'=c^r d=-d^{r+1}=-N_{k/\Q}\bigl(d^{(r+1)/2}\bigr).
+\]
+The rational polarization stays positive and its discriminant becomes $-1$ modulo norms. Clear denominators and apply the split sixfold theorem. This handles the relevant mixed Weil planes in N1 and N4. It does not say that arbitrary polarization changes preserve algebraic cycles; it preserves the specific target cohomology space.
+
+\textbf{Real-quadratic mechanism (\ref{p:quartic-scale}).} If $K=kF$, $F=\Q(\sqrt d)$ real quadratic, and the $K$-rank is three, write the polarization using a Hermitian form $H$ with $b=\det H\in F$. The trace determinant is
+\[
+ D=(4d)^3N_{F/\Q}(b).
+\]
+The signs in the Weil signature allow $a=\pm\sqrt d\,b$ to be totally positive. Replacing $H$ by $aH$ gives
+\[
+ D'=-\bigl(8d^3N_{F/\Q}(b)^2\bigr)^2.
+\]
+This is an explicit rational norm-class correction, not only a real signature adjustment. It proves the exceptional S9 case using Markman's split theorem, without the withdrawn inputs.
+
+\textbf{Reusable recipe.} Identify a geometric target invariant under a moduli choice; calculate how a positive self-adjoint endomorphism changes the obstruction class; solve that class algebraically before invoking geometry. Both positivity and rationality must be checked.
+\newpage
+\section*{Takeaways II: trace forms and actual contractions}
+\subsection*{2. Construct a maximal isotropic space by interpolation}
+\textbf{Input (\ref{p:CMsplit}).} A simple CM sixfold, $K=kF$ with $[F:\Q]=6$, and $k$-signature $(3,3)$. Write
+\[
+ \psi(x,y)=\Tr_{K/\Q}(\delta b x\bar y),\qquad b\in F^\times.
+\]
+Choose a primitive element $\theta\in F$ whose ordered real embeddings make the signs of $f'(\theta)$ match those prescribed by $b$, where $f$ is its minimal polynomial. Weak approximation supplies the ordering. Then $a=(1/f'(\theta))/b$ is totally positive, so it defines a new compatible polarization.
+
+Lagrange interpolation gives
+\[
+ \Tr_{F/\Q}\!\left(\frac{\theta^m}{f'(\theta)}\right)=0\ (0\le m\le4),
+ \qquad
+ \Tr_{F/\Q}\!\left(\frac{\theta^5}{f'(\theta)}\right)=1.
+\]
+Thus $k\langle1,\theta,\theta^2\rangle$ is a three-dimensional totally isotropic space for the resulting $k$-Hermitian form. This constructs splitting directly. The recipe is the combination of sign control, inverse derivatives and exact trace vanishing; interpolation alone is classical.
+
+\textbf{Separate group theory from cycle existence.} The rank bound in \ref{p:CMsixrank} uses the two-dimensional orthogonal relation space of a hypothetical rank-four CM type. Finite rational plane rotations and signed-orbit constraints exclude rank four. Rank five or six identifies the invariant generators; it does not algebraize them. The trace construction and Markman's theorem supply the missing geometry. Together these yield \ref{p:CMcomplete}, including all powers, independently of the new CM assertion.
+
+\subsection*{3. Stabilize an obstruction, then recover by an algebraic map}
+\textbf{Conditional input and output (\ref{p:all-sixfold-weil}).} Given a Weil sixfold with determinant $d<0$, add two oppositely oriented $k$-CM elliptic curves with Hermitian coefficients $1,d$. The resulting eightfold has signature $(4,4)$ and determinant $d^2$, hence is hyperbolic. Assuming \textbf{EXT:Weil8}, its Weil plane is algebraic.
+
+The nontrivial recovery step uses a rational divisor $0\ne\beta\in W_k(P)$ on the auxiliary surface, and the actual correspondence
+\[
+ C_\beta(\gamma)=(\operatorname{pr}_A)_*
+       \bigl(\gamma\cup\operatorname{pr}_P^*\beta\bigr).
+\]
+Its two conjugate components are nonzero, so it maps the eightfold Weil plane isomorphically to the original one. The cycle codimension is $4+1-2=3$. This is a proved implication from the stipulated eightfold assertion; it does not repair the withdrawn proof of that assertion.
+
+\textbf{Reuse test.} An auxiliary realization is useful only if its geometric input applies with the exact discriminant, period and polarization hypotheses, and a nonzero algebraic contraction returns to the original target. An abstract Hodge isomorphism is insufficient.
+\newpage
+\section*{Takeaways III: one mixed cycle and all powers}
+\subsection*{4. Reduce a coupled Hodge problem to a single nonzero projection}
+The residual N2 and N3 models share a split representation
+\[
+ H=\{(g_1,g_2,u,v):\det g_1=uv,\ \det g_2=u/v\},
+ \quad\dim V_1=\dim V_2=2.
+\]
+The calculation in \ref{p:quartic-mixed} isolates a four-dimensional rational space $Q$ in codimension two. Divisors and $Q$ generate the sixfold Hodge ring. Field endomorphisms make $Q$ rank one over a quartic field (\ref{p:N2nonCMstructure}, \ref{p:N2CMstructure}, \ref{p:N3onecycle}). Algebraic projectors are explicitly available. Consequently the target becomes
+\[
+ \exists Z\in\CH^2(A)_\Q:\quad p_Q\operatorname{cl}(Z)\ne0.
+\]
+\textbf{What is gained.} One need not construct a basis of all mixed classes. One nonzero projected cycle, acted on by field correspondences, supplies all of $Q$. The field-rank and projector statements are essential hypotheses.
+
+\subsection*{5. Contract tensor slots to pass from the one-cycle criterion to powers}
+In \ref{p:mixed-allpowers}, reduce derived-group invariants to pairings and block volumes. Give the two signed volume exponents the names $r,s\in\Z$. Central neutrality forces the remaining auxiliary character to be
+\[
+                         u^{-(r+s)}v^{-(r-s)}.
+\]
+Take $|r|+|s|$ signed copies of the four mixed generators in $Q$. Their fourfold slots give the required volume monomial. Polarization contracts every surplus opposite $u$ or $v$ pair; additional neutral slots are supplied by divisor pairings. The relevant one-dimensional pairings are nonzero.
+
+These operations take place in tensor powers before alternation. Kunneth projectors, endomorphisms, addition maps, permutations, diagonals and inverse polarization contractions are algebraic for the abelian varieties in use. Thus the argument generates classes on arbitrary powers, including those not obtainable as ordinary products of classes pulled back from a single copy.
+
+\textbf{Scope.} This proves an all-powers theorem for the specified residual mixed models. It is not a general implication $\mathrm{HC}(A)\Rightarrow\mathrm{HC}(A^n)$. The full N1, N4, N5 and N6 rows retain only their explicitly stated sixfold conclusions in this repository's scope ledger. Here $\dim A^n=6n$.
+
+\subsection*{6. Check Hodge cocharacters, not only common abstract quotients}
+The N4 test in \ref{p:CMthreepair} examines the actual projected Hodge vectors. Isomorphic rational torus constituents need not yield a coupling. In the potentially shared plane, $J=\rho-\rho^{-1}$ intertwines a standard module with its sign twist, but $Jv_j$ has a zero coordinate and the candidate target vectors do not. The proposed graph relation therefore fails. This removes a plausible extra coupling that an abstract quotient comparison would not exclude.
+
+\textbf{Finite-kernel warning.} In residual N2 the projection onto the fourfold group has kernel $\mu_2$, acting nontrivially on $H^1(P)$. An all-powers theorem for the fourfold alone therefore does not automatically supply the surface's weight-one object. A mixed correspondence still has to be constructed.
+\newpage
+\section*{Takeaways IV: Clifford extraction and geometric transfer}
+\subsection*{7. Use the full rational Clifford module as the descent container}
+\textbf{Residual N3 (\ref{p:N3KS}).} A rational projector inside $H^1(B)\otimes H^1(E_1)$ gives a K3-type structure $W$ of dimension eight, Hodge numbers $(1,6,1)$ and signature $(2,6)$. Lattice embedding and periods realize it as $T(X)$ for a projective K3 with $\rho(X)=14$. This Hodge isometry is \emph{not} assumed algebraic.
+
+For the actual joint group, $W_\C=L\oplus L^\vee$ and $\det L=u^{-2}$. The square character gives a Spin lift. Once existence is established, connectedness makes the lift unique and hence rational (\ref{p:N3spin-descent}). Use the full rational even-Clifford regular module, not an assumed rational half-spinor. Base change for rational Hom spaces identifies the needed weight-one abelian factors.
+
+Assuming the \emph{specified} complete KS map, use
+\[
+ \kappa_0(w)(x)=wxt_0,\quad q(t_0)\ne0,
+ \qquad t_0\operatorname{Cl}^+=\operatorname{Cl}^-.
+\]
+Even right multiplications commute with the left Hodge action and are algebraic weight-one endomorphisms. They allow the required odd matrix coefficient to be selected. The two selected maps, contracted with $q^{-1}$ and pulled back along the fourfold diagonal, give
+\[
+           0\ne\lambda(b_1\wedge b_2)u^{-1}v^{-1}\in Q_\C.
+\]
+The K3 transcendental projector realizes this contraction algebraically. A bilinear map on finite rational correspondence spaces that is nonzero after complexification must be nonzero on some rational pair. This supplies the rational cycle, without declaring an individual complex eigenline to be a rational cycle.
+
+\subsection*{8. In N2, restore the determinant before using an auxiliary spin tensor}
+\textbf{Distinct hypothesis (\ref{p:N2auxiliary}).} Over $F=K^+$, combine a half-twisted structure $U$, the determinant structure $R$ with complementary period places, and seven negative directions. The resulting dimension is $13\equiv5\pmod8$, both signatures are $(2,11)$, and two successive local--global isotropy arguments give Witt index at least two. The determinant character is a square, so the spin lift retains the original central characters.
+
+Assume \textbf{EXT:Aux}, a four-slot algebraic tensor stronger than the ordinary KS input. Its selected Fock block is
+\[
+ C_U(e_{13}\wedge e_{23})=2e_3\wedge e_{123}\ne0.
+\]
+Rational selectors yield a cycle on $B\times D$, with $D$ CM. The separate \textbf{EXT:CM} assertion algebraizes a Hodge correspondence on $D\times P$, transferring the nonzero block to the given surface $P$. It is used on the CM product $D\times P$, not on the non-CM product $B\times P$.
+
+\textbf{A separate geometric route.} Weighted covers and \ref{p:curve-specialization} algebraize a fixed $(p,p)$ subvariation on represented one-dimensional PEL components (\ref{p:PELcompletion}). This specializes along the same component; it does not cross to new rational Hermitian types or imply algebraicity of newly appearing special-fiber classes.
+
+\smallskip\noindent\textbf{Agent entry points.} For classical cases: S2--S6, N7--N10. For reusable constructions: S9, S11, N4 and the central results cited above. For conditional mixed cycles: N2 and N3, reading their external contracts first. The JSON separates curated logical dependencies from syntactic references and records the exact proof locations.
+\clearpage

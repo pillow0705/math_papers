@@ -1,0 +1,35 @@
+\section{Experimental details}
+\label{app:experiment_details}
+
+\paragraph{Baseline updates.}
+Both experiments use scalar inputs. Write $s^2$ for the measurement-noise
+variance and suppress the iteration index. Taylor corrections use
+\[
+G_{\mathrm{T2}}=g(\theta;W,Y)-\frac{s^2}{2}\partial_w^2g(\theta;W,Y),
+\qquad
+G_{\mathrm{T4}}=G_{\mathrm{T2}}+
+\frac{s^4}{8}\partial_w^4g(\theta;W,Y),
+\]
+with the response held fixed. The deterministic Woolsey--Huang baseline
+uses $\operatorname{Re}g^{\mathbb C}(\theta;W+is,Y)$; CCSGD instead
+samples $V\sim N(0,s^2)$ at every update. Regression calibration substitutes
+the exact conditional mean $\mathbb E[Z\mid W]$ under the stated latent law.
+Quadratic SIMEX trains three models with additional Gaussian noise
+variances $\lambda s^2$, $\lambda=0,1,2$. It extrapolates parameters in
+nonlinear-feature regression and predictions in neural-network regression,
+with weights $(3,-3,1)$. In the first experiment its additional-noise
+expectation is integrated analytically; in the second it is sampled.
+These comparisons use common data streams and step-size schedules;
+SIMEX uses three training trajectories, so update counts do not equalize
+computational cost.
+
+\paragraph{Population reference lines.}
+In nonlinear-feature regression, each direct baseline has a population
+score $H_k\theta-r_k$. The dashed line is
+$\|H_k^{-1}r_k-\theta^*\|^2$; for SIMEX it is the squared distance between
+the extrapolation of the three population minimizers and $\theta^*$.
+We evaluate $H_k$ by 160-node Gauss--Hermite quadrature and $r_k$ by
+$128\times128$ joint quadrature over $(Z,U)$, retaining the dependence
+between $Y$ and $W$. Thus the reference lines are numerical evaluations
+of population squared biases, not fits to the simulated trajectories or
+lower bounds at every finite iteration.

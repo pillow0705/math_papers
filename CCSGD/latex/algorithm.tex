@@ -1,0 +1,107 @@
+\section{Complex-Corrected SGD}
+\label{sec:algorithm}
+
+Let $\theta\in\mathbb R^p$. A fixed response, when present, is suppressed in the notation. We observe $W=Z+U$, where $U\sim N(0,\Omega)$ is independent of $Z$ and the covariance $\Omega\succeq0$ is known. No invertibility or diagonal structure is required. Assume that $Z\in\mathbb R^d$ is sub-Gaussian about its mean $m_Z$: for some $\sigma_Z<\infty$,
+\[
+\mathbb E e^{s v^\top(Z-m_Z)}\le e^{\sigma_Z^2s^2/2}
+\quad(s\in\mathbb R,\ \|v\|=1).
+\]
+For a loss $\ell(\theta;z)$ differentiable in $\theta$, with
+$\mathbb E|\ell(\theta;Z)|<\infty$ for every $\theta$, write
+\[
+F(\theta)=\mathbb E_Z\ell(\theta;Z),\qquad
+g(\theta;z)=\nabla_\theta\ell(\theta;z).
+\]
+The following assumptions separate input regularity from clean sampling
+noise. All norms are Euclidean, with $\|\cdot\|_{\rm op}$ denoting the
+induced operator norm.
+
+\begin{assumption}[Holomorphic score]\label{ass:entire}
+For every $\theta$, $z\mapsto g(\theta;z)$ admits an entire extension $g^{\mathbb C}(\theta;\cdot)$ on $\mathbb C^d$, real-valued on $\mathbb R^d$.
+\end{assumption}
+
+\begin{assumption}[Exponential envelope]\label{ass:envelope}
+There are a finite constant $a\ge0$ and a measurable function
+$M:\mathbb R^p\to[0,\infty)$ such that
+\begin{equation}\label{eq:parameter_envelope}
+\|D_qg^{\mathbb C}(\theta;q)\|_{\rm op}
+\le M(\theta)e^{a\|q\|},
+\qquad \theta\in\mathbb R^p,\ q\in\mathbb C^d.
+\end{equation}
+The exponent $a$ is independent of $\theta$; the amplitude $M(\theta)$
+need not be bounded.
+In addition, for finite constants $A,B\ge0$,
+\begin{equation}\label{eq:amplitude_control}
+M(\theta)^2\le A+B\|\nabla F(\theta)\|^2,
+\qquad \theta\in\mathbb R^p.
+\end{equation}
+\end{assumption}
+
+\begin{assumption}[Clean sampling variance]\label{ass:clean_variance}
+Differentiation may be interchanged with the expectation defining $F$,
+and for constants $\sigma_0^2,\rho_0\ge0$, independent of $\theta$,
+\[
+\mathbb E_Z\|g(\theta;Z)-\nabla F(\theta)\|^2
+\le\sigma_0^2+\rho_0\|\nabla F(\theta)\|^2.
+\]
+This condition concerns the clean stochastic score;
+no variance bound is assumed on the corrected score.
+\end{assumption}
+
+The amplitude control transfers the input growth bound to the standard
+SGD relative variance condition. The correction identity itself uses
+only the entire extension and the bound~\eqref{eq:parameter_envelope};
+it requires neither amplitude control nor convexity.
+
+\begin{algorithm}[H]
+\caption{Complex-Corrected SGD}
+\label{alg:ccsgd}
+\begin{algorithmic}[1]
+\Require Initial point $\theta_1$, step sizes $\{\eta_t\}_{t=1}^T$, known noise covariance $\Omega$
+\For{$t=1,\ldots,T$}
+    \State Observe a fresh $W_t=Z_t+U_t$
+    \State Draw $V_t\sim N(0,\Omega)$ independently of the observation and the past
+    \State $G_t\gets\operatorname{Re}g^{\mathbb C}(\theta_t;W_t+iV_t)$
+    \State $\theta_{t+1}\gets\theta_t-\eta_tG_t$
+\EndFor
+\State \Return $\theta_{T+1}$
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Optional averaging.}
+For the same observation $W_t$, one may draw $m$ independent
+$V_{t,j}\sim N(0,\Omega)$ and replace $G_t$ by
+\[
+G_t^{(m)}=\frac1m\sum_{j=1}^m
+\operatorname{Re}g^{\mathbb C}(\theta_t;W_t+iV_{t,j}).
+\]
+This preserves conditional unbiasedness with respect to the past.
+Given $(\mathcal F_{t-1},W_t)$, the covariance is $1/m$ times that of
+a single draw, reducing simulation variability and stabilizing the update
+at the cost of additional score evaluations. Variability due to the
+shared observation remains.
+
+\begin{lemma}[Exact correction]\label{lem:exact_correction}
+Under Assumptions~\ref{ass:entire}--\ref{ass:envelope}, for every $(z,\theta)$,
+\[
+\mathbb E_{U,V}\bigl[\operatorname{Re}g^{\mathbb C}(\theta;z+U+iV)\bigr]
+=g(\theta;z).
+\]
+Consequently, if $\theta_t$ is measurable with respect to the past $\mathcal F_{t-1}$, $(Z_t,U_t,V_t)$ is independent of that past, and differentiation may be interchanged with the expectation defining $F$, then
+$\mathbb E[\operatorname{Re}g^{\mathbb C}(\theta_t;W_t+iV_t)\mid\mathcal F_{t-1}]=\nabla F(\theta_t)$.
+\end{lemma}
+
+
+\paragraph{Observed responses.}
+For noise-free responses $Y=r(Z)$, keep $Y$ fixed when extending
+$z\mapsto g(\theta;z,Y)$ to complex inputs. The same argument gives
+\[
+\mathbb E_{U,V}[\operatorname{Re}g^{\mathbb C}(\theta;Z+U+iV,Y)
+\mid Z,Y]=g(\theta;Z,Y),
+\]
+provided the score satisfies the entire and growth conditions at each
+fixed $(\theta,y)$. For the objective
+$F(\theta)=\mathbb E\ell(\theta;Z,Y)$, sampling and moment conditions
+must hold for the joint pair $(Z,Y)$.
+Appendix~\ref{app:regression} derives these bounds for the regression
+experiment.

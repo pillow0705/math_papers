@@ -1,0 +1,71 @@
+\section{Related work}
+\label{sec:related_work}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Selected approaches to measurement-error correction. Exactness is understood within each method's stated model and function class.}
+\label{tab:related_work}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.35\linewidth}}
+\toprule
+Work & Main result & Relation to CCSGD \\
+\midrule
+Nakamura (1990) \cite{nakamura1990} & Corrected estimating equations & Foundational score-correction principle. \\
+Novick--Stefanski (2002) \cite{novick2002} & Exact Gaussian complex Monte Carlo corrected scores and batch $M$-estimation & Our Gaussian correction uses their identity; we study its per-sample use in SGD. \\
+Stefanski (1989) \cite{stefanski1989} & Analyticity restriction for globally unbiased Gaussian correction & Delimits exact correction for scores with complex singularities. \\
+Konstantopoulos--Patie--Sarkar (2024) \cite{konstantopoulos2024} & van Dantzig pairs and distributional constructions & Supplies candidate conjugate perturbations for non-Gaussian noise; score integrability remains to be checked. \\
+Woolsey--Huang (2026) \cite{woolseyhuang2026} & Statistical estimation with non-Gaussian error through finite-order bias cancellation & CCSGD gives an explicit stochastic-gradient update and optimization guarantees; exact correction for admissible non-Gaussian noise is discussed in Further work. \\
+Cook--Stefanski (1994); Spicker et al. (2024) \cite{cookstefanski1994,spicker2024} & Parametric and nonparametric SIMEX & Correct by extrapolation rather than an exact per-sample gradient identity. \\
+Belomestny--Goldenshluger (2021) \cite{belomestnygoldenshluger2021} & Density deconvolution allowing zeros of the error characteristic function & Related inverse problem; its target is density estimation. \\
+Loh--Wainwright (2012) \cite{lohwainwright2012} & Corrected high-dimensional sparse linear regression with a convergent projected-gradient algorithm & Addresses linear regression; CCSGD treats scores of more general analytic losses in an online stochastic update. \\
+Carroll et al. (2006) \cite{carroll2006} & Regression calibration and broader measurement-error methodology & Context for plug-in correction. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Nakamura's corrected-score principle and the complex Monte Carlo
+construction of Novick and Stefanski \cite{nakamura1990,novick2002}
+provide the statistical foundation. CCSGD studies the associated online
+gradient recursion and derives its noise conditions before applying
+classical optimization theory. Loh and Wainwright
+\cite{lohwainwright2012} already provide a computationally tractable
+corrected optimization method for sparse linear regression; our analysis
+allows more general analytic scores under explicit growth conditions.
+Woolsey and Huang \cite{woolseyhuang2026} develop non-Gaussian
+corrections for statistical estimation by cancelling finitely many bias
+terms, which generally leaves a residual bias. Our focus is stochastic
+optimization: CCSGD gives a directly implementable learning rule using
+one noisy observation and one simulated complex perturbation per update,
+with convergence rates and asymptotic guarantees. Further work discusses
+exact correction for non-Gaussian noise admitting a suitable conjugate
+perturbation, including uniform and symmetric two-point noise, under the
+required score-integrability conditions. In our experiments, the
+Woolsey--Huang baseline is their deterministic correction in Eq.~(5).
+
+\subsection*{Our contributions}
+\begin{enumerate}
+\item \emph{An explicit optimization method.}
+CCSGD turns complex correction into a directly implementable stochastic
+optimization algorithm for a broad class of analytic losses with noisy
+inputs. Each update evaluates the score at one noisy observation plus
+one simulated complex perturbation. Experiments demonstrate convergence
+to the true parameter in nonlinear-feature regression and improved
+prediction over naive training in neural-network regression.
+\item \emph{Exact correction beyond Gaussian noise.}
+The conjugate-variable criterion in our companion work
+\cite{conjugatecriterion2026} extends the correction principle to
+admissible non-Gaussian noise, including uniform and symmetric two-point
+distributions. Further work describes these constructions and the
+integrability conditions required for exact unbiasedness; the main
+optimization theorems here concern Gaussian measurement error.
+\item \emph{Per-step unbiasedness and asymptotic guarantees.}
+The corrected gradient is exactly unbiased at every iteration, rather
+than merely cancelling finitely many bias terms. We derive the classical
+SGD relative variance bound from input growth and sampling conditions,
+then establish convex and nonconvex guarantees. Under strong convexity,
+CCSGD converges to the clean optimizer $\theta^*$ almost surely and in
+mean square, with explicit MSE rates; under the stated local regularity
+conditions, both the last iterate and the Polyak--Ruppert average are
+asymptotically normal.
+\end{enumerate}

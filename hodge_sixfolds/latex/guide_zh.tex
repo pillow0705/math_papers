@@ -1,0 +1,59 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[left=20mm,right=20mm,top=18mm,bottom=19mm,headheight=14pt]{geometry}
+\usepackage{fontspec,xeCJK,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,titlesec}
+\setmainfont{Times New Roman}\setsansfont{Arial}\setCJKmainfont{Songti SC}
+\usepackage[hidelinks]{hyperref}
+\definecolor{Ink}{HTML}{183B4E}\definecolor{Muted}{HTML}{52616B}\definecolor{Warn}{HTML}{A33A2B}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\setlength{\emergencystretch}{3em}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=2pt}
+\titleformat{\section}{\large\sffamily\bfseries\color{Ink}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}\fancyfoot[C]{\small\thepage}
+\newcommand{\external}{\textcolor{Warn}{\textsuperscript{*}}}
+\begin{document}
+\fancyhead[L]{\small\sffamily 六维阿贝尔簇 / 阅读导读}
+{\LARGE\sffamily\bfseries\color{Ink}二十一类证明阅读导读}\par
+{\small 中文版 / 2026 年 10 月 11 日 / 与英文版内容对应}
+\section*{问题与结论范围}
+对复六维阿贝尔簇 $A$，论文研究有理 Hodge 类的代数性。覆盖全体六维阿贝尔簇的总结论以明确列出的外部断言为假设。论文也给出了结构归约，以及仅使用所引经典和几何结果的若干分类结论。自乘幂 $A^n$ 的维数是 $6n$。
+\section*{二十一类如何产生}
+在同源意义下，先区分简单簇与乘积。对简单六维簇，以 Albert 端同态类型、中心次数及模秩得到 S1--S11 共十一行；对非简单六维簇，以六的十个非平凡整数分拆得到 N1--N10。这些行并非所有 Hodge 群的分类：签名、域嵌入、同源重复及极化类型仍会在行内产生分层。
+\section*{共用证明框架}
+\begin{itemize}
+\item 由表示、交换子及 Hodge 余特征确定\emph{实际联合} Hodge 群。各因子分别满足 Hodge 猜想，并不能直接解决乘积。
+\item 计算外代数或张量不变量。配对给出除子；行列式张量给出 Weil 空间或混合例外空间。
+\item 用相容极化调整、几何对应或明确的条件性输入，使例外生成元代数化。
+\item 使用有理下降与同源不变性。仅在给出所需不变量生成论证的范围内，声称所有自乘幂的结论。
+\end{itemize}
+\section*{可带走的方法}
+AI 版开头四页集中说明：极化与迹形式构造、带代数收缩的稳定化、单循环判据与张量收缩、实际 Hodge 圈检验，以及完整 Clifford 模中的矩阵分量提取。这些内容提炼可复用机制及其边界，并不声称每个组成部分都是新的，也不声称已经确定文献优先权。
+\section*{条件性情形应先读的外部假设}
+\external\ 表示完整行的路线使用四项未独立验证输入之一：\textbf{W8} 为分裂八维 Weil 类代数性；\textbf{CM} 为任意维 CM 阿贝尔簇 Hodge 类代数性；\textbf{KS} 为指定完整偶 Clifford Kuga--Satake 对应；\textbf{Aux} 为指定四阶辅助 spin 张量。Aux 与 KS 是独立输入。官方 10 月 7 日记录撤回 W8、KS 及 K3 乘积论文；这里只保留其断言作为假设。CM 未列于该三项名单，但本文未独立验证它。见\href{https://github.com/openai/math/blob/main/history.md}{官方记录}及 JSON 中的准确输入条件。
+用户提供的外部审阅意见称：\emph{在这些假设下}“未发现重大缺口”。它不是新增验证、外部假设的证明或形式化认证。
+\newpage
+\section*{分类路线与阅读难度}
+难度仅指相对阅读成本，不是数学新颖性的排名。“标准”仍要求核对所引定理的适用条件。
+\par\medskip\small\begin{tabular}{@{}p{0.15\linewidth}p{0.67\linewidth}p{0.12\linewidth}@{}}\toprule
+类别 & 方法 & 难度\\\midrule
+S1 & 表示与 Hodge 权排除，再用配对。 & 中等\\[4pt]
+S2--S4 & 以交换子及 Goursat 得完整辛群乘积。 & 标准\\[4pt]
+S5--S6 & 四元数重数空间与辛不变量。 & 标准\\[4pt]
+S7\external & Weil 平面、四元数生成及 W8 收缩。 & 较高\\[4pt]
+S8\external & 酉群二分；平衡 Weil 平面经 W8 处理。 & 中等\\[4pt]
+S9 & 实二次极化修正与分裂 Weil 定理。 & 较高\\[4pt]
+S10\external & 行列式环面、W8 及独立覆盖实例。 & 较高\\[4pt]
+S11 & 秩下界、插值迹形式及分裂 Weil 定理。 & 较高\\[4pt]
+N1 & 素数维因子加椭圆曲线；奇秩调整。 & 中等\\[4pt]
+N2\external & 剩余单循环判据、Aux 及 CM 转移。 & 最高\\[4pt]
+N3\external & 重复因子归约、剩余 KS 提取及 CM 分层。 & 最高\\[4pt]
+N4 & 实际联合 Hodge 圈检验与奇秩调整。 & 较高\\[4pt]
+N5 & 曲面分离与四维 Weil 平面。 & 中等\\[4pt]
+N6 & 椭圆同源类与四维 Weil 平面拉回。 & 中等\\[4pt]
+N7--N9 & 直接应用低维乘积定理。 & 标准\\[4pt]
+N10 & 椭圆同源类与配对不变量。 & 标准\\[4pt]
+\bottomrule\end{tabular}\par\normalsize
+\section*{自乘幂：准确范围}
+S1--S11、N7--N10 明确给出所有自乘幂的结论。本资料包对 N1、N4、N5、N6 完整行仅记录原文陈述的六维结论。N2、N3 覆盖完整行的六维情形；其指定剩余模型及其他明确处理的分层具有全幂结论。这不构成任意六维阿贝尔簇的无条件、无范围限制的全幂定理。
+\section*{推荐阅读路径}
+\textbf{快速了解：}本导读，再读 AI 版前四页。\textbf{先读完整简单实例：}S2--S6、N7--N10。\textbf{读可复用构造：}S9、S11、N4，再读单循环及全幂命题。\textbf{读困难条件性构造：}先读外部输入条件，再读 N3、N2。用依赖图定位前置结果，需更广上下文时查原版。评审报告单独注明来源，不改变定理的逻辑地位。
+\end{document}

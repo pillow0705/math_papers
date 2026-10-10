@@ -1,0 +1,819 @@
+\documentclass[11pt,twoside]{article}
+\usepackage[a4paper,textwidth=154mm,textheight=232mm,centering,headheight=14pt,headsep=8mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{newtxtext,newtxmath,microtype}
+\usepackage{titlesec,fancyhdr,etoolbox}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[hypertexnames=false,hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{topsep=4pt,itemsep=2pt,parsep=0pt,leftmargin=2em}
+% Restrained journal typography; mathematical content is unchanged.
+\linespread{1.035}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0pt}
+\setlength{\abovedisplayskip}{9pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{9pt plus 2pt minus 2pt}
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+\titleformat{\section}[block]{\centering\normalfont\large\scshape}{\thesection.}{0.6em}{}
+\titleformat{\subsection}[runin]{\normalfont\bfseries}{\thesubsection.}{0.5em}{}[.]
+\titlespacing*{\section}{0pt}{22pt plus 4pt minus 2pt}{11pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{0.65em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[CE]{\footnotesize\scshape Constructive van Dantzig pairs}
+\fancyhead[CO]{\footnotesize\scshape\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\makeatletter
+\renewcommand{\maketitle}{\thispagestyle{plain}%
+  \begin{center}
+  \vspace*{4mm}
+  {\fontsize{18}{23}\selectfont\scshape\@title\par}
+  \vspace{12pt}
+  {\small\@date\par}
+  \end{center}\vspace{10pt}}
+\renewenvironment{abstract}{\begin{list}{}{\setlength{\leftmargin}{6mm}\setlength{\rightmargin}{6mm}}\item\relax\small\noindent\textsc{Abstract.}\enspace}{\end{list}\vspace{6pt}}
+\makeatother
+\AtBeginEnvironment{thebibliography}{\small\setlength{\itemsep}{5pt}}
+\newtheoremstyle{journalplain}{8pt plus 2pt minus 1pt}{8pt plus 2pt minus 1pt}{\itshape}{}{\scshape}{.}{0.5em}{}
+\newtheoremstyle{journaldefinition}{8pt plus 2pt minus 1pt}{8pt plus 2pt minus 1pt}{}{}{\scshape}{.}{0.5em}{}
+\theoremstyle{journalplain}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{journaldefinition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\D}{\mathcal D}
+\newcommand{\DL}{\mathcal D_L}
+\newcommand{\DP}{\mathcal D_P}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Law}{\mathcal L}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Ree}{Re}
+\title{Constructive Characterizations and New Families\\of van Dantzig Pairs}
+\author{}
+\date{October 10, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study symmetric real random variables $U$ whose reciprocal moment-generating functions are characteristic functions. Assuming $M_U(t)<\infty$ for every real $t$, we give two equivalent criteria: nonnegativity of a Fourier inverse and positivity of recursively computed Hankel matrices. These criteria also recover the conjugate law. The resulting pairs preserve the expected real part of entire extensions under an explicit integrability condition. We then give a general construction. For every nonconstant real polynomial $P$ with $P(0)=1$ and $P(s)>0$ for $s\ge0$, suitable $b,\tau>0$ make
+\[
+ e^{\tau t^2/2}(1+bt^2)P(t^2)
+\]
+a moment-generating function whose reciprocal is a characteristic function. The proof uses two steps: Laplace convolution makes the reciprocal Fourier inverse positive, and Gaussian regularization gives a positive density for $U$. Choosing the zeros of $P$ produces families outside both the symmetric Laguerre--P\'olya class and the class $\DP$ of Konstantopoulos, Patie and Sarkar. We give explicit densities and sampling procedures for an explicit example, and recover the two known classes within the same framework.
+\end{abstract}
+\noindent\textbf{Keywords:} van Dantzig problem; characteristic function; Stieltjes moment problem; positive polynomial; Fourier inversion; Gaussian variance mixture.
+
+\section{Introduction}\label{sec:intro}
+We study real random variables $U$ admitting an independent real random variable $V$ such that $\E e^{t(U+\ii V)}=1$ for every $t\in\R$. We give criteria for existence, methods for recovering the law of $V$, and a polynomial construction of such pairs.
+
+Write
+\[
+ M_U(t)=\E e^{tU},\qquad \varphi_U(t)=\E e^{\ii tU}.
+\]
+An independent real random variable $V$ will be called a \emph{negative conjugate} of $U$ if
+\begin{equation}\label{eq:cancel}
+ \E e^{t(U+\ii V)}=1\qquad(t\in\R).
+\end{equation}
+When $M_U$ is finite on $\R$, independence makes this equivalent to
+\begin{equation}\label{eq:reciprocal}
+ \varphi_V(t)=M_U(t)^{-1}.
+\end{equation}
+Thus the problem is to determine whether the explicitly given function $1/M_U$ is a characteristic function. If it is, it determines the law of $V$ uniquely. We assume that $U$ has all real exponential moments. The conjugate $V$ has an exponential moment in a neighborhood of zero, as established in Theorem~\ref{thm:hankel}.
+
+The classical van Dantzig problem asks when a characteristic function $F$ has a characteristic reciprocal $1/F(\ii t)$. For symmetric $U$, we have $\varphi_U(\ii t)=M_U(t)$, so \eqref{eq:reciprocal} is exactly this relation. Lukacs\ \cite{Lukacs1968} developed the subject systematically. The even Laguerre--P\'olya class $\DL$ supplies classical examples through real-zero products\ \cite{Schoenberg1951}. Konstantopoulos, Patie and Sarkar\ \cite{KPS2024} introduced another class, $\DP$, using spectrally negative L\'evy exponents.
+
+The main results are as follows.
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Existence criteria and recovery.} We give two necessary-and-sufficient criteria. One computes a Fourier inverse and checks its sign. The other computes candidate moments and checks two sequences of Hankel matrices. When the conditions hold, they also recover $V$ through its density or discrete approximations.
+\item \textbf{Polynomial construction.} We prove that every polynomial $P$ with $P(0)=1$ and $P>0$ on $[0,\infty)$ can be used in \eqref{eq:polynomial-pair}. Suitable Laplace and Gaussian parameters ensure that both the proposed moment-generating function and its reciprocal are valid. The proof gives sufficient bounds for choosing these parameters.
+\item \textbf{Families outside $\DL\cup\DP$.} We choose polynomials whose zeros place the resulting pairs outside $\DL\cup\DP$. We also give a concrete example with positive density formulas and direct sampling procedures.
+\end{enumerate}
+The criteria are expressed through a Fourier integral and recursively computed matrices. Their necessary-and-sufficient conditions quantify over all spatial points or all matrix sizes. The polynomial construction supplies finite sufficient checks for selecting parameters.
+
+The Fourier and moment criteria build on classical inversion and Stieltjes moment theory. Earlier work on rational characteristic functions also uses positivity of Fourier inverses and restrictions on poles\ \cite{LukacsSzasz1954,LukacsSzasz1954II}. Our polynomial theorem concerns the simultaneous validity of both members of the pair for every positive $P$. The comparison in this paper concerns $\DL$, $\DP$, and the Gaussian variance-mixture closure described in Section~\ref{sec:families}.
+
+The paper follows this order: criteria in Section~\ref{sec:criteria}, construction in Section~\ref{sec:polynomial}, and new families in Section~\ref{sec:families}. Section~\ref{sec:known} recovers known pairs. Full technical proofs are in the appendices.
+
+\section{Equivalent characterizations and recovery}\label{sec:criteria}
+\subsection{Assumptions and notation}
+The Fourier criterion uses $M_U$; the Hankel criterion uses the moments of $U$. Throughout this section we assume
+\begin{equation}\tag{H}\label{eq:H}
+ U\overset d=-U,\qquad \Var(U)>0,\qquad M_U(t)<\infty\quad(t\in\R).
+\end{equation}
+The last condition implies that $M_U(z)=\E e^{zU}$ is entire. Symmetry is necessary for \eqref{eq:reciprocal}: a real-valued characteristic function is even, so $M_U(t)=M_U(-t)$, and uniqueness of moment-generating functions gives symmetry of $U$. A deterministic $U=c$ therefore has a negative conjugate only when $c=0$, in which case $V=0$.
+
+We use the convention
+\[
+ \widehat f(t)=\int_\R e^{\ii tx}f(x)\dd x,\qquad
+ \mathcal F^{-1}q(x)=\frac1{2\pi}\int_\R e^{-\ii tx}q(t)\dd t.
+\]
+We write $\D$ for the classical analytic van Dantzig class and $\DL$ for its even Laguerre--P\'olya characteristic functions. Under \eqref{eq:H}, $\varphi_U$ is entire. The conjugate characteristic function may be analytic only in a horizontal strip; its reciprocal identity provides continuation along the imaginary axis. The standing assumption \eqref{eq:H} concerns $U$; the regularity of $V$ is established below.
+
+The following bound ensures that the Fourier integral in our first criterion always converges.
+
+\begin{lemma}[Automatic decay]\label{lem:decay}
+Under \eqref{eq:H}, choose $r>0$ such that $\rho=\Prob(|U|\ge r)>0$. Then
+\begin{equation}\label{eq:decay}
+ M_U(t)\ge\rho\cosh(rt),\qquad
+ 0<M_U(t)^{-1}\le\frac2\rho e^{-r|t|}.
+\end{equation}
+Consequently $M_U^{-1}\in L^1(\R)$.
+\end{lemma}
+
+\subsection{The Fourier criterion}
+If $1/M_U$ is a characteristic function, its inverse Fourier transform must be a probability density. The next theorem shows that checking nonnegativity is enough: normalization then follows automatically.
+\begin{theorem}[Fourier characterization]\label{thm:fourier}
+Under \eqref{eq:H}, define
+\begin{equation}\label{eq:fourier-density}
+ f_U^*(x)=\frac1\pi\int_0^\infty\frac{\cos(tx)}{M_U(t)}\dd t.
+\end{equation}
+Then $U$ has a negative conjugate if and only if $f_U^*(x)\ge0$ for every $x\in\R$. In that event $f_U^*$ is the continuous density of the unique conjugate law.
+\end{theorem}
+The same formula both tests existence and gives the density of $V$. It can also be approximated with a uniform error bound. If $f_{U,T}^*$ is \eqref{eq:fourier-density} with upper integration limit $T$, then
+\begin{equation}\label{eq:fourier-error}
+ \sup_{x\in\R}|f_U^*(x)-f_{U,T}^*(x)|
+ \le\frac{2}{\pi\rho r}e^{-rT},\qquad
+ \sup_x |(f_U^*)'(x)|\le\frac{2}{\pi\rho r^2}.
+\end{equation}
+Together with a quadrature error bound, these estimates can certify a negative value and hence rule out a conjugate. Proving positivity everywhere also requires control of the spatial tails. Appendix~\ref{app:fourier} gives the proof, including normalization.
+
+\subsection{The Hankel criterion}
+Expanding $M_U(t)\varphi_V(t)=1$ determines the candidate even moments of $V$. The Stieltjes moment theorem characterizes when this sequence is represented by a probability law on $[0,\infty)$.
+
+Put $u_n=\E U^{2n}$, with $u_0=1$, and compute $v_n$ recursively by
+\begin{equation}\label{eq:recursion}
+ v_0=1,\qquad
+ v_n=\sum_{k=1}^n(-1)^{k+1}\binom{2n}{2k}u_kv_{n-k}
+ \quad(n\ge1).
+\end{equation}
+For $N\ge0$, set
+\begin{equation}\label{eq:hankel}
+ H_N=(v_{i+j})_{i,j=0}^N,\qquad
+ \widetilde H_N=(v_{i+j+1})_{i,j=0}^N.
+\end{equation}
+\begin{theorem}[Moment characterization]\label{thm:hankel}
+Under \eqref{eq:H}, the following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item $U$ has a negative conjugate;
+\item $H_N\succeq0$ and $\widetilde H_N\succeq0$ for every $N\ge0$;
+\item $H_N\succ0$ and $\widetilde H_N\succ0$ for every $N\ge0$.
+\end{enumerate}
+When these conditions hold, $\E V^{2n}=v_n$, $V$ is symmetric, and its law is moment-determinate and has an exponential moment $\E e^{a|V|}<\infty$ for some $a>0$.
+\end{theorem}
+The matrices test whether $(v_n)$ is the moment sequence of a nonnegative variable $X$, by the Stieltjes moment theorem\ \cite[Chapters 3--5]{Schmudgen2017}. If so, attach an independent fair sign to $\sqrt X$ to obtain $V$. Analyticity near zero then upgrades the moment identities to \eqref{eq:reciprocal} on the whole real axis. Appendix~\ref{app:hankel} proves the analytic continuation step.
+
+The first two nontrivial terms are
+\[
+ v_1=u_1,\qquad v_2=6u_1^2-u_2.
+\]
+Strict positivity of $\det H_1$ gives the useful necessary condition
+\begin{equation}\label{eq:fourth}
+ \E U^4<5(\E U^2)^2.
+\end{equation}
+This gives an exclusion test using only the second and fourth moments. More generally, checking both matrices through size $N+1$ requires moments of $U$ through order $4N+2$. A failed positive-semidefiniteness test rules out existence. The existence criterion requires both matrices to be positive semidefinite for every $N$.
+
+When the criterion holds, the same moments also give finite discrete approximations to the conjugate law.
+
+\begin{corollary}[Discrete spectral recovery]\label{cor:jacobi}
+Suppose the conditions of Theorem~\ref{thm:hankel} hold. Form the full moment sequence $m_{2n}=v_n$, $m_{2n+1}=0$, and let $p_n$ be its monic orthogonal polynomials. With $p_0=1$, $p_1=x$, write
+\[
+ p_{n+1}(x)=xp_n(x)-\beta_n p_{n-1}(x),\qquad
+ \beta_n=\frac{\int p_n^2\dd\Law(V)}{\int p_{n-1}^2\dd\Law(V)}>0.
+\]
+Let $J_N$ have zero diagonal and off-diagonals $\sqrt{\beta_1},\ldots,\sqrt{\beta_{N-1}}$. If $(x_{N,j},q_{N,j})$ are its eigenvalues and orthonormal eigenvectors, then
+\begin{equation}\label{eq:jacobi}
+ \mu_N=\sum_{j=1}^N|\langle e_1,q_{N,j}\rangle|^2\delta_{x_{N,j}}
+ \ \Longrightarrow\ \Law(V).
+\end{equation}
+Moreover, $\mu_N$ matches the moments of $V$ through degree $2N-1$.
+\end{corollary}
+To implement this construction, use the full symmetric sequence $m_{2n}=v_n$, $m_{2n+1}=0$. Its symmetry gives the zero diagonal of $J_N$. Using $(v_n)$ directly as moments of $V^2$ would give a different Jacobi matrix.
+
+\subsection{A mean-value identity for holomorphic extensions}
+The cancellation implies a mean-value identity for entire functions satisfying an integrability condition. Taking real parts gives the corresponding identity for their real-valued restrictions.
+
+\begin{theorem}[Mean-value identity]\label{thm:mean-value}
+Assume \eqref{eq:H}, let $V$ be an independent negative conjugate of $U$, and set $W=U+\ii V$. There is $a_0>0$ such that $\E e^{a_0|W|}<\infty$. For every polynomial $F\in\C[z]$ and every $x\in\R$,
+\begin{equation}\label{eq:mean-value-complex}
+ \E F(x+W)=F(x).
+\end{equation}
+The same conclusion holds for an entire function $F$ whenever
+\begin{equation}\label{eq:taylor-integrability}
+ \sum_{n=0}^{\infty}\frac{|F^{(n)}(x)|}{n!}\E|W|^n<\infty.
+\end{equation}
+In particular, this condition holds for every $x\in\R$ if
+$|F(z)|\le C e^{a|z|}$ on $\C$ for constants $C>0$ and $0\le a<a_0$.
+If $F$ extends a real-valued function $f$ on $\R$, then
+\begin{equation}\label{eq:mean-value-real}
+ \boxed{\E\!\left[\operatorname{Re}F(x+U+\ii V)\right]=f(x).}
+\end{equation}
+\end{theorem}
+The proof uses $\E W^n=0$ for all $n\ge1$ and an absolutely integrable Taylor expansion; see Appendix~\ref{app:hankel}. The role of the integrability condition is illustrated by the following example. Take $U=\pm1$ with equal probabilities and its conjugate with density $[2\cosh(\pi v/2)]^{-1}$. For $F(z)=e^{-z^2}$,
+\[
+ \operatorname{Re}F(U+\ii V)=e^{V^2-1}\cos(2V),
+\]
+whose positive and negative parts both have infinite expectation. Thus the real-part expectation is undefined without additional control.
+
+\section{A general polynomial construction}\label{sec:polynomial}
+For a normalized polynomial $P$ positive on $[0,\infty)$, we construct a pair by multiplying $P(t^2)$ by a quadratic factor and a Gaussian moment-generating function. The theorem below establishes simultaneous validity of the resulting moment-generating function and its reciprocal.
+
+\begin{theorem}[Polynomial realization]\label{thm:polynomial}
+Let $P\in\R[s]$ be nonconstant with $P(0)=1$. The following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item $P(s)>0$ for every $s\ge0$;
+\item there exist $b,\tau>0$ such that
+\begin{equation}\label{eq:polynomial-pair}
+ M_U(t)=e^{\tau t^2/2}(1+bt^2)P(t^2),\qquad
+ \varphi_V(t)=\frac{e^{-\tau t^2/2}}{(1+bt^2)P(t^2)}
+\end{equation}
+are respectively a moment-generating function finite on $\R$ and a characteristic function.
+\end{enumerate}
+More strongly, under (a) there is $b_0>0$ such that for every $b\ge b_0$ there is $\tau_0(b)>0$ for which \eqref{eq:polynomial-pair} is valid whenever $\tau\ge\tau_0(b)$. Both laws have strictly positive, symmetric densities, and independent representatives satisfy \eqref{eq:cancel}.
+\end{theorem}
+The condition on $P$ is necessary because every moment-generating function is strictly positive on the real axis. To prove sufficiency, we choose the parameters in order. First choose $b$ so that $[(1+bt^2)P(t^2)]^{-1}$ is a characteristic function. Then choose $\tau$ so that the proposed $M_U$ is a moment-generating function. Multiplying the reciprocal by $e^{-\tau t^2/2}$ simply adds an independent Gaussian. The theorem guarantees suitable parameters; the bounds below explain how to choose them.
+
+\subsection{Step 1: obtain a density for the reciprocal}
+The inverse Fourier transform of $1/P(t^2)$ has total integral one, but it may take negative values. We show that convolution with a sufficiently wide Laplace density makes it positive everywhere.
+
+Let $\ell_\lambda(x)=\lambda e^{-\lambda|x|}/2$. Its characteristic function is $(1+t^2/\lambda^2)^{-1}$.
+\begin{lemma}[Uniform positivity after Laplace convolution]\label{lem:laplace}
+Let $k\in L^1(\R)$ be real, $\int k=1$, and suppose $\int e^{\eta|y|}|k(y)|\dd y<\infty$ for some $\eta>0$. Define, for $0<\lambda<\eta$,
+\begin{equation}\label{eq:delta}
+ \delta_k(\lambda)=\int_\R |k(y)|(e^{\lambda|y|}-1)\dd y.
+\end{equation}
+Then $\delta_k(\lambda)\to0$ as $\lambda\downarrow0$, and for every $x$,
+\begin{equation}\label{eq:laplace-bounds}
+ (1-\delta_k(\lambda))\ell_\lambda(x)
+ \le (\ell_\lambda*k)(x)
+ \le(1+\delta_k(\lambda))\ell_\lambda(x).
+\end{equation}
+In particular, $\delta_k(\lambda)<1$ guarantees a strictly positive probability density.
+\end{lemma}
+The error bound $\delta_k(\lambda)$ is uniform in $x$. For $\delta_k(\lambda)<1$, the lower bound is positive on $\R$. The next lemma checks that the inverse of $1/P(t^2)$ satisfies the required assumptions.
+
+\begin{lemma}[Rational inverse kernel]\label{lem:rational}
+If $P$ satisfies Theorem~\ref{thm:polynomial}(a), then
+\[
+ k=\mathcal F^{-1}\bigl(t\mapsto P(t^2)^{-1}\bigr)
+\]
+is real, even and continuous, has total integral one, and satisfies the exponential integrability assumption of Lemma~\ref{lem:laplace}. Consequently
+\begin{equation}\label{eq:Y}
+ \varphi_{Y_b}(t)=\frac1{(1+bt^2)P(t^2)}
+\end{equation}
+is a characteristic function for every sufficiently large $b$.
+\end{lemma}
+Repeated roots are allowed. The positivity assumption removes real poles in the Fourier variable, while partial fractions give exponentially decaying terms multiplied by polynomials. Details are given in Appendix~\ref{app:poly}.
+
+\subsection{Step 2: obtain a density for the original variable}
+Fix the value of $b$ found in Step 1 and put $Q(s)=(1+bs)P(s)$. We seek a density with characteristic function $e^{-\tau t^2/2}Q(-t^2)$. Fourier inversion gives a Gaussian density multiplied by a polynomial. For large $\tau$, the positive part of that polynomial dominates its derivative corrections.
+
+For $\tau>0$, write $g_\tau(x)=(2\pi\tau)^{-1/2}e^{-x^2/(2\tau)}$.
+\begin{lemma}[Gaussian polynomial realization]\label{lem:gaussian}
+Let $Q\in\R[s]$ satisfy $Q(0)=1$ and $Q(s)>0$ for $s\ge0$. Put $D=\deg Q$, $R(y)=Q(y^2)$ and
+\begin{equation}\label{eq:S}
+ S_\tau(y)=\sum_{j=0}^D\frac{(-1)^j}{(2\tau)^j j!}R^{(2j)}(y).
+\end{equation}
+The inverse Fourier transform of $e^{-\tau t^2/2}Q(-t^2)$ is
+\begin{equation}\label{eq:U-density}
+ f_{Q,\tau}(x)=g_\tau(x)S_\tau(x/\tau).
+\end{equation}
+For $1\le j\le D$, the numbers
+\[
+ C_j=\sup_{y\in\R}\frac{|R^{(2j)}(y)|}{R(y)}
+\]
+are finite. If
+\begin{equation}\label{eq:tau-certificate}
+ A_Q(\tau):=\sum_{j=1}^D\frac{C_j}{(2\tau)^j j!}<1,
+\end{equation}
+then $f_{Q,\tau}>0$, $\int f_{Q,\tau}=1$, and its moment-generating function is $e^{\tau t^2/2}Q(t^2)$.
+\end{lemma}
+Each derivative has lower degree than $R$, so the relative bounds $C_j$ are finite. The correction in \eqref{eq:S} is therefore uniformly smaller than $R$ for large $\tau$.
+
+We can now combine the two steps. Lemma~\ref{lem:rational} gives $Y_b$, and Lemma~\ref{lem:gaussian} gives $U$. Taking
+\begin{equation}\label{eq:V-construction}
+ V=\sqrt\tau Z+Y_b,\qquad Z\sim N(0,1),\quad Z\perp Y_b,
+\end{equation}
+gives the reciprocal characteristic function in \eqref{eq:polynomial-pair}. This completes the construction; the full proofs are in Appendix~\ref{app:poly}.
+
+\subsection{How to choose the parameters}
+The proof gives the following three-step procedure for obtaining sufficient parameter bounds.
+\begin{enumerate}[label=\arabic*.]
+\item Invert $1/P(t^2)$ by partial fractions. On $x\ge0$ write its real-valued inverse as a finite, conjugate-paired sum
+\[
+ k(x)=\sum_{\ell,p}c_{\ell,p}x^p e^{-\zeta_\ell x},\qquad \alpha_\ell=\Ree\zeta_\ell>0.
+\]
+For $0<\lambda<\min\alpha_\ell$, a directly evaluable upper bound is
+\begin{equation}\label{eq:B}
+ B(\lambda)=2\sum_{\ell,p}|c_{\ell,p}|p!
+ \left((\alpha_\ell-\lambda)^{-p-1}-\alpha_\ell^{-p-1}\right)
+ \ge\delta_k(\lambda).
+\end{equation}
+Choose $\lambda$ with $B(\lambda)<1$ and set $b=\lambda^{-2}$.
+\item Form $R(y)=(1+by^2)P(y^2)$ and upper bounds $\overline C_j\ge C_j$. Any
+\begin{equation}\label{eq:tau-simple}
+ \tau\ge\max\left\{1,\sum_{j=1}^D\frac{\overline C_j}{j!}\right\}
+\end{equation}
+ensures $A_Q(\tau)\le1/2$.
+\item Use \eqref{eq:U-density} for $U$ and \eqref{eq:V-construction} for $V$. Lemma~\ref{lem:laplace} gives a Laplace rejection envelope for $Y_b$.
+\end{enumerate}
+For rational or real algebraic coefficients, polynomial root isolation and univariate polynomial inequalities can certify the bounds in these steps. General real coefficients require a representation permitting certified evaluation. Increasing $\tau$ beyond a successful value also preserves validity directly by adding independent Gaussians to both members.
+
+\section{New families outside the two known classes}\label{sec:families}
+We choose $P$ with nonreal zeros in the closed right half-plane. Nonreal zeros of $\varphi_U$ exclude membership in $\DL$, and poles of the reciprocal transform exclude the Laplace representation required for $\DP$.
+
+\subsection{A test for excluding the class \texorpdfstring{$\DP$}{D-P}}
+Recall that $h:[0,\infty)\to\R$ is completely monotone if it is continuous at zero, smooth on $(0,\infty)$, and $(-1)^n h^{(n)}(s)\ge0$ for all $n\ge0$ and $s>0$. If $h(0)=1$, the Bernstein--Widder theorem represents it as a probability Laplace transform\ \cite{SSV2012}. In particular,
+\begin{equation}\label{eq:bounded-laplace}
+ h(z)=\int_{[0,\infty)}e^{-zx}\nu(\dd x),\qquad
+ |h(z)|\le1\quad(\Ree z>0).
+\end{equation}
+The known Bernstein representation for $\DP$ implies that $h_U(s)=M_U(\sqrt{s})^{-1}$ must be completely monotone when $\varphi_U\in\DP$; the precise definition is recalled in Section~\ref{subsec:DP}.
+
+\begin{proposition}[Pole obstruction]\label{prop:poles}
+Let $Q(0)=1$ and $Q(s)>0$ for $s\ge0$. If $Q$ has a nonreal zero $z_0$ with $\Ree z_0\ge0$, then for every $\tau\ge0$,
+\[
+ h(s)=\frac{e^{-\tau s/2}}{Q(s)}
+\]
+is not completely monotone. Hence a pair with this $h_U$ has $\varphi_U\notin\DP$; its conjugate is not a centered Gaussian variance mixture.
+\end{proposition}
+\begin{proof}
+If $h$ were completely monotone, its probability Laplace transform would satisfy \eqref{eq:bounded-laplace}. The identity theorem identifies it with $e^{-\tau z/2}/Q(z)$ on the right half-plane with the finitely many poles removed; this domain is connected. An interior pole contradicts analyticity and boundedness. A pole on the imaginary axis contradicts the same uniform bound when approached from the right half-plane. The exponential numerator has no zeros, so no cancellation is possible. Finally, a centered Gaussian variance mixture has characteristic function $h(t^2)$ with $h$ completely monotone.
+\end{proof}
+For poles on the imaginary axis, the exclusion follows from the uniform bound in the open right half-plane.
+
+\subsection{A family with arbitrarily many factors}
+Choose $P$ to be a product of positive quadratics. Their nonreal zeros will give both exclusions at once.
+\begin{theorem}[Families outside $\DL\cup\DP$]\label{thm:families}
+For $m\ge1$, $a_j\ge0$ and $c_j>0$, define
+\begin{equation}\label{eq:family}
+ P(s)=\prod_{j=1}^m\frac{(s-a_j)^2+c_j^2}{a_j^2+c_j^2}.
+\end{equation}
+For all sufficiently large $b$, and then all sufficiently large $\tau$, \eqref{eq:polynomial-pair} defines a van Dantzig pair whose first member satisfies
+\begin{equation}\label{eq:outside}
+ \varphi_U\in\D\setminus(\DL\cup\DP).
+\end{equation}
+Both densities are strictly positive. The conclusion permits repeated factors and includes $a_j=0$.
+\end{theorem}
+\begin{proof}
+The polynomial is normalized and strictly positive on the nonnegative axis, so Theorem~\ref{thm:polynomial} applies. Its zeros $a_j\pm\ii c_j$ are nonreal. Therefore
+\[
+ \varphi_U(z)=e^{-\tau z^2/2}(1-bz^2)P(-z^2)
+\]
+has nonreal zeros, excluding the Laguerre--P\'olya class. The same zeros are poles of $e^{-\tau s/2}/[(1+bs)P(s)]$ in the closed right half-plane. Proposition~\ref{prop:poles} excludes $\DP$.
+\end{proof}
+The number of factors $m$ is arbitrary. The conjugates also lie outside the class of centered Gaussian variance mixtures and the laws obtained from that class by independent addition, scaling or weak limits. Addition and scaling preserve the mixture form directly. For weak limits, if $V_n=\sqrt{2T_n}Z$ is tight, then
+\[
+ \Prob(T_n>R^2/2)\Prob(|Z|>1)\le\Prob(|V_n|>R),
+\]
+so the mixing laws are tight too, and subsequential limits retain the mixture representation. The closure considered here consists of independent addition, scaling, and weak limits of centered Gaussian variance mixtures.
+
+\subsection{An explicit example}
+For $P(s)=1+s^2$, the parameters $b=2$ and $\tau=4$ yield explicit positive densities.
+\begin{example}\label{ex:explicit}
+Take $P(s)=1+s^2$, $b=2$ and $\tau=4$. Then
+\begin{equation}\label{eq:explicit-pair}
+ M_U(t)=e^{2t^2}(1+2t^2)(1+t^4),\qquad
+ \varphi_V(t)=\frac{e^{-2t^2}}{(1+2t^2)(1+t^4)}.
+\end{equation}
+For these parameters, the two densities are obtained from the following functions:
+\begin{align}
+ k_2(x)&=\frac{e^{-|x|/\sqrt2}}{10\sqrt2}
+ \left(4-\cos\frac{|x|}{\sqrt2}+3\sin\frac{|x|}{\sqrt2}\right),\label{eq:explicit-k}\\
+ S_4(y)&=2y^6-\frac{13}{2}y^4+\frac{49}{8}y^2+\frac7{32}\nonumber\\
+ &=2y^2\left(y^2-\frac{13}{8}\right)^2+\frac{27}{32}y^2+\frac7{32}.
+ \label{eq:explicit-S}
+\end{align}
+Then $U$ has density $g_4(x)S_4(x/4)$, while $V=2Z+Y$, where $Y$ has density $k_2$ and is independent of $Z\sim N(0,1)$. In particular, $f_V=g_4*k_2$.
+\end{example}
+Both positivity checks are exact: $4-\cos y+3\sin y\ge4-\sqrt{10}>0$ and \eqref{eq:explicit-S} is strictly positive. Appendix~\ref{app:example} verifies the Fourier constants and normalizations. Since $P$ has zeros at $\pm\ii$, Proposition~\ref{prop:poles} and the nonreal-zero argument give \eqref{eq:outside} for this example too.
+
+Sampling $Y$ requires only a Laplace proposal with scale $\sqrt2$: for a proposed $x$, accept with probability
+\begin{equation}\label{eq:sample-Y}
+ \frac{4-\cos(|x|/\sqrt2)+3\sin(|x|/\sqrt2)}{4+\sqrt{10}}.
+\end{equation}
+The mean acceptance probability is $5/(4+\sqrt{10})$. Adding $2Z$ then samples $V$. A Gaussian rejection envelope for $U$, and a general version of both samplers, are given in Appendix~\ref{app:sampling}.
+
+
+\begin{proposition}[An exact rational parameter threshold]\label{prop:threshold}
+For $b>0$, the rational function
+\[
+ r_b(t)=\frac1{(1+bt^2)(1+t^4)}
+\]
+is a characteristic function if and only if $b\ge2$.
+\end{proposition}
+Thus the non-Gaussian factor has an exact, finite parameter test. The admissible region for the full pair also depends on $\tau$. Appendix~\ref{app:example} proves the threshold.
+
+\section{Recovery of known van Dantzig pairs}\label{sec:known}
+For $\DL$, the conjugate is a sum of independent Gaussian and Laplace variables. For $\DP$, the Bernstein representation of \cite{KPS2024} gives a Gaussian variance mixture. These representations verify the Fourier criterion for both classes.
+
+\subsection{Laguerre--P\'olya products}
+\begin{proposition}[Independent-sum recovery]\label{prop:LP}
+Suppose $U$ is symmetric and its moment-generating function is
+\begin{equation}\label{eq:LP-product}
+ M_U(t)=e^{\sigma^2t^2/2}\prod_n(1+t^2/a_n^2),
+ \qquad \sigma\ge0,\quad a_n>0,\quad\sum_n a_n^{-2}<\infty.
+\end{equation}
+The product may be finite or empty. For independent variables $G\sim N(0,\sigma^2)$ and $L_n\sim\operatorname{Laplace}(0,1/a_n)$,
+\[
+ V=G+\sum_n L_n
+\]
+converges in $L^2$ and almost surely and is a negative conjugate of $U$. If $U$ is nondegenerate, its conjugate density is \eqref{eq:fourier-density}.
+\end{proposition}
+Each reciprocal factor in \eqref{eq:LP-product} is a Gaussian or Laplace characteristic function, which explains the independent sum. We assume the product already comes from a law of $U$. Appendix~\ref{app:known} proves convergence of the sum.
+
+For $a>0$, the familiar examples are
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Law of $U$ & $M_U(t)$ & Law or density of $V$\\
+\midrule
+$N(0,\sigma^2)$ & $e^{\sigma^2t^2/2}$ & $N(0,\sigma^2)$\\[3pt]
+$\Prob(U=\pm a)=1/2$ & $\cosh(at)$ & $[2a\cosh(\pi x/(2a))]^{-1}$\\[3pt]
+Uniform on $[-a,a]$ & $\sinh(at)/(at)$ & $\frac{\pi}{4a}\sech^2(\pi x/(2a))$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last law is logistic with scale $a/\pi$.
+
+The power-semicircle family gives a continuous range of examples. For $\nu>-1/2$ and $a>0$, let
+\[
+ f_U(x)=\frac{\Gamma(\nu+1)}{a\sqrt\pi\,\Gamma(\nu+1/2)}
+ \left(1-\frac{x^2}{a^2}\right)^{\nu-1/2}\mathbf1_{\{|x|<a\}}.
+\]
+Beta integration and the Bessel product formula\ \cite[Eq.~10.21.15]{DLMF} give
+\begin{equation}\label{eq:bessel}
+ M_U(t)=\Gamma(\nu+1)(at/2)^{-\nu}I_\nu(at)
+ =\prod_{n\ge1}\left(1+\frac{a^2t^2}{j_{\nu,n}^2}\right).
+\end{equation}
+The first expression is interpreted by its even entire series at zero and on negative real arguments. Thus $V$ is the sum of independent Laplace variables of scales $a/j_{\nu,n}$. The choices $\nu=0,1/2,1$ give the arcsine, uniform and semicircle laws, respectively.
+
+\subsection{The class \texorpdfstring{$\DP$}{D-P}}\label{subsec:DP}
+We recall the definition to state precisely which class is recovered. Following\ \cite[Section 4]{KPS2024}, let
+\begin{equation}\label{eq:Psi}
+ \Psi(u)=-\kappa+du+\frac{\sigma^2}{2}u^2
+ +\int_0^\infty(e^{-ur}-1+ur\mathbf1_{\{r<1\}})\Pi(\dd r),
+\end{equation}
+where $\kappa\ge0$, $d\in\R$, $\sigma\ge0$ and
+$\int(1\wedge r^2)\Pi(\dd r)<\infty$. Exclude the negative-subordinator case: simultaneously $\sigma=0$, $\int(1\wedge r)\Pi(\dd r)<\infty$, and $d+\int_0^1r\Pi(\dd r)\le0$. Let $\theta$ be the largest nonnegative zero of $\Psi$, and require $0\le\theta\le1/2$. These exponents form $\mathcal N_D$. In particular, $\Psi(n)>0$ for $n\ge1$.
+
+Define
+\begin{equation}\label{eq:Jpsi}
+ \mathcal J_\Psi(t)=\sum_{n=0}^\infty\frac{(-1)^nt^{2n}}{\prod_{k=1}^n\Psi(k)},
+ \qquad \mathcal I_\Psi(t)=\mathcal J_\Psi(\ii t),
+ \qquad \DP=\{\mathcal J_\Psi:\Psi\in\mathcal N_D\}.
+\end{equation}
+The empty product equals one. Theorem~4.1 of\ \cite{KPS2024} states that $\mathcal J_\Psi$ is a van Dantzig function and that
+\begin{equation}\label{eq:bernstein}
+ \log\mathcal I_\Psi(t)=\Phi_\Psi(t^2)
+\end{equation}
+for a Bernstein function $\Phi_\Psi$ with $\Phi_\Psi(0)=0$. This representation is the fact about $\DP$ used in Proposition~\ref{prop:poles}. It also gives the following probability construction.
+
+\begin{proposition}[Fourier recovery from Bernstein structure]\label{prop:DP}
+For $\Psi\in\mathcal N_D$, there is a positive random variable $T_\Psi$ with
+\[
+ \E e^{-sT_\Psi}=e^{-\Phi_\Psi(s)}.
+\]
+If $Z$ is independent and standard normal, the conjugate of the variable with characteristic function $\mathcal J_\Psi$ is
+\[
+ V_\Psi=\sqrt{2T_\Psi}\,Z.
+\]
+Its density is, at every $x\in\R$,
+\begin{equation}\label{eq:mixture}
+ \frac1\pi\int_0^\infty\frac{\cos(tx)}{\mathcal I_\Psi(t)}\dd t
+ =\E\left[\frac{e^{-x^2/(4T_\Psi)}}{\sqrt{4\pi T_\Psi}}\right]\ge0.
+\end{equation}
+\end{proposition}
+This proposition uses the published Bernstein representation. Appendix~\ref{app:known} verifies that $T_\Psi>0$ and that the displayed mixture density is finite and continuous. Related complete-monotonicity results already appear in Patie\ \cite{Patie2009}.
+
+\section{Concluding remarks}\label{sec:conclusion}
+The Fourier and Hankel criteria characterize existence and recover the conjugate law. The polynomial theorem constructs pairs from every normalized polynomial positive on $[0,\infty)$. Polynomials with nonreal zeros in the closed right half-plane give families outside $\DL\cup\DP$.
+
+Open problems include determining the smallest admissible $b$, characterizing the polynomials for which the Laplace factor can be omitted, and describing the exact admissible region for $(b,\tau)$. Further comparisons concern the differential and multiplicative transformations in the van Dantzig literature.
+
+\appendix
+\section{Fourier characterization}\label{app:fourier}
+\begin{proof}[Proof of Lemma~\ref{lem:decay}]
+Symmetry gives $M_U(t)=\E\cosh(tU)$. On $\{|U|\ge r\}$, this is at least $\cosh(rt)$. Since $\cosh(rt)\ge e^{r|t|}/2$, \eqref{eq:decay} follows. Such an $r$ exists by nondegeneracy.
+\end{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:fourier}]
+Write $q=1/M_U$. By Lemma~\ref{lem:decay}, its inverse $f=\mathcal F^{-1}q$ is continuous, bounded and real, and equals \eqref{eq:fourier-density}. If $q$ is a characteristic function, the inversion theorem for an integrable characteristic function gives its continuous density $f$, which must be nonnegative.
+
+Conversely suppose $f\ge0$. For $\varepsilon>0$, Fubini's theorem is applicable because $q\in L^1$ and the Gaussian factor is integrable. It gives
+\begin{align*}
+ \int_\R f(x)e^{-\varepsilon x^2/2}\dd x
+ &=\frac1{\sqrt{2\pi\varepsilon}}\int_\R q(t)e^{-t^2/(2\varepsilon)}\dd t
+ \longrightarrow q(0)=1.
+\end{align*}
+The limit follows from the Gaussian approximate identity and continuity of $q$ at zero. Monotone convergence on the left implies $\int f=1$. More generally, for any real $s$,
+\[
+ \int_\R e^{\ii sx}f(x)e^{-\varepsilon x^2/2}\dd x
+ =\frac1{\sqrt{2\pi\varepsilon}}\int_\R q(t)e^{-(t-s)^2/(2\varepsilon)}\dd t.
+\]
+Dominated convergence on the left and the approximate identity on the right yield $\widehat f(s)=q(s)$. Thus $f$ is a probability density with the required characteristic function. Uniqueness follows from uniqueness of characteristic functions. The estimates \eqref{eq:fourier-error} follow by integrating \eqref{eq:decay} over $[T,\infty)$ and integrating $t$ times that bound over $[0,\infty)$.
+\end{proof}
+
+\section{Moment characterization and Jacobi recovery}\label{app:hankel}
+The following classical regularity principle for analytic characteristic functions supplies the moments and exponential integrability used in the Hankel criterion; compare\ \cite{LukacsSzasz1952}.
+\begin{lemma}[Analytic characteristic germ]\label{lem:germ}
+If a characteristic function $\varphi$ agrees near zero on the real axis with an analytic function $q$, then the underlying variable $W$ has every even moment and
+\[
+ \E W^{2n}=(-1)^nq^{(2n)}(0).
+\]
+If $q$ is even and analytic on a neighborhood of $\{|z|\le r_0\}$, with $|q(z)|\le C$ there, then
+\begin{equation}\label{eq:moment-bound}
+ 0\le\E W^{2n}\le C(2n)!r_0^{-2n},\qquad
+ \E e^{a|W|}<\infty\quad(0<a<r_0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $h\ne0$, the nonnegative quantity
+\[
+ \E\left|\frac{e^{\ii hW}-1}{h}\right|^{2n}
+\]
+is a finite linear combination of $h^{-2n}\varphi(jh)$ for $-n\le j\le n$. Its coefficients annihilate powers of degree less than $2n$, so the Taylor expansion of $q$ shows that this expression stays bounded as $h\to0$. Fatou's lemma gives $\E |W|^{2n}<\infty$. Differentiation under the expectation, now justified by this moment, proves the stated derivative identity. Cauchy's estimate yields the first inequality in \eqref{eq:moment-bound}. Finally, monotone convergence in the nonnegative series for $\cosh(aW)$ gives
+\[
+ \E\cosh(aW)=\sum_{n\ge0}\frac{a^{2n}\E W^{2n}}{(2n)!}<\infty,
+\]
+and $e^{a|W|}\le2\cosh(aW)$ proves the claim.
+\end{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:hankel}]
+\emph{Analytic preparation.} First, $M_U$ is entire: on any compact subset with $|\Ree z|\le A$, the integrand is bounded by $e^{A|U|}$, whose expectation is at most $M_U(A)+M_U(-A)$. Derivatives are handled by a slightly larger $A$. Since $M_U(0)=1$, $q=1/M_U$ is analytic in a disk about zero. Its even Taylor coefficients are determined uniquely by the formal product $M_Uq=1$. Writing
+\[
+ q(z)=\sum_{n\ge0}\frac{(-1)^nv_n z^{2n}}{(2n)!}
+\]
+and comparing coefficients gives precisely \eqref{eq:recursion}.
+
+\emph{Necessity.} Suppose first that a conjugate $V$ exists. Its characteristic function is real and even, so its law is symmetric. Lemma~\ref{lem:germ} applies to $q$ and proves that its moments are the recursively defined $v_n$. Since $X=V^2\ge0$, every real vector $c=(c_0,\ldots,c_N)$ satisfies
+\[
+ c^\top H_Nc=\E\left(\sum_{j=0}^Nc_jX^j\right)^2\ge0,
+ \qquad
+ c^\top\widetilde H_Nc=\E\left[X\left(\sum_{j=0}^Nc_jX^j\right)^2\right]\ge0.
+\]
+This proves (a)$\Rightarrow$(b).
+
+\emph{Sufficiency: construct a law from the moments.} Assume (b). The Stieltjes moment theorem yields a probability measure $\nu$ on $[0,\infty)$ with moments $v_n$; its total mass is $v_0=1$. Take $X\sim\nu$, an independent fair sign $\epsilon$, and set $V=\epsilon\sqrt X$. Choose $r_0>0$ with $q$ analytic on a neighborhood of the closed disk of radius $r_0$, and $C\ge\max_{|z|=r_0}|q(z)|$. Cauchy's coefficient estimate gives
+\[
+ 0\le v_n\le C(2n)!r_0^{-2n}.
+\]
+Consequently, for every $0<a<r_0$,
+\[
+ \E\cosh(aV)=\sum_{n\ge0}\frac{a^{2n}v_n}{(2n)!}<\infty.
+\]
+\emph{Sufficiency: recover the identity on the real axis.} Thus $\varphi_V(z)=\E e^{\ii zV}$ is analytic on the connected strip $|\Im z|<a$. On a neighborhood of zero its Taylor expansion equals $q$, and therefore
+\[
+ F(z):=M_U(z)\varphi_V(z)-1
+\]
+is analytic throughout this strip and vanishes near zero. The identity theorem gives $F=0$ on the entire strip, hence \eqref{eq:reciprocal} on $\R$. The resulting identity also shows that $M_U$ is zero-free on this strip. This proves (b)$\Rightarrow$(a).
+
+\emph{Strict positivity.} Under (a), Theorem~\ref{thm:fourier} gives an absolutely continuous, nonzero probability law for $V$. A nonzero polynomial in $V^2$ can vanish only at finitely many real values of $V$. Hence both displayed quadratic forms are strictly positive when $c\ne0$, even after the factor $V^2$ in the second. This proves (a)$\Rightarrow$(c), while (c)$\Rightarrow$(b) is immediate.
+
+\emph{Moment determinacy.} Finally, the exponential moment proves moment determinacy. Explicitly, any competing law with the same moments has finite $\E\cosh(aW)$ by monotone convergence and the same bound. Its characteristic function is analytic on a strip and agrees with that of $V$ near zero, hence everywhere on $\R$. This also shows that the law of $V^2$ is determined: any representing Stieltjes law can be symmetrized by the fair-sign construction just used.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:jacobi}]
+The density of $V$ implies that its moment functional is strictly positive on squares of nonzero polynomials. Gram--Schmidt therefore produces polynomials of every degree. Symmetry makes their parities alternate and the diagonal Jacobi coefficients vanish. The usual three-term recurrence gives the stated positive $\beta_n$.
+
+For completeness, the finite matrix construction has the Gauss exactness property. In the orthonormal polynomial basis, multiplication by $x$ is tridiagonal. To compute the coefficient of the constant polynomial after $k$ multiplications, sum over tridiagonal paths starting and ending at index zero. A path reaching index $N$ and returning requires at least $2N$ steps. Thus for $k\le2N-1$ the finite compression and the full recurrence give the same $(0,0)$ entry. The spectral theorem consequently yields
+\[
+ \int x^k\mu_N(\dd x)=\langle e_1,J_N^ke_1\rangle=m_k
+ \quad(0\le k\le2N-1).
+\]
+In particular, the weights sum to one, and the common second moment for $N\ge2$ proves tightness. Along any weakly convergent subsequence, moments of fixed degree pass to the limit by uniform integrability: choose a larger fixed even moment, which is eventually matched exactly. Every subsequential limit therefore has all moments $m_k$ and equals $\Law(V)$ by determinacy. Tightness and uniqueness of the limit prove \eqref{eq:jacobi}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:mean-value}]
+By Theorem~\ref{thm:hankel}, choose $a_0>0$ with $\E e^{a_0|V|}<\infty$. Hypothesis~\eqref{eq:H} implies $\E e^{a_0|U|}<\infty$. Independence and $|W|\le |U|+|V|$ therefore give $\E e^{a_0|W|}<\infty$. The function $z\mapsto\E e^{zW}$ is analytic on $|z|<a_0$, by exponential domination on smaller disks. It equals $1$ for real $z$ by \eqref{eq:cancel}; hence all its derivatives at zero vanish except the constant term. Consequently,
+\[
+ \E W^n=0\quad(n\ge1),\qquad \E W^0=1.
+\]
+Taylor expansion now proves \eqref{eq:mean-value-complex} for polynomials. For an entire $F$ satisfying \eqref{eq:taylor-integrability}, Tonelli's theorem gives absolute integrability of its Taylor series at $x$, so expectation can be taken term by term and gives the same identity.
+
+To verify the stated growth condition, choose $c>1$ with $ac<a_0$. For $w\ne0$, Cauchy's estimate on the circle centered at $x$ of radius $c|w|$ gives
+\[
+ \sum_{n=0}^{\infty}\frac{|F^{(n)}(x)|}{n!}|w|^n
+ \le \frac{c}{c-1}C e^{a|x|+ac|w|}.
+\]
+The bound also holds at $w=0$. Its expectation at $w=W$ is finite, proving \eqref{eq:taylor-integrability}. Taking real parts gives \eqref{eq:mean-value-real}. In the counterexample following the theorem, intervals of fixed length on which $\cos(2v)\ge1/2$, or $\cos(2v)\le-1/2$, recur at arbitrarily large $v$. On these intervals the quadratic exponential $e^{v^2-1}$ dominates the exponential decay of the conjugate density, proving divergence of both parts.
+\end{proof}
+
+\section{The polynomial construction and parameter bounds}\label{app:poly}
+\begin{proof}[Proof of Lemma~\ref{lem:laplace}]
+For every $x,y\in\R$, the triangle inequality gives
+\[
+ e^{-\lambda|y|}\le\frac{\ell_\lambda(x-y)}{\ell_\lambda(x)}\le e^{\lambda|y|},
+ \quad
+ \left|\frac{\ell_\lambda(x-y)}{\ell_\lambda(x)}-1\right|
+ \le e^{\lambda|y|}-1.
+\]
+Since $\int k=1$, division by $\ell_\lambda(x)>0$ gives
+\[
+ \left|\frac{(\ell_\lambda*k)(x)}{\ell_\lambda(x)}-1\right|
+ \le\delta_k(\lambda).
+\]
+This proves \eqref{eq:laplace-bounds}. Dominated convergence, using any fixed $0<\lambda_1<\eta$, proves $\delta_k(\lambda)\to0$ for $\lambda\downarrow0$. Fubini gives $\int(\ell_\lambda*k)=1$. Continuity follows, for example, from uniform continuity and boundedness of $\ell_\lambda$ and integrability of $k$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:rational}]
+\emph{Decay of the inverse.} Let $d=\deg P\ge1$. Positivity on $[0,\infty)$ forces a positive leading coefficient. The rational function $r(z)=1/P(z^2)$ is $O(|z|^{-2d})$ at infinity, has no real poles, and is even and real on the real axis. Thus $r|_\R\in L^1$, and its inverse $k$ is continuous, real and even.
+
+For $x>0$ close the contour for $e^{-\ii zx}r(z)$ in the lower half-plane. The semicircle integral tends to zero since the exponential has modulus at most one there and $r(z)=O(|z|^{-2d})$. A pole $z_\ell$ of multiplicity $m_\ell$ contributes a polynomial of degree at most $m_\ell-1$ in $x$ times $e^{-\ii z_\ell x}$. Since $\Im z_\ell<0$, each term decays exponentially. The analogous upper contour handles $x<0$, or one may use evenness. If $\alpha>0$ is smaller than the distance of all poles to the real axis, a constant $C$ and integer $M$ satisfy
+\[
+ |k(x)|\le C(1+|x|^M)e^{-\alpha|x|}.
+\]
+This gives the required exponential integrability for any smaller exponent. Repeated poles only enlarge the polynomial factor. Zeros of $P$ on the negative real axis give purely imaginary Fourier poles and cause no problem; nonreal zeros, including purely imaginary zeros of $P$, also remain a positive distance from the real Fourier axis. Positive real zeros of $P$ are excluded by the hypothesis, as is zero itself.
+
+\emph{Normalization and positivity.} Because both $r$ and $k$ are integrable, Fourier inversion (or Gaussian regularization followed by dominated convergence) gives $\widehat k=r$. In particular $\int k=r(0)=1$. Lemma~\ref{lem:laplace} now applies. Choose $\lambda_0>0$ with $\delta_k(\lambda_0)<1$ within the exponential-integrability range. The function $\delta_k$ is nondecreasing, so every $0<\lambda\le\lambda_0$ works. With $b=\lambda^{-2}$ and $b_0=\lambda_0^{-2}$, the transform of $\ell_\lambda*k$ is \eqref{eq:Y} for all $b\ge b_0$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:gaussian}]
+\emph{The density formula.} Write $Q(s)=\sum_{k=0}^Dq_ks^k$. Gaussian differentiation gives
+\begin{equation}\label{eq:derivative-density}
+ \mathcal F^{-1}[e^{-\tau t^2/2}Q(-t^2)](x)
+ =\sum_{k=0}^D q_k g_\tau^{(2k)}(x).
+\end{equation}
+Indeed, our Fourier convention gives $\widehat{g_\tau^{(2k)}}(t)=(-1)^kt^{2k}e^{-\tau t^2/2}$. To verify \eqref{eq:S} with its exact signs and scales, expand the Gaussian translation identity
+\[
+ \frac{g_\tau(x+z)}{g_\tau(x)}
+ =\exp\left(-\frac{xz}{\tau}-\frac{z^2}{2\tau}\right).
+\]
+Comparing coefficients of $z^{2k}$ yields
+\[
+ \frac{g_\tau^{(2k)}(x)}{g_\tau(x)}
+ =\sum_{j=0}^k\frac{(2k)!}{(2k-2j)!j!}
+ \left(-\frac1{2\tau}\right)^j\left(\frac{x}{\tau}\right)^{2k-2j}.
+\]
+Substituting into \eqref{eq:derivative-density} and regrouping the finite sums gives \eqref{eq:U-density}.
+
+\emph{Positivity.} Since $R>0$ on $\R$, each $|R^{(2j)}|/R$ is continuous. It tends to zero at infinity, because its numerator has lower degree than its denominator, so $C_j<\infty$. Consequently
+\[
+ S_\tau(y)\ge R(y)(1-A_Q(\tau)).
+\]
+Under \eqref{eq:tau-certificate}, this is strictly positive.
+
+\emph{Normalization and the moment-generating function.} Every nonzero derivative of the Gaussian has zero integral, so \eqref{eq:derivative-density} integrates to $q_0=1$. Its absolute value is a polynomial times a Gaussian, so all real exponential moments exist. Integrating by parts $2k$ times gives
+\[
+ \int_\R e^{tx}g_\tau^{(2k)}(x)\dd x=t^{2k}e^{\tau t^2/2},
+\]
+with all boundary terms zero. Summing proves the asserted moment-generating function.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:polynomial} and the certificates]
+If (b) holds, strict positivity of $M_U$ gives $P(t^2)>0$ for every real $t$, proving (a). Conversely Lemma~\ref{lem:rational} supplies a common $b_0$ for the conjugate side. Fix any $b\ge b_0$ and apply Lemma~\ref{lem:gaussian} to $Q=(1+bs)P$. The quantity $A_Q(\tau)$ decreases to zero as $\tau\to\infty$, so one may choose $\tau_0(b)>0$ with $A_Q(\tau_0(b))<1$. All larger $\tau$ work. The resulting $U$ is symmetric with a strictly positive density, and $V=\sqrt\tau Z+Y_b$ is symmetric with a strictly positive density. Their transforms multiply to one. Product-space independence gives \eqref{eq:cancel} with an absolutely integrable complex random variable because $|e^{t(U+\ii V)}|=e^{tU}$.
+
+For \eqref{eq:B}, use the triangle inequality termwise on $x\ge0$, evenness on the other half-line, and
+\[
+ \int_0^\infty x^pe^{-\alpha x}(e^{\lambda x}-1)\dd x
+ =p!\bigl((\alpha-\lambda)^{-p-1}-\alpha^{-p-1}\bigr).
+\]
+Thus $B(\lambda)\to0$, so its test succeeds for small enough $\lambda$. For \eqref{eq:tau-simple}, note that for $\tau\ge1$ and $j\ge1$, $(2\tau)^{-j}\le(2\tau)^{-1}$. Hence
+\[
+ A_Q(\tau)\le\frac1{2\tau}\sum_{j=1}^D\frac{\overline C_j}{j!}\le\frac12.
+\]
+Finally, the bounds $\overline C_j$ may be certified by the polynomial inequalities $\overline C_jR\pm R^{(2j)}\ge0$ on $\R$. A sufficiently large bound always exists by the preceding proof. For algebraic inputs these are univariate algebraic sign tests, so the positive-polynomial construction admits certified parameter selection.
+\end{proof}
+
+\section{Exact verification of the explicit example}\label{app:example}
+The rational factor has the decomposition
+\begin{equation}\label{eq:partial}
+ \frac1{(1+2t^2)(1+t^4)}
+ =\frac4{5(1+2t^2)}+\frac{1-2t^2}{5(1+t^4)}.
+\end{equation}
+Set $a=1/\sqrt2$. The elementary inverse transform
+\[
+ j(x)=\mathcal F^{-1}[(1+t^4)^{-1}](x)
+ =\frac{e^{-a|x|}}{2\sqrt2}\bigl(\cos(a|x|)+\sin(a|x|)\bigr)
+\]
+follows by residues at the two lower-half-plane poles for $x>0$. Here $j'(0+)=j'(0-)=0$, so its distributional second derivative has no atom at zero, and
+\[
+ \mathcal F^{-1}[t^2/(1+t^4)](x)=-j''(x)
+ =\frac{e^{-a|x|}}{2\sqrt2}\bigl(\cos(a|x|)-\sin(a|x|)\bigr).
+\]
+Combining these identities with the Laplace inverse of $(1+2t^2)^{-1}$ proves \eqref{eq:explicit-k}, including its Fourier normalization. Directly, substituting $y=|x|/\sqrt2$ gives
+\[
+ \int_\R k_2(x)\dd x
+ =\frac15\int_0^\infty e^{-y}(4-\cos y+3\sin y)\dd y
+ =\frac15\left(4-\frac12+\frac32\right)=1.
+\]
+The amplitude bound in the main text proves strict positivity everywhere.
+
+On the original side $Q(s)=(1+2s)(1+s^2)$ and
+$R(y)=1+2y^2+y^4+2y^6$. Formula~\eqref{eq:S} with $\tau=4$ gives
+\[
+ S_4=R-\frac18R''+\frac1{128}R^{(4)}-\frac1{3072}R^{(6)},
+\]
+which expands to \eqref{eq:explicit-S}. Its displayed sum-of-squares decomposition proves positivity without a numerical minimization. For a direct normalization check, under $g_4$ the variable $y=x/4$ has variance $1/4$, so
+\[
+ \int g_4(x)S_4(x/4)\dd x
+ =2\frac{15}{64}-\frac{13}{2}\frac3{16}+\frac{49}{8}\frac14+\frac7{32}=1.
+\]
+The integration-by-parts identity in Appendix~\ref{app:poly} gives exactly the first transform in \eqref{eq:explicit-pair}. Independent Gaussian addition supplies the second. Both variables have variance $8$, also obtained from the second derivatives of their transforms at zero.
+
+
+\begin{proof}[Proof of Proposition~\ref{prop:threshold}]
+For $b\ge2$, the identity
+\[
+ r_b(t)=r_2(t)\left(\frac2b+\frac{1-2/b}{1+bt^2}\right)
+\]
+is a product of characteristic functions: the parenthesis is a mixture of a point mass at zero and a Laplace law. Conversely, for any $b>0$, partial fractions give the continuous inverse
+\begin{align*}
+ k_b(x)={}&\frac{b^{3/2}}{2(b^2+1)}e^{-|x|/\sqrt b}\\
+ &+\frac{e^{-|x|/\sqrt2}}{2\sqrt2(b^2+1)}
+ \left((1-b)\cos\frac{|x|}{\sqrt2}+(1+b)\sin\frac{|x|}{\sqrt2}\right).
+\end{align*}
+If $b<2$, the first term decays strictly faster than the oscillating second term. The latter has nonzero amplitude, so $k_b$ is negative along an unbounded sequence of points. Integrability of $r_b$ makes nonnegativity of this inverse necessary for a characteristic function. This proves necessity. The argument is also consistent with the classical pole restrictions in\ \cite{LukacsSzasz1954II}.
+\end{proof}
+
+\section{Rejection sampling constructions}\label{app:sampling}
+These constructions specify exact target laws; numerical implementations must evaluate the acceptance probabilities to the required accuracy.
+
+For the general polynomial family, choose $\lambda$ and a certified $B\ge\delta_k(\lambda)$ with $B<1$. Let $f_b=\ell_\lambda*k$. Propose $X\sim\ell_\lambda$ and accept independently with probability
+\[
+ \frac{f_b(X)}{(1+B)\ell_\lambda(X)}.
+\]
+Lemma~\ref{lem:laplace} puts this ratio in $[0,1]$, and normalization proves an acceptance rate $1/(1+B)$. The convolution can itself be evaluated by the partial fractions of $[(1+bt^2)P(t^2)]^{-1}$. Repeated poles are handled by the same polynomial--exponential formulas. Add an independent $N(0,\tau)$ variable to obtain $V$.
+
+For $U$, expand the even polynomial $S_\tau(y)=\sum_{k=0}^Ds_ky^{2k}$. Relative to the proposal $g_{2\tau}$,
+\[
+ \frac{f_{Q,\tau}(x)}{g_{2\tau}(x)}
+ =\sqrt2 e^{-\tau y^2/4}S_\tau(y),\qquad y=x/\tau.
+\]
+Using $\sup_{y\in\R}|y|^{2k}e^{-\tau y^2/4}=(4k/(e\tau))^k$ for $k\ge1$, the finite constant
+\begin{equation}\label{eq:CU}
+ C_U=\sqrt2\left(|s_0|+\sum_{k=1}^D|s_k|\left(\frac{4k}{e\tau}\right)^k\right)
+\end{equation}
+satisfies $0\le f_{Q,\tau}\le C_Ug_{2\tau}$. Accept a $g_{2\tau}$ proposal with probability $f_{Q,\tau}/(C_Ug_{2\tau})$. Its acceptance rate is $1/C_U>0$.
+
+For Example~\ref{ex:explicit}, $k_2/\ell_{1/\sqrt2}=(4-\cos y+3\sin y)/5$, which gives \eqref{eq:sample-Y}. For $U$, use $\tau=4$ and the coefficients in \eqref{eq:explicit-S} in \eqref{eq:CU}; all required functions are elementary. Independent repetitions of these samplers realize the independence in \eqref{eq:cancel}.
+
+\section{Recovery of the known classes}\label{app:known}
+\begin{proof}[Proof of Proposition~\ref{prop:LP}]
+The variables $L_n$ are centered with variances $2a_n^{-2}$. Their partial sums are an $L^2$-bounded martingale, hence converge both in $L^2$ and almost surely. Independence gives the characteristic function of each partial sum, and bounded convergence under almost-sure convergence gives
+\[
+ \varphi_V(t)=e^{-\sigma^2t^2/2}\prod_n(1+t^2/a_n^2)^{-1}=M_U(t)^{-1}.
+\]
+The Gaussian factor permits $\sigma=0$, interpreted as a point mass. Finite and empty products cause no difficulty. In the nondegenerate case Lemma~\ref{lem:decay} and Theorem~\ref{thm:fourier} give the continuous density.
+\end{proof}
+
+For the Bessel example, let $z=x/a$ and integrate its even moments by the beta integral. One obtains
+\[
+ \E U^{2n}=a^{2n}\frac{\Gamma(n+1/2)\Gamma(\nu+1)}{\sqrt\pi\,\Gamma(n+\nu+1)}.
+\]
+The duplication formula gives the series in \eqref{eq:bessel}. The canonical product for $J_\nu$ yields the product for $I_\nu$, and comparison of the coefficient of $t^2$ gives
+\[
+ \sum_{n\ge1}\frac1{j_{\nu,n}^2}=\frac1{4(\nu+1)}<\infty.
+\]
+Proposition~\ref{prop:LP} then applies. The hyperbolic-secant and logistic formulas follow from the usual Fourier transforms, with a change of scale; their integrals are one by the elementary antiderivatives of $\sech$ and $\sech^2$, respectively.
+
+\begin{proof}[Proof of Proposition~\ref{prop:DP}]
+We use the characteristic-function assertion and Bernstein representation of Theorem~4.1 in\ \cite{KPS2024}. To check the hypotheses of our Fourier theorem explicitly, the series for $\mathcal J_\Psi$ is entire since $\Psi(n)\to\infty$. Lemma~\ref{lem:germ} yields its even moments
+\[
+ u_n=\frac{(2n)!}{\prod_{k=1}^n\Psi(k)}.
+\]
+For each real $t$, monotone convergence in the $\cosh$ series gives $\E\cosh(tU)=\mathcal I_\Psi(t)<\infty$. Symmetry therefore gives $M_U(t)=\mathcal I_\Psi(t)$, and $u_1=2/\Psi(1)>0$. Thus \eqref{eq:H} holds.
+
+A Bernstein function with value zero at the origin is a Laplace exponent of a subordinator; equivalently, $e^{-\Phi_\Psi(s)}$ is a probability Laplace transform\ \cite{SSV2012}. This supplies $T_\Psi\ge0$. The polynomial lower bound $\mathcal I_\Psi(t)\ge1+t^2/\Psi(1)$ shows
+\[
+ \Prob(T_\Psi=0)=\lim_{s\to\infty}\E e^{-sT_\Psi}
+ =\lim_{s\to\infty}\mathcal I_\Psi(\sqrt s)^{-1}=0.
+\]
+Conditioning on $T_\Psi$ now gives the asserted characteristic function of $\sqrt{2T_\Psi}Z$. Moreover, Tonelli's theorem and Lemma~\ref{lem:decay} imply
+\[
+ \sqrt\pi\,\E T_\Psi^{-1/2}
+ =\int_\R\E e^{-t^2T_\Psi}\dd t
+ =\int_\R\mathcal I_\Psi(t)^{-1}\dd t<\infty.
+\]
+Hence the Gaussian mixture density is finite and continuous at every $x$, by domination with $(4\pi T_\Psi)^{-1/2}$. Fourier inversion identifies it pointwise with \eqref{eq:mixture}.
+\end{proof}
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{KPS2024} T. Konstantopoulos, P. Patie and R. Sarkar, A new class of solutions to the van Dantzig problem, the Lee--Yang property, and the Riemann hypothesis, \emph{Ann. Inst. Fourier} \textbf{74} (2024), no. 1, 377--421. \href{https://doi.org/10.5802/aif.3600}{doi:10.5802/aif.3600}.
+\bibitem{Lukacs1968} E. Lukacs, Contributions to a problem of D. van Dantzig, \emph{Theory Probab. Appl.} \textbf{13} (1968), no. 1, 116--127. \href{https://doi.org/10.1137/1113008}{doi:10.1137/1113008}.
+\bibitem{LukacsSzasz1954} E. Lukacs and O. Sz\'asz, Nonnegative trigonometric polynomials and certain rational characteristic functions, \emph{J. Res. Natl. Bur. Stand.} \textbf{52} (1954), no. 3, 153--160. \href{https://nvlpubs.nist.gov/nistpubs/jres/52/jresv52n3p153_A1b.pdf}{Research Paper 2484}.
+\bibitem{LukacsSzasz1952} E. Lukacs and O. Sz\'asz, On analytic characteristic functions, \emph{Pacific J. Math.} \textbf{2} (1952), no. 4, 615--625. \href{https://msp.org/pjm/1952/2-4/pjm-v2-n4-p08-p.pdf}{Publisher PDF}.
+\bibitem{LukacsSzasz1954II} E. Lukacs and O. Sz\'asz, Certain Fourier transforms of distributions: II, \emph{Canad. J. Math.} \textbf{6} (1954), 186--189. \href{https://doi.org/10.4153/CJM-1954-020-5}{doi:10.4153/CJM-1954-020-5}.
+\bibitem{Patie2009} P. Patie, Infinite divisibility of solutions to some self-similar integro-differential equations and exponential functionals of L\'evy processes, \emph{Ann. Inst. Henri Poincar\'e Probab. Stat.} \textbf{45} (2009), no. 3, 667--684. \href{https://doi.org/10.1214/08-AIHP182}{doi:10.1214/08-AIHP182}.
+\bibitem{Schmudgen2017} K. Schm\"udgen, \emph{The Moment Problem}, Graduate Texts in Mathematics 277, Springer, Cham, 2017. \href{https://doi.org/10.1007/978-3-319-64546-9}{doi:10.1007/978-3-319-64546-9}.
+\bibitem{Schoenberg1951} I. J. Schoenberg, On P\'olya frequency functions. I. The totally positive functions and their Laplace transforms, \emph{J. Analyse Math.} \textbf{1} (1951), 331--374.
+\bibitem{SSV2012} R. L. Schilling, R. Song and Z. Vondra\v cek, \emph{Bernstein Functions: Theory and Applications}, second ed., De Gruyter Studies in Mathematics 37, De Gruyter, Berlin, 2012. \href{https://doi.org/10.1515/9783110269338}{doi:10.1515/9783110269338}.
+\bibitem{DLMF} F. W. J. Olver et al. (eds.), \emph{NIST Digital Library of Mathematical Functions}, Chapter 10, Bessel Functions, \href{https://dlmf.nist.gov/10.21}{Section 10.21}, especially Eq.~10.21.15. Accessed October 10, 2026.
+\end{thebibliography}
+\end{document}

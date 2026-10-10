@@ -1,0 +1,57 @@
+\section{Introduction}
+
+Consider the stochastic optimization problem
+\[
+\min_{\theta\in\mathbb R^p}F(\theta),\qquad
+F(\theta)=\mathbb E\ell(\theta;Z),
+\]
+when the latent input $Z$ is observed only through $W=Z+U$.
+Even for centered measurement error, the score
+$g(\theta;W)=\nabla_\theta\ell(\theta;W)$ is generally biased for
+$\nabla F(\theta)$. A decreasing step size controls stochastic
+fluctuations but does not eliminate this discrepancy. The question is
+whether noisy observations can nevertheless support an explicit
+stochastic-gradient method for the clean objective.
+
+For Gaussian error with known covariance, the classical complex
+corrected-score identity provides a construction
+\cite{stefanski1989,novick2002}. If the score has an integrable entire
+extension, an independent imaginary Gaussian perturbation cancels the
+measurement error in expectation. This leads to complex-corrected
+stochastic gradient descent (CCSGD):
+\[
+\theta_{t+1}=\theta_t-\eta_t\operatorname{Re}
+g^{\mathbb C}(\theta_t;W_t+iV_t),\qquad
+V_t\sim N(0,\Omega).
+\]
+Each iteration uses one noisy observation and one complex score evaluation.
+Only the noise covariance is required; it may be correlated or singular.
+
+The central analytical issue is control of the corrected gradient along
+the stochastic trajectory. Pointwise unbiasedness and finite variance
+do not by themselves give the conditional moment bounds required for
+convergence. We address this issue through three results.
+\begin{enumerate}
+\item \emph{Exact correction.}
+We formulate the Gaussian correction for vector-valued entire scores
+under an explicit exponential growth condition. The construction is
+independent of the convexity of the objective.
+\item \emph{Relative variance control.}
+We bound the correction error using the score's input derivative and
+the tails of the latent and Gaussian variables. The derivative amplitude
+may grow with the parameter, provided its square is controlled by the
+squared objective gradient. Conditional orthogonality then yields the
+classical SGD relative variance condition and local higher-moment control
+for limit laws.
+\item \emph{Convergence and fluctuations.}
+For polynomially decaying step sizes with exponent $1/2<\alpha\le1$,
+we establish convex objective bounds, strongly convex mean-square rates
+and almost-sure convergence, and nonconvex stationarity bounds.
+Under local regularity, we identify the last-iterate and averaged
+Gaussian limits, including the $\alpha=1$ endpoint.
+\end{enumerate}
+The analysis connects the classical Gaussian identity to stochastic
+approximation through explicit moment estimates
+\cite{novick2002,fabian1968,polyakjuditsky1992}. Examples and numerical
+studies illustrate the method; a separate moment argument covers
+nonlinear-feature regression.

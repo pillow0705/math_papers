@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=25mm,right=25mm,top=24mm,bottom=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,float,algorithm,algpseudocode}
+\usepackage{graphicx,array,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo,titlesec,fancyhdr,caption,enumitem,etoolbox}
+\linespread{1.045}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{2pt}
+\titleformat{\section}{\large\sffamily\bfseries}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\sffamily\bfseries}{\thesubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus 1ex minus .2ex}{1.1ex}
+\titlespacing*{\subsection}{0pt}{1.6ex plus .5ex}{0.7ex}
+\captionsetup{font=small,labelfont=bf,labelsep=period,skip=8pt}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=4pt,topsep=6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Complex-corrected stochastic gradient descent}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\AtBeginEnvironment{thebibliography}{\small}
+\renewcommand{\maketitle}{%
+  \thispagestyle{plain}%
+  \begingroup\raggedright
+  {\fontsize{22}{26}\selectfont\bfseries
+  Complex-Corrected\\Stochastic Gradient Descent\\for Noisy Observations\par}
+  \vspace{12pt}\hrule\vspace{14pt}
+  \endgroup}
+\renewenvironment{abstract}
+  {\small\noindent\textbf{Abstract.}\ignorespaces}
+  {\par\vspace{10pt}}
+\usepackage[hidelinks]{hyperref}
+\floatstyle{ruled}\restylefloat{algorithm}
+\setlength{\tabcolsep}{4pt}
+\setlength{\emergencystretch}{1em}
+\raggedbottom
+\numberwithin{equation}{section}
+\newtheoremstyle{emphasizedplain}
+  {9pt plus 2pt minus 1pt}{9pt plus 2pt minus 1pt}
+  {\itshape}{}{\bfseries}{.}{0.6em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\textbf{ (#3)}}}
+\newtheoremstyle{emphasizeddefinition}
+  {9pt plus 2pt minus 1pt}{9pt plus 2pt minus 1pt}
+  {\normalfont}{}{\bfseries}{.}{0.6em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\textbf{ (#3)}}}
+\theoremstyle{emphasizedplain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{emphasizeddefinition}
+\newtheorem{assumption}[theorem]{Assumption}
+\title{Complex-Corrected Stochastic Gradient Descent for Noisy Observations}
+\author{}
+\date{}
+\hypersetup{pdftitle={Complex-Corrected Stochastic Gradient Descent for Noisy Observations},
+pdfsubject={Exact gradient correction and stochastic optimization under Gaussian measurement error}}
+\begin{document}
+\maketitle
+\input{abstract}
+\input{introduction}
+\input{related_work}
+\input{algorithm}
+\input{main_results}
+\input{examples}
+\input{experiments}
+\input{future_work}
+\appendix
+\input{appendix_proofs}
+\input{appendix_experiments}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

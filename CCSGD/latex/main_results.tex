@@ -1,0 +1,185 @@
+\section{Main results}
+\label{sec:main_results}
+
+Throughout this section, the assumptions of Section~\ref{sec:algorithm}
+hold. The initial point is deterministic, and $(Z_t,U_t,V_t)$ are i.i.d.
+triples, independent of the past $\mathcal F_{t-1}$. Write
+$\mathbb E_t[\cdot]=\mathbb E[\cdot\mid\mathcal F_{t-1}]$ and
+\[
+\Delta_t=G_t-g(\theta_t;Z_t),\qquad
+\xi_t=G_t-\nabla F(\theta_t).
+\]
+Exact correction gives $\mathbb E_t\xi_t=0$. The exponential envelope and
+independence of the fresh data imply
+\[
+\mathbb E_t\|\Delta_t\|^2\le K_aM(\theta_t)^2
+\le K_aA+K_aB\|\nabla F(\theta_t)\|^2,
+\]
+where
+\[
+K_a=\mathbb E e^{2a\|Z\|}\,
+\mathbb E\!\left[\|U+iV\|^2e^{2a\|U+iV\|}\right]<\infty.
+\]
+Since $\mathbb E[\Delta_t\mid\mathcal F_{t-1},Z_t]=0$, the cross term vanishes.
+Assumption~\ref{ass:clean_variance} therefore yields
+\begin{equation}\label{eq:relative_variance}
+\mathbb E_t\|\xi_t\|^2
+=\mathbb E_t\|\Delta_t\|^2+
+\mathbb E_t\|g(\theta_t;Z_t)-\nabla F(\theta_t)\|^2
+\le\sigma^2+\rho\|\nabla F(\theta_t)\|^2,
+\end{equation}
+with
+\[
+\sigma^2=\sigma_0^2+K_aA,\qquad \rho=\rho_0+K_aB.
+\]
+These constants are independent of $t$ and $\theta$. Thus the correction
+preserves the classical relative variance structure without requiring
+a bounded amplitude $M$. All proofs, including the local higher-moment
+estimates for the CLTs, are given in Appendix~\ref{app:proofs}.
+
+\paragraph{Mini-batching and Monte Carlo averaging.}
+With $n$ independent fresh observations and $m$ independent imaginary
+perturbations per observation, use
+\[
+G_t^{(n,m)}=\frac1n\sum_{i=1}^n\frac1m\sum_{j=1}^m
+\operatorname{Re}g^{\mathbb C}(\theta_t;W_{t,i}+iV_{t,i,j}).
+\]
+All perturbations are independent of the observations and the past.
+For fixed $\theta$, write
+$h_\theta(W)=\mathbb E_V[\operatorname{Re}g^{\mathbb C}(\theta;W+iV)\mid W]$
+and define
+\[
+\begin{aligned}
+v_{\rm obs}(\theta)&=\mathbb E\|h_\theta(W)-\nabla F(\theta)\|^2,\\
+v_{\rm sim}(\theta)&=\mathbb E\|G(\theta)-h_\theta(W)\|^2.
+\end{aligned}
+\]
+Conditional centering makes the observation and simulation errors
+orthogonal. Independence across observations and simulations therefore gives
+\begin{equation}\label{eq:batch_mc_variance}
+\mathbb E_t\|G_t^{(n,m)}-\nabla F(\theta_t)\|^2
+=\frac{v_{\rm obs}(\theta_t)}n+
+\frac{v_{\rm sim}(\theta_t)}{nm}
+\le\frac{\sigma^2+\rho\|\nabla F(\theta_t)\|^2}{n},
+\end{equation}
+since $v_{\rm obs}+v_{\rm sim}=\mathbb E\|G-\nabla F\|^2$.
+Thus mini-batching reduces both components by $n$, while repeated imaginary
+perturbations further reduce only the simulation component by $m$.
+The bounds below apply with variance constants $\sigma^2/n$ and $\rho/n$;
+for the CLTs, the corrected-oracle covariance is that of $G^{(n,m)}$
+when $n$ and $m$ are fixed.
+The analysis below requires only the relative variance bound; its precise
+constants affect the quantitative bounds, but not the stated convergence
+rates or the validity of the CLTs. Averaging is primarily a practical
+option for reducing variability and improving training stability.
+
+\begin{theorem}[Convex objective]\label{thm:convex}
+Suppose $F:\mathbb R^p\to\mathbb R$ is convex and $L$-smooth and has a
+minimizer $\theta^*$. Let $\eta_t=c/(t+\gamma)^\alpha$ with
+$c>0$, $\gamma\ge0$, $1/2<\alpha\le1$, and $\eta_1\le1/[L(1+\rho)]$. Define
+$\bar\theta_T^{\eta}=(\sum_{t=1}^T\eta_t\theta_t)/
+(\sum_{t=1}^T\eta_t)$. Then
+\[
+\mathbb E[F(\bar\theta_T^{\eta})]-F(\theta^*)
+\le
+\frac{\|\theta_1-\theta^*\|^2
++\sigma^2\sum_{t=1}^T\eta_t^2}
+{2\sum_{t=1}^T\eta_t}.
+\]
+Consequently, the expected objective gap is $O(T^{\alpha-1})$ if
+$\alpha<1$, and $O(1/\log T)$ if $\alpha=1$.
+\end{theorem}
+
+\begin{theorem}[Strong convexity]
+\label{thm:strong_convex}
+Suppose $F:\mathbb R^p\to\mathbb R$ is $\mu$-strongly convex and
+$L$-smooth, with minimizer $\theta^*$. Let
+$\eta_t=c/(t+\gamma)^\alpha$ with $c>0$, $\gamma\ge0$, and
+$1/2<\alpha\le1$. Then $\theta_t\to\theta^*$ almost surely and in
+mean square. For $\alpha<1$,
+\[
+\mathbb E\|\theta_t-\theta^*\|^2=O(t^{-\alpha}).
+\]
+For $\alpha=1$,
+\[
+\mathbb E\|\theta_t-\theta^*\|^2=
+\begin{cases}
+O(t^{-1}), & 2\mu c>1,\\
+O(t^{-1}\log t), & 2\mu c=1,\\
+O(t^{-2\mu c}), & 2\mu c<1.
+\end{cases}
+\]
+
+\end{theorem}
+
+For the two central limit theorems, write
+\[
+S(\theta)=\mathbb E\bigl[(G(\theta)-\nabla F(\theta))
+(G(\theta)-\nabla F(\theta))^\top\bigr],\qquad
+G(\theta)=\operatorname{Re}g^{\mathbb C}(\theta;Z+U+iV).
+\]
+
+\begin{theorem}[Last-iterate fluctuations]\label{thm:last_clt}
+In addition to the strong convexity and smoothness conditions of
+Theorem~\ref{thm:strong_convex}, suppose $F$ is twice continuously
+differentiable near $\theta^*$, its Hessian is locally Lipschitz there,
+and $S(\theta)\to S_*:=S(\theta^*)$ as $\theta\to\theta^*$.
+Let $H=\nabla^2F(\theta^*)$ and
+$\eta_t=c/(t+\gamma)^\alpha$, where $c>0$, $\gamma\ge0$, and
+$1/2<\alpha\le1$. If $\alpha<1$, then
+\[
+t^{\alpha/2}(\theta_t-\theta^*)\ \Rightarrow\ N(0,\Sigma_c),
+\qquad H\Sigma_c+\Sigma_c H=cS_*.
+\]
+If $\alpha=1$ and $c\lambda_{\min}(H)>1/2$, then
+\[
+\sqrt t\,(\theta_t-\theta^*)\ \Rightarrow\ N(0,\Sigma_c),
+\qquad
+(cH-\tfrac12 I)\Sigma_c
++\Sigma_c(cH-\tfrac12 I)=c^2S_*.
+\]
+Each Lyapunov equation has a unique positive semidefinite solution.
+\end{theorem}
+
+\begin{theorem}[Polyak--Ruppert averaging]\label{thm:pr_clt}
+Under the objective and covariance conditions of
+Theorem~\ref{thm:last_clt}, let $\eta_t=c/(t+\gamma)^\alpha$ with
+$c>0$, $\gamma\ge0$, and $1/2<\alpha\le1$.
+For $\bar\theta_T=T^{-1}\sum_{t=1}^T\theta_t$,
+if $\alpha<1$,
+\[
+\sqrt T\,(\bar\theta_T-\theta^*)
+\ \Rightarrow\ N(0,H^{-1}S_*H^{-1}).
+\]
+If $\alpha=1$ and $c\lambda_{\min}(H)>1/2$, the same scaling holds
+with covariance
+\[
+\Xi_c=\int_0^1 K_c(u)S_*K_c(u)^\top\,du,
+\qquad
+K_c(u)=c\,u^{cH-I}\int_u^1 v^{-cH}\,dv,
+\]
+where $u^A=e^{(\log u)A}$ for a matrix $A$.
+\end{theorem}
+
+The two averages have different roles: $\bar\theta_T^\eta$ gives the
+convex objective bound, whereas $\bar\theta_T$ gives the averaged CLT.
+At $\alpha=1$, $\Xi_c$ generally differs from $H^{-1}S_*H^{-1}$.
+In every CLT, $S_*$ is the covariance of the corrected oracle, including
+measurement and simulation noise.
+
+\begin{theorem}[Nonconvex stationarity]\label{thm:nonconvex}
+Suppose $F:\mathbb R^p\to\mathbb R$ is $L$-smooth and bounded below by
+$F_{\inf}$. Let $\eta_t=c/(t+\gamma)^\alpha$ with $c>0$,
+$\gamma\ge0$, $1/2<\alpha\le1$, and $\eta_1\le1/[L(1+\rho)]$. Then, for any $T\ge1$,
+\[
+\frac{\sum_{t=1}^T\eta_t\mathbb E\|\nabla F(\theta_t)\|^2}
+{\sum_{t=1}^T\eta_t}
+\le
+\frac{2(F(\theta_1)-F_{\inf})
++L\sigma^2\sum_{t=1}^T\eta_t^2}
+{\sum_{t=1}^T\eta_t}.
+\]
+Consequently, the weighted mean squared gradient is $O(T^{\alpha-1})$
+if $\alpha<1$, and $O(1/\log T)$ if $\alpha=1$.
+\end{theorem}
+

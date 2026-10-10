@@ -1,0 +1,145 @@
+\section{Further work}
+\label{sec:future_work}
+
+\subsection{Noise generalization}
+\label{sec:noise_generalization}
+The Gaussian perturbation is one instance of a more general conjugate
+construction. Our companion manuscript \cite{conjugatecriterion2026}
+characterizes symmetric scalar errors $U$ admitting an independent real
+variable $V$ such that
+\begin{equation}\label{eq:conjugate_transform}
+M_U(t)\varphi_V(t)=1,\qquad t\in\mathbb R,
+\end{equation}
+where $M_U(t)=\mathbb E e^{tU}$ is finite on $\mathbb R$ and
+$\varphi_V(t)=\mathbb E e^{itV}$. Existence is equivalent to $1/M_U$
+being a characteristic function; the companion manuscript gives Fourier
+and moment criteria and constructs the conjugate law. The imaginary
+perturbation must follow this law, which generally differs from the
+measurement-error law.
+
+\paragraph{Uniform measurement error.}
+For $U\sim\operatorname{Unif}[-b,b]$, with known $b>0$,
+\[
+M_U(t)=\frac{\sinh(bt)}{bt},\qquad
+\varphi_V(t)=\frac{bt}{\sinh(bt)},
+\]
+with both ratios interpreted as $1$ at $t=0$.
+The conjugate $V$ has a centered logistic distribution with scale $b/\pi$:
+\[
+f_V(v)=\frac{\pi}{4b\cosh^2(\pi v/(2b))},\qquad
+F_V(v)=\frac{1}{1+e^{-\pi v/b}}.
+\]
+It can be sampled directly from $R\sim\operatorname{Unif}(0,1)$ via
+\begin{equation}\label{eq:uniform_conjugate_sampler}
+V=\frac b\pi\log\frac{R}{1-R}.
+\end{equation}
+Thus a uniform measurement error is corrected by an independent logistic
+imaginary perturbation.
+
+\paragraph{Symmetric two-point measurement error.}
+For $\mathbb P(U=b)=\mathbb P(U=-b)=1/2$,
+\[
+M_U(t)=\cosh(bt),\qquad
+\varphi_V(t)=\frac1{\cosh(bt)}.
+\]
+Here $V$ has a scaled hyperbolic-secant distribution:
+\[
+f_V(v)=\frac{1}{2b\cosh(\pi v/(2b))},\qquad
+F_V(v)=\frac2\pi\arctan\!\left(e^{\pi v/(2b)}\right).
+\]
+An exact sampler is
+\begin{equation}\label{eq:binary_conjugate_sampler}
+V=\frac{2b}\pi\log\tan\!\left(\frac{\pi R}{2}\right),
+\qquad R\sim\operatorname{Unif}(0,1).
+\end{equation}
+The imaginary perturbation is continuous even though the measurement
+error is discrete.
+
+\paragraph{Exact correction and implementation.}
+Set $D=U+iV$. Equation~\eqref{eq:conjugate_transform} implies
+$\mathbb E D^k=0$ for every integer $k\ge1$
+\cite{conjugatecriterion2026}. Hence, for fixed $(\theta,z)$,
+\begin{equation}\label{eq:nongaussian_correction}
+\mathbb E_{U,V}\operatorname{Re}g^{\mathbb C}(\theta;z+U+iV)
+=g(\theta;z)
+\end{equation}
+for polynomial scores. The identity also holds for entire scores when
+\begin{equation}\label{eq:nongaussian_taylor}
+\sum_{k=0}^\infty
+\frac{\|\partial_z^k g^{\mathbb C}(\theta;z)\|}{k!}
+\mathbb E|D|^k<\infty.
+\end{equation}
+Indeed, this condition permits termwise expectation of the Taylor series;
+all nonconstant terms vanish. Thus correction is exact, with no
+finite-order truncation. Algorithm~\ref{alg:nongaussian_ccsgd} implements
+it using the explicit inverse-distribution samplers above. It requires
+the error law and its scale, but not the latent input distribution.
+
+\begin{algorithm}[H]
+\caption{CCSGD for uniform or symmetric two-point measurement error}
+\label{alg:nongaussian_ccsgd}
+\begin{algorithmic}[1]
+\Require Initial point $\theta_1$, step sizes $\{\eta_t\}_{t=1}^T$, known error type and scale $b>0$
+\For{$t=1,\ldots,T$}
+    \State Observe a fresh $W_t=Z_t+U_t$
+    \State Draw $R_t\sim\operatorname{Unif}(0,1)$ independently of the observation and the past
+    \If{$U_t\sim\operatorname{Unif}[-b,b]$}
+        \State $V_t\gets(b/\pi)\log\{R_t/(1-R_t)\}$
+    \Else\Comment{$\mathbb P(U_t=\pm b)=1/2$}
+        \State $V_t\gets(2b/\pi)\log\tan(\pi R_t/2)$
+    \EndIf
+    \State $G_t\gets\operatorname{Re}g^{\mathbb C}(\theta_t;W_t+iV_t)$
+    \State $\theta_{t+1}\gets\theta_t-\eta_tG_t$
+\EndFor
+\State \Return $\theta_{T+1}$
+\end{algorithmic}
+\end{algorithm}
+For noise-free responses, the observed response is held fixed during the
+complex evaluation, as in Section~\ref{sec:algorithm}. Independent
+replicates of $V_t$ may be averaged using the same observation. For
+independent input-error coordinates, the construction can also be applied
+coordinatewise with independent conjugate perturbations, subject to the
+corresponding multivariate integrability condition.
+
+\paragraph{Moment conditions for optimization.}
+Unlike a Gaussian conjugate, these conjugates have exponential moments
+only below a finite threshold. Specifically,
+\[
+\mathbb E e^{s|V|}<\infty\quad\Longleftrightarrow\quad 0\le s<\lambda,
+\qquad
+\lambda=
+\begin{cases}
+\pi/b, & U\sim\operatorname{Unif}[-b,b],\\
+\pi/(2b), & \mathbb P(U=\pm b)=1/2.
+\end{cases}
+\]
+Under the derivative envelope~\eqref{eq:parameter_envelope}, the strict
+condition $a<\lambda$ suffices for
+\eqref{eq:nongaussian_taylor}: the score has exponential growth of any
+rate slightly larger than $a$, and the conjugate has an exponential
+moment at a still larger rate. If $2a<\lambda$, boundedness of $U$ gives
+\[
+K_a=\mathbb E e^{2a|Z|}\,
+\mathbb E[|D|^2e^{2a|D|}]<\infty.
+\]
+Together with the clean sampling and amplitude bounds, the same argument
+as in Section~\ref{sec:main_results} yields the relative variance
+condition~\eqref{eq:relative_variance}. For the CLTs, choose $\delta>0$
+with $(2+\delta)a<\lambda$; the higher-moment proof then applies as well.
+Thus the optimization analysis transfers when these moment conditions
+and the corresponding objective and covariance assumptions are verified.
+Polynomial scores satisfy the required input moment conditions for both
+pairs. Arbitrary entire scores still require growth control, and random
+responses require the corresponding joint moment bounds.
+
+\subsection{Function generalization}
+Exact Gaussian correction restricts the admissible score class. In the scalar Gaussian location model with positive noise
+variance, Stefanski \cite{stefanski1989} shows that a target admitting an
+integrable unbiased estimator for every real mean must extend to an entire
+function. Applied componentwise at fixed $\theta$, this rules out globally
+exact unbiased correction of non-entire scores in that setting.
+Entire analyticity alone does not ensure the integrability required by
+CCSGD; growth control remains essential. For non-entire scores, a natural
+direction is approximate or regularized correction with explicit bias,
+variance, and optimization-error bounds. With singular $\Omega$, the
+analyticity restriction concerns the directions affected by noise.
